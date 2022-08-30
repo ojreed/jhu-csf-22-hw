@@ -5,6 +5,7 @@
 
 typedef struct {
   // TODO: add fields
+
 } Fixedpoint;
 
 // Create a Fixedpoint value representing an integer.
