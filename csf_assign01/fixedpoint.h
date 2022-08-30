@@ -3,8 +3,31 @@
 
 #include <stdint.h>
 
+/***
+ * So theoretically we want a signed int for the whole part and an unsinged int for the fractional part
+ * this is because only the whole part carries a negative or positive weight. although negation of the whole part does
+ * matter for operations on the fractional part.
+ * 
+ * My main question is about the way we store this information. The assignement implies that we are storing uint64_t 
+ * but the project says "An instance of Fixedpoint is a base-2 fixed point value" 
+ *  I think it means we dont really ever have to deal with binary values but I am not sure. 
+ * 
+ * 
+ * **/
+
 typedef struct {
   // TODO: add fields
+  uint64_t whole;
+  uint64_t fractional;
+  uint8_t flag; /*use value to hold flag state
+    0 - undefined
+    1 - valid/non-negative
+    2 - valid/negative
+    3 - an error value --> cant convert from hex?
+    4 - positive or negative overflow value
+    5 - positive or negative underflow value.
+  */
+
 
 } Fixedpoint;
 
