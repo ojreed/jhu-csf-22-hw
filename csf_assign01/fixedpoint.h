@@ -19,13 +19,13 @@ typedef struct {
   // TODO: add fields
   uint64_t whole;
   uint64_t fractional;
-  uint8_t flag; /*use value to hold flag state
-    0 - undefined
-    1 - valid/non-negative
-    2 - valid/negative
-    3 - an error value --> cant convert from hex?
-    4 - positive or negative overflow value
-    5 - positive or negative underflow value.
+  uint8_t flag; /*use value to hold flag state 
+    if bit is high then flag is thrown 
+    0 - valid/non-negative
+    1 - valid/negative
+    2 - an error value --> cant convert from hex?
+    3 - positive or negative overflow value
+    4 - positive or negative underflow value.
   */
 
 
