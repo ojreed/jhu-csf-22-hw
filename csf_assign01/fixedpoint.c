@@ -97,34 +97,51 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
-  if (left.flag == right.flag) { // magnitudes increases 
-    if (left.flag == 2) { //neg + neg --> sum is neg
+  if (left.flag == right.flag) { // magnitudes increases ie. + and + or - and -
+    if (left.flag == 2) { //neg + neg --> sum is neg so set flag 
       sum.flag = 2;
     }
-    /* TODO
+    /* TODO: 
     1) overflow of whole --> throw an overflow flag | DONE
     2) overflow of fractional --> carry 1 to whole part | DONE
     */
+   //ADD COMPONENTS SEPERATLY 
     sum.whole = left.whole + right.whole;
     sum.fractional = left.fractional + right.fractional; 
-    if (pow(2,64) - left.fractional < right.fractional) {//carry check
+
+    //RESOLVE ISSUES
+    //TODO: do we need the final - 1??? 
+    if (((1<<64)-1) - left.fractional < right.fractional - 1) {//carry check
       sum.whole + 1;
     }
-    if (pow(2,64) - left.whole < right.whole) {//overflow check
+    if (((1<<64)-1)  - left.whole < right.whole - 1) {//overflow check
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
     /*
-      1) if neg > pos --> neg - pos and set sum to negative maybe recursive addition call?? -fp_subtract(neg,pos)
-      2) borrowing from fractional 
+      1) if neg > pos | DONE
+      2) borrowing from fractional | DONE
+
     */
-    if (right.flag == 2) { //right is negative
-      sum.whole = left.whole - right.whole;
-      sum.fractional = left.fractional - right.fractional;
-    } else { //left is negative
-      sum.whole = right.whole - left.whole;
-      sum.fractional = right.fractional - left.fractional;
+    //SETUP
+    //Subtract smaller value from the larger 
+    Fixedpoint Big, Little;
+    if (left.whole<right.whole || (left.whole == right.whole && left.fractional < right.fractional)) { //right has the larger magnitude 
+     Big = right;
+     Little = left;
+    } else { // right has the higher magnitude 
+     Big = left;
+     Little = right;
     }
+    //COMPUTATION
+    sum.whole = Big.whole-Little.whole;
+    if (Big.fractional < Little.fractional) {//need carry in fractional side
+      sum.whole -= 1;
+      sum.fractional = ((1<<64)-1) - (Little.fractional - Big.fractional) + 1;//do I need the plus 1?
+    } else { //fractional component behaves as expected
+      sum.fractional = Big.fractional - Little.fractional;
+    }
+    sum.flag = Big.flag; //maintain sign of the larger magnitude component  
   }
   
 }
