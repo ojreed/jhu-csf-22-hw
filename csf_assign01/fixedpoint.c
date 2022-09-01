@@ -27,33 +27,58 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) {
 }
 
 uint64_t fixedpoint_whole_part(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
-  return 0UL;
+  return val.whole; //returns the whole part
 }
 
 uint64_t fixedpoint_frac_part(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
-  return 0UL;
+  return val.fractional; //returns the fractional part
 }
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  Fixedpoint sum;
+  if (left.flag == right.flag) { // magnitudes increases 
+    if (left.flag == 2) { //neg + neg --> sum is neg
+      sum.flag = 2;
+    }
+    /* TODO
+    1) overflow of whole --> throw an overflow flag
+    2) overflow of fractional --> carry 1 to whole part
+    */
+    sum.whole = left.whole + right.whole;
+    sum.fractional = left.fractional + right.fractional; 
+    if (pow(2,64) - left.fractional < right.fractional) {//carry check
+      sum.whole + 1;
+    }
+    if (pow(2,64) - left.whole < right.whole) {//overflow check
+      sum.flag = 8;
+    } 
+  } else { //magnitude decreases 
+    /*
+      1) if neg > pos --> neg - pos and set sum to negative maybe recursive addition call?? -fp_subtract(neg,pos)
+      2) borrowing from fractional 
+    */
+    if (right.flag == 2) { //right is negative
+      sum.whole = left.whole - right.whole;
+      sum.fractional = left.fractional - right.fractional;
+    } else { //left is negative
+      sum.whole = right.whole - left.whole;
+      sum.fractional = right.fractional - left.fractional;
+    }
+  }
+  
 }
 
 Fixedpoint fixedpoint_sub(Fixedpoint left, Fixedpoint right) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  return fixedpoint_add(left,fixedpoint_negate(right)); //add the left to the negated right
 }
 
 Fixedpoint fixedpoint_negate(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  if (val.flag == 2) { //if negative make positive
+    val.flag = 1;
+  } else { //else make negative
+    val.flag = 2;
+  }
+  return val; //return flipped val
 }
 
 Fixedpoint fixedpoint_halve(Fixedpoint val) {
@@ -75,8 +100,11 @@ int fixedpoint_compare(Fixedpoint left, Fixedpoint right) {
 }
 
 int fixedpoint_is_zero(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if (val.flag <= 2) { //verify val is in the valid range of flags
+    if (val.whole == 0 && val.fractional == 0) { //if both the whole and fractional parts are zero than the FP is zero
+      return 1;
+    }
+  }
   return 0;
 }
 
