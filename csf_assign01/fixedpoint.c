@@ -97,8 +97,8 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
-  if (left.flag == right.flag) { // magnitudes increases ie. + and + or - and -
-    if (left.flag == 2) { //neg + neg --> sum is neg so set flag 
+  if (left.flag & 3 == right.flag & 3) { // magnitudes increases ie. + and + or - and -
+    if (left.flag & 2 == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
     }
     /* TODO: 
@@ -151,10 +151,10 @@ Fixedpoint fixedpoint_sub(Fixedpoint left, Fixedpoint right) {
 }
 
 Fixedpoint fixedpoint_negate(Fixedpoint val) {
-  if (val.flag == 2) { //if negative make positive
-    val.flag = 1;
+  if (val.flag & 2 == 2) { //if negative make positive NOTE: we use "bitwise and" to see if the bit is set to high
+    val.flag -= 1; //shift the flag in the 2s bit to the 1s 
   } else { //else make negative
-    val.flag = 2;
+    val.flag += 1;//shift ones bit one to twos
   }
   return val; //return flipped val
 }
