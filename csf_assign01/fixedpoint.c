@@ -102,8 +102,8 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.flag = 2;
     }
     /* TODO
-    1) overflow of whole --> throw an overflow flag
-    2) overflow of fractional --> carry 1 to whole part
+    1) overflow of whole --> throw an overflow flag | DONE
+    2) overflow of fractional --> carry 1 to whole part | DONE
     */
     sum.whole = left.whole + right.whole;
     sum.fractional = left.fractional + right.fractional; 
@@ -111,7 +111,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.whole + 1;
     }
     if (pow(2,64) - left.whole < right.whole) {//overflow check
-      sum.flag = 8;
+      sum.flag += 8;
     } 
   } else { //magnitude decreases 
     /*
