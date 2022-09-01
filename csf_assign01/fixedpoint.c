@@ -9,21 +9,82 @@
 static Fixedpoint DUMMY;
 
 Fixedpoint fixedpoint_create(uint64_t whole) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  Fixedpoint fp;
+  fp.whole = whole;
+  fp.fractional = 0;
+  fp.flag = 1; // Only set first bit (valid non-neg number)
+  return fp;
 }
 
 Fixedpoint fixedpoint_create2(uint64_t whole, uint64_t frac) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  Fixedpoint fp = fixedpoint_create(whole);
+  fp.fractional = frac;
+  return fp;
 }
 
-Fixedpoint fixedpoint_create_from_hex(const char *hex) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
+  Fixedpoint fp;
+  int *ptr = hex; // Pointer is memory address of first element
+  int period;
+  int onto_frac = 0;
+  char whole_arr[64];
+  char frac_arr[64];
+  int index = 0;
+
+  // Locate period, then divide into two parts
+  While (ptr != NULL) {
+    if(strcmp(ptr, "-") == 0) {
+      fp.flag |= (1 << 1); // Set flag if negative
+    }
+
+    if(strcmp(ptr, ".") == 0){ // Returns 0 if identical
+      onto_frac = 0;
+    } 
+    
+    if (onto_frac == 0) {
+      whole_arr[index] = ptr;
+    } else if (onto_frac == 1) {
+      frac_arr[index] = ptr;
+    }
+
+    index++;
+    ptr++; // Next element of char array
+    return fp;
+  }
+
+  // Convert each half to decimal
+  // Whole part
+  ptr = whole_arr; // Element of string
+  int power = 0; // See if we can reuse other variable later
+  int num;
+  int whole_sum;
+  for(int i = sizeof(whole_arr); i > 0; i--){ // Traverse from end
+    num = ptr;
+    if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
+      num = (int)ptr - 55;
+    }
+    whole_sum += num * pow(16, power);
+    power++;
+  }
+  fp.whole = whole_sum;
+
+  // Fractional part
+  int frac_sum;
+  ptr = frac_arr; // Element of string
+  power = -1; 
+
+  for(int i = 0; i < sizeof(frac_arr); i++){ // Traverse from end
+    num = ptr;
+    if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
+      num = (int)ptr - 55;
+    }
+    frac_sum += num * pow(16, power);
+    power--;
+  }
+  fp.fractional = frac_sum;
+
+  // Return Fixedpoint value
+  return fp;
 }
 
 uint64_t fixedpoint_whole_part(Fixedpoint val) {
