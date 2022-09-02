@@ -97,7 +97,7 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
-  if (left.flag & 3 == right.flag & 3) { // magnitudes increases ie. + and + or - and -
+  if (left.flag & 3 == right.flag & 3) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if (left.flag & 2 == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
     }
