@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
   }
 
   TEST_INIT();
-
+  TEST(debug_create_from_hex);
   TEST(test_whole_part);
   TEST(test_frac_part);
   TEST(test_create_from_hex);
