@@ -84,11 +84,11 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   uint64_t whole_sum;
   for(int i = sizeof(whole_arr); i > 0; i--) { // Traverse from end
     num = ptr;
-    if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
-      num = (int)ptr - 55;
+    if((uint64_t)ptr >= 97 && (uint64_t)ptr <= 102){ // a-f
+      num = (uint64_t)ptr - 55;
     }
-    if((int)ptr >= 48 && (int)ptr <= 57){ // a-f
-      num = (int)ptr - 48;
+    if((uint64_t)ptr >= 48 && (uint64_t)ptr <= 57){ // a-f
+      num = (uint64_t)ptr - 48;
     }
     whole_sum += num * pow(16, power);
     power++;
@@ -103,11 +103,11 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
 
   for(int i = 0; i < sizeof(frac_arr); i++) { // Traverse from end
     num = ptr;
-    if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
-      num = (int)ptr - 55;
+    if((uint64_t)ptr >= 97 && (uint64_t)ptr <= 102){ // a-f
+      num = (uint64_t)ptr - 55;
     }
-    if((int)ptr >= 48 && (int)ptr <= 57){ // a-f
-      num = (int)ptr - 48;
+    if((uint64_t)ptr >= 48 && (uint64_t)ptr <= 57){ // a-f
+      num = (uint64_t)ptr - 48;
     }
     frac_sum += num * pow(16, power);
     power--;
