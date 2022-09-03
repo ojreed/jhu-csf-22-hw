@@ -106,6 +106,16 @@ void test_frac_part(TestObjs *objs) {
   ASSERT(0x4d1a23c24fafUL == fixedpoint_frac_part(objs->large2));
 }
 
+void debug_create_from_hex(TestObjs *objs) {
+  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
+  printf("%d",fixedpoint_whole_part(test1));
+  printf("%d",fixedpoint_frac_part(test1));
+
+  Fixedpoint test1 = fixedpoint_create_from_hex("14.0005");
+  printf("%d",fixedpoint_whole_part(test1));
+  printf("%d",fixedpoint_frac_part(test1));
+}
+
 void test_create_from_hex(TestObjs *objs) {
   (void) objs;
 
