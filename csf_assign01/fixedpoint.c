@@ -93,6 +93,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     whole_sum += num * pow(16, power);
     power++;
     flow_ctr++;
+    ptr++;
   }
   fp.whole = whole_sum;
 
@@ -112,6 +113,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     frac_sum += num * pow(16, power);
     power--;
     flow_ctr++;
+    ptr++;
   }
   fp.fractional = frac_sum;
 
