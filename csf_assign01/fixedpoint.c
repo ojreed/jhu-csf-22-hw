@@ -194,8 +194,9 @@ int fixedpoint_is_zero(Fixedpoint val) {
 }
 
 int fixedpoint_is_err(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if (val.flag & 4 == 4) { // if error bit set to high
+    return 1;
+  }
   return 0;
 }
 
@@ -231,7 +232,9 @@ int fixedpoint_is_underflow_pos(Fixedpoint val) {
 
 int fixedpoint_is_valid(Fixedpoint val) {
   // TODO: implement
-  assert(0);
+  if (val.flag <= 2) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
+    return 1;
+  }
   return 0;
 }
 
