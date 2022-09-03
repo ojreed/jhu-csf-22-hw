@@ -200,32 +200,37 @@ int fixedpoint_is_err(Fixedpoint val) {
 }
 
 int fixedpoint_is_neg(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if(val.flag & 2 == 2) {
+    return 1;
+  }
   return 0;
 }
 
 int fixedpoint_is_overflow_neg(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if(val.flag & 10 == 10) {
+    return 1;
+  }
   return 0;
 }
 
 int fixedpoint_is_overflow_pos(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if(val.flag & 9 == 9) {
+    return 1;
+  }
   return 0;
 }
 
 int fixedpoint_is_underflow_neg(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if(val.flag & 18 == 18) {
+    return 1;
+  }
   return 0;
 }
 
 int fixedpoint_is_underflow_pos(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
+  if(val.flag & 17 == 17) {
+    return 1;
+  }
   return 0;
 }
 
