@@ -37,15 +37,33 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   char whole_arr[64];
   char frac_arr[64];
   int index = 0;
+  int flow_ctr = 0;
 
   // Locate period, then divide into two parts
   while (ptr != NULL) {
+    // Check for invalid character
+    if (!(ptr < 102 && ptr > 97) || !(ptr < 57 || ptr > 48))  {
+      fp.flag += 4; // Set error bit in flag
+      break;
+    }
+
+    // Check for overflow
+    if(onto_frac == 0 && flow_ctr > 8) {
+      fp.flag += 8;
+    } else if(onto_frac == 1 && flow_ctr > 8) {
+      fp.flag += 16;
+    }
+
+    // Check if neg or pos value
     if(strcmp(ptr, "-") == 0) {
       fp.flag |= (1 << 1); // Set flag if negative
+    } else {
+      fp.flag |= 1;
     }
 
     if(strcmp(ptr, ".") == 0){ // Returns 0 if identical
-      onto_frac = 0;
+      onto_frac = 1;
+      flow_ctr = 0;
     } 
     
     if (onto_frac == 0) {
@@ -72,6 +90,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
     whole_sum += num * pow(16, power);
     power++;
+    flow_ctr++;
   }
   fp.whole = whole_sum;
 
@@ -87,6 +106,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
     frac_sum += num * pow(16, power);
     power--;
+    flow_ctr++;
   }
   fp.fractional = frac_sum;
 
@@ -236,8 +256,7 @@ int fixedpoint_is_underflow_pos(Fixedpoint val) {
 }
 
 int fixedpoint_is_valid(Fixedpoint val) {
-  // TODO: implement
-  if (val.flag <= 2) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
+  if (val.flag <= 2 && val.flag > 0) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
     return 1;
   }
   return 0;
