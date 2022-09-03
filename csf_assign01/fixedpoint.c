@@ -32,7 +32,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   int index = 0;
 
   // Locate period, then divide into two parts
-  While (ptr != NULL) {
+  while (ptr != NULL) {
     if(strcmp(ptr, "-") == 0) {
       fp.flag |= (1 << 1); // Set flag if negative
     }
@@ -111,10 +111,10 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
 
     //RESOLVE ISSUES
     //TODO: do we need the final - 1??? 
-    if (sum.fractional < left.fractional) {//carry check
+    if (((1<<64)-1) - left.fractional < right.fractional - 1) {//carry check
       sum.whole + 1;
     }
-    if (sum.whole < left.whole) {//overflow check
+    if (((1<<64)-1)  - left.whole < right.whole - 1) {//overflow check
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
@@ -137,7 +137,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     sum.whole = Big.whole-Little.whole;
     if (Big.fractional < Little.fractional) {//need carry in fractional side
       sum.whole -= 1;
-      sum.fractional = ((1<<64)) - (Little.fractional - Big.fractional);//can I use 1<<64
+      sum.fractional = ((1<<64)-1) - (Little.fractional - Big.fractional) + 1;//do I need the plus 1?
     } else { //fractional component behaves as expected
       sum.fractional = Big.fractional - Little.fractional;
     }
@@ -228,10 +228,34 @@ int fixedpoint_is_valid(Fixedpoint val) {
   return 0;
 }
 
+// Return a dynamically allocated C character string with the representation of
+// the given valid Fixedpoint value.  The string should start with "-" if the
+// value is negative, and should use the characters 0-9 and a-f to represent
+// each hex digit of the whole and fractional parts. As a special case, if the
+// Fixedpoint value represents an integer (i.e., the fractional part is 0),
+// then no "decimal point" ('.') should be included.
+//
+// Parameters:
+//   val - the Fixedpoint value
+//
+// Returns:
+//   dynamically allocated character string containing the representation
+//   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
   // TODO: implement
-  assert(0);
-  char *s = malloc(20);
-  strcpy(s, "<invalid>");
-  return s;
+  //assert(0);
+  //char *s = malloc(20);
+  //strcpy(s, "<invalid>");
+  //return s;
+}
+
+// Power function instead of using pow
+uint64_t pow(uint64_t base, uint64_t power) {
+  int ctr = 0;
+  int result = 1;
+  while(ctr < power) {
+    result *= base;
+    ctr++;
+  }
+  return result;
 }
