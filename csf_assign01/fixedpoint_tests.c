@@ -114,6 +114,10 @@ void debug_create_from_hex(TestObjs *objs) {
   Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
   printf("14 = %i \n",fixedpoint_whole_part(test2));
   printf("0005 = %i \n",fixedpoint_frac_part(test2));
+
+  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
+  printf("14 = %i \n",fixedpoint_whole_part(test3));
+  printf("0005 = %i \n",fixedpoint_frac_part(test3));
 }
 
 void test_create_from_hex(TestObjs *objs) {
