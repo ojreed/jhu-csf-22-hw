@@ -108,16 +108,16 @@ void test_frac_part(TestObjs *objs) {
 
 void debug_create_from_hex(TestObjs *objs) {
   Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
-  printf("a = %i \n",fixedpoint_whole_part(test1));
-  printf("0 = %i \n",fixedpoint_frac_part(test1));
+  printf("a = %lu \n",fixedpoint_whole_part(test1));
+  printf("0 = %lu \n",fixedpoint_frac_part(test1));
 
   Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
-  printf("14 = %i \n",fixedpoint_whole_part(test2));
-  printf("0005 = %i \n",fixedpoint_frac_part(test2));
+  printf("14 = %lu \n",fixedpoint_whole_part(test2));
+  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
 
   Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
-  printf("1 = %i \n",fixedpoint_whole_part(test3));
-  printf("0 = %i \n",fixedpoint_frac_part(test3));
+  printf("1 = %lu \n",fixedpoint_whole_part(test3));
+  printf("0 = %lu \n",fixedpoint_frac_part(test3));
 }
 
 void test_create_from_hex(TestObjs *objs) {
