@@ -110,6 +110,18 @@ void test_create_from_hex(TestObjs *objs) {
   ASSERT(0x00f2000000000000UL == fixedpoint_frac_part(val1));
 }
 
+void test_is_zero(TestObjs *objs) {
+  Fixedpoint whole, frac, both, zero;
+  zero = fixedpoint_create2(0,0);
+  whole = fixedpoint_create2(1,0);
+  both = fixedpoint_create2(1,1);
+  frac = fixedpoint_create2(0,1); 
+  ASSERT(fixedpoint_is_zero(zero));
+  ASSERT(!fixedpoint_is_zero(whole));
+  ASSERT(!fixedpoint_is_zero(both));
+  ASSERT(!fixedpoint_is_zero(frac));
+}
+
 void test_format_as_hex(TestObjs *objs) {
   char *s;
 
