@@ -1,3 +1,10 @@
+/*
+CSF Assignement 1 - Fixedpoint Number Representation
+Maddy Esty and Owen Reed
+mesty1@jhu.edu and oreed2@jhu.edu
+Functions to implement desired functionality of the Fixedpoint struct
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +65,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   int power = 0; // See if we can reuse other variable later
   int num;
   int whole_sum;
-  for(int i = sizeof(whole_arr); i > 0; i--){ // Traverse from end
+  for(int i = sizeof(whole_arr); i > 0; i--) { // Traverse from end
     num = ptr;
     if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
       num = (int)ptr - 55;
@@ -73,7 +80,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   ptr = frac_arr; // Element of string
   power = -1; 
 
-  for(int i = 0; i < sizeof(frac_arr); i++){ // Traverse from end
+  for(int i = 0; i < sizeof(frac_arr); i++) { // Traverse from end
     num = ptr;
     if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
       num = (int)ptr - 55;
@@ -125,23 +132,23 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     */
     //SETUP
     //Subtract smaller value from the larger 
-    Fixedpoint Big, Little;
+    Fixedpoint big, little;
     if (left.whole<right.whole || (left.whole == right.whole && left.fractional < right.fractional)) { //right has the larger magnitude 
-     Big = right;
-     Little = left;
+     big = right;
+     little = left;
     } else { // right has the higher magnitude 
-     Big = left;
-     Little = right;
+     big = left;
+     little = right;
     }
     //COMPUTATION
-    sum.whole = Big.whole-Little.whole;
-    if (Big.fractional < Little.fractional) {//need carry in fractional side
+    sum.whole = big.whole-little.whole;
+    if (big.fractional < little.fractional) {//need carry in fractional side
       sum.whole -= 1;
-      sum.fractional = ((1<<64)-1) - (Little.fractional - Big.fractional) + 1;//do I need the plus 1?
+      sum.fractional = ((1<<64)-1) - (little.fractional - big.fractional) + 1;//do I need the plus 1?
     } else { //fractional component behaves as expected
-      sum.fractional = Big.fractional - Little.fractional;
+      sum.fractional = big.fractional - little.fractional;
     }
-    sum.flag = Big.flag; //maintain sign of the larger magnitude component  
+    sum.flag = big.flag; //maintain sign of the larger magnitude component  
   }
   
 }
