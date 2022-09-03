@@ -74,7 +74,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
 
     index++;
     ptr++; // Next element of char array
-    return fp;
   }
 
   // Convert each half to decimal
