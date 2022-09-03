@@ -1,7 +1,7 @@
 /*
 CSF Assignement 1 - Fixedpoint Number Representation
-Maddy Esty and Owen Reed
-mesty1@jhu.edu and oreed2@jhu.edu
+Maddy Estey and Owen Reed
+mestey1@jhu.edu and oreed2@jhu.edu
 Functions to test the functionality of the Fixedpoint struct
 */
 
