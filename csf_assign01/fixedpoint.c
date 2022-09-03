@@ -87,6 +87,9 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
       num = (int)ptr - 55;
     }
+    if((int)ptr >= 48 && (int)ptr <= 57){ // a-f
+      num = (int)ptr - 48;
+    }
     whole_sum += num * pow(16, power);
     power++;
     flow_ctr++;
@@ -102,6 +105,9 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     num = ptr;
     if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
       num = (int)ptr - 55;
+    }
+    if((int)ptr >= 48 && (int)ptr <= 57){ // a-f
+      num = (int)ptr - 48;
     }
     frac_sum += num * pow(16, power);
     power--;
