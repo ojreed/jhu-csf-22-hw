@@ -79,9 +79,9 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Convert each half to decimal
   // Whole part
   ptr = whole_arr; // Element of string
-  int power = 0; // See if we can reuse other variable later
-  int num;
-  int whole_sum;
+  uint64_t power = 0; // See if we can reuse other variable later
+  uint64_t num;
+  uint64_t whole_sum;
   for(int i = sizeof(whole_arr); i > 0; i--) { // Traverse from end
     num = ptr;
     if((int)ptr >= 97 && (int)ptr <= 102){ // a-f
@@ -97,7 +97,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   fp.whole = whole_sum;
 
   // Fractional part
-  int frac_sum;
+  uint64_t frac_sum;
   ptr = frac_arr; // Element of string
   power = -1; 
 
