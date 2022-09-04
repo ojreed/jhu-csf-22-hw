@@ -148,7 +148,7 @@ void debug_add(TestObjs *objs) {
   ASSERT(fixedpoint_is_neg(e));
 
   Fixedpoint f = fixedpoint_add(e,c);
-  printf("e+c = %i.%i \n",fixedpoint_whole_part(f),fixedpoint_frac_part(f));
+  printf("e+c = %lu.%lu \n",fixedpoint_whole_part(f),fixedpoint_frac_part(f));
   ASSERT(fixedpoint_whole_part(f) == 4);
   ASSERT(fixedpoint_frac_part(f) == 9);
   ASSERT(!fixedpoint_is_neg(f));
