@@ -137,6 +137,8 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
+    } else {
+      sum.flag = 1;
     }
     // printf("Running mag increase\n");
     /* TODO: 
@@ -251,7 +253,7 @@ int fixedpoint_is_overflow_neg(Fixedpoint val) {
 }
 
 int fixedpoint_is_overflow_pos(Fixedpoint val) {
-  if(val.flag == 9) {
+  if((val.flag & 9) == 9) {
     return 1;
   }
   return 0;
