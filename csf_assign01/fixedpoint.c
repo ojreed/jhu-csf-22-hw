@@ -138,7 +138,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
     }
-    printf("Running mag increase\n");
+    // printf("Running mag increase\n");
     /* TODO: 
     1) overflow of whole --> throw an overflow flag | DONE
     2) overflow of fractional --> carry 1 to whole part | DONE
@@ -156,7 +156,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
-    printf("Running mag decrease\n");
+    // printf("Running mag decrease\n");
     /*
       1) if neg > pos | DONE
       2) borrowing from fractional | DONE
