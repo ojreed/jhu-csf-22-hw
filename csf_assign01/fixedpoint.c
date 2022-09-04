@@ -176,6 +176,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     sum.whole = big.whole-little.whole;
     if (big.fractional < little.fractional) {//need carry in fractional side
       sum.whole -= 1;
+      printf("HERE");
       sum.fractional =  (((uint64_t)-1) - little.fractional) + big.fractional;//do I need the plus 1?
     } else { //fractional component behaves as expected
       sum.fractional = big.fractional - little.fractional;
