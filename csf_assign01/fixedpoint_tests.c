@@ -125,12 +125,11 @@ void debug_add(TestObjs *objs) {
   Fixedpoint a = fixedpoint_create2(1,0);
   Fixedpoint b = fixedpoint_create2(1,1);
   Fixedpoint c = fixedpoint_create2(5,0);
-  
-  printf("/n");
+
+  printf("\n");
   printf("a = %i.%i \n",fixedpoint_whole_part(a),fixedpoint_frac_part(a));
   printf("b = %i.%i \n",fixedpoint_whole_part(b),fixedpoint_frac_part(b));
   printf("c = %i.%i \n",fixedpoint_whole_part(c),fixedpoint_frac_part(c));
-  printf("-a = %i.%i \n",fixedpoint_whole_part(fixedpoint_negate(a)),fixedpoint_frac_part(fixedpoint_negate(a)));
   
   Fixedpoint d = fixedpoint_add(a,b);
 
