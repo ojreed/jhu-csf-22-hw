@@ -134,7 +134,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   printf("Running add\n");
   printf("Flags Right = %d, Left = %d\n",right.flag,left.flag);
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
-    if (left.flag & 2 == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
+    if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
     }
     printf("Running mag increase\n");
@@ -189,7 +189,7 @@ Fixedpoint fixedpoint_sub(Fixedpoint left, Fixedpoint right) {
 }
 
 Fixedpoint fixedpoint_negate(Fixedpoint val) {
-  if (val.flag & 2 == 2) { //if negative make positive NOTE: we use "bitwise and" to see if the bit is set to high
+  if ((val.flag & 2) == 2) { //if negative make positive NOTE: we use "bitwise and" to see if the bit is set to high
     val.flag -= 1; //shift the flag in the 2s bit to the 1s 
   } else { //else make negative
     val.flag += 1;//shift ones bit one to twos
@@ -225,42 +225,42 @@ int fixedpoint_is_zero(Fixedpoint val) {
 }
 
 int fixedpoint_is_err(Fixedpoint val) {
-  if (val.flag & 4 == 4) { // if error bit set to high
+  if ((val.flag & 4) == 4) { // if error bit set to high
     return 1;
   }
   return 0;
 }
 
 int fixedpoint_is_neg(Fixedpoint val) {
-  if(val.flag & 2 == 2) {
+  if((val.flag & 2) == 2) {
     return 1;
   }
   return 0;
 }
 
 int fixedpoint_is_overflow_neg(Fixedpoint val) {
-  if(val.flag & 10 == 10) {
+  if((val.flag & 10) == 10) {
     return 1;
   }
   return 0;
 }
 
 int fixedpoint_is_overflow_pos(Fixedpoint val) {
-  if(val.flag & 9 == 9) {
+  if((val.flag & 9) == 9) {
     return 1;
   }
   return 0;
 }
 
 int fixedpoint_is_underflow_neg(Fixedpoint val) {
-  if(val.flag & 18 == 18) {
+  if((val.flag & 18) == 18) {
     return 1;
   }
   return 0;
 }
 
 int fixedpoint_is_underflow_pos(Fixedpoint val) {
-  if(val.flag & 17 == 17) {
+  if((val.flag & 17) == 17) {
     return 1;
   }
   return 0;
