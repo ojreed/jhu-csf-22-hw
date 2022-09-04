@@ -48,18 +48,18 @@ int main(int argc, char **argv) {
 
   TEST_INIT();
   //SIMPLIFIED MAIN FOR DEBUGGING:
-  TEST(debug_create_from_hex);
+  // TEST(debug_create_from_hex);
   TEST(debug_add);
-  TEST(test_whole_part);
-  TEST(test_frac_part);
-  TEST(test_create_from_hex);
-  TEST(test_format_as_hex);
-  TEST(test_negate);
-  TEST(test_add);
-  TEST(test_sub);
-  TEST(test_is_overflow_pos);
-  TEST(test_is_err);
-  TEST(test_is_zero);
+  // TEST(test_whole_part);
+  // TEST(test_frac_part);
+  // TEST(test_create_from_hex);
+  // TEST(test_format_as_hex);
+  // TEST(test_negate);
+  // TEST(test_add);
+  // TEST(test_sub);
+  // TEST(test_is_overflow_pos);
+  // TEST(test_is_err);
+  // TEST(test_is_zero);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
@@ -133,11 +133,14 @@ void debug_add(TestObjs *objs) {
   printf("c = %i.%i \n",fixedpoint_whole_part(c),fixedpoint_frac_part(c));
   
   Fixedpoint d = fixedpoint_add(a,b);
-
   printf("a+b = %i.%i \n",fixedpoint_whole_part(d),fixedpoint_frac_part(d));
-
   ASSERT(fixedpoint_whole_part(d) == 2);
   ASSERT(fixedpoint_frac_part(d) == 1);
+
+  Fixedpoint e = fixedpoint_add(a,fixedpoint_negate(b));
+  printf("|a-b| = %i.%i \n",fixedpoint_whole_part(e),fixedpoint_frac_part(e));
+  ASSERT(fixedpoint_whole_part(e) == 0);
+  ASSERT(fixedpoint_frac_part(e) == 9);
   
   
 }
