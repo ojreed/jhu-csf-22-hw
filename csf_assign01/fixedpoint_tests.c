@@ -142,6 +142,7 @@ void debug_add(TestObjs *objs) {
   printf("|a-b| = %i.%i \n",fixedpoint_whole_part(e),fixedpoint_frac_part(e));
   ASSERT(fixedpoint_whole_part(e) == 0);
   ASSERT(fixedpoint_frac_part(e) == 1);
+  printf("e.flag = %d/n",e.flag);
   ASSERT(fixedpoint_is_neg(e));
 
   Fixedpoint f = fixedpoint_add(e,c);
