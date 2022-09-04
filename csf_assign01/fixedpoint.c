@@ -177,7 +177,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     }
     sum.flag = big.flag; //maintain sign of the larger magnitude component  
   }
-  
+  return sum;
 }
 
 Fixedpoint fixedpoint_sub(Fixedpoint left, Fixedpoint right) {
