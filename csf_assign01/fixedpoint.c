@@ -190,6 +190,9 @@ Fixedpoint fixedpoint_sub(Fixedpoint left, Fixedpoint right) {
 }
 
 Fixedpoint fixedpoint_negate(Fixedpoint val) {
+  if (fixedpoint_is_zero(val)) {
+    return val;
+  }
   if ((val.flag & 2) == 2) { //if negative make positive NOTE: we use "bitwise and" to see if the bit is set to high
     val.flag -= 1; //shift the flag in the 2s bit to the 1s 
   } else { //else make negative
