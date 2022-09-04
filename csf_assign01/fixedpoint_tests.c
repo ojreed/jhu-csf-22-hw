@@ -136,11 +136,19 @@ void debug_add(TestObjs *objs) {
   printf("a+b = %i.%i \n",fixedpoint_whole_part(d),fixedpoint_frac_part(d));
   ASSERT(fixedpoint_whole_part(d) == 2);
   ASSERT(fixedpoint_frac_part(d) == 1);
+  ASSERT(!fixedpoint_is_neg(d));
 
   Fixedpoint e = fixedpoint_add(a,fixedpoint_negate(b));
   printf("|a-b| = %i.%i \n",fixedpoint_whole_part(e),fixedpoint_frac_part(e));
   ASSERT(fixedpoint_whole_part(e) == 0);
-  ASSERT(fixedpoint_frac_part(e) == 9);
+  ASSERT(fixedpoint_frac_part(e) == 1);
+  ASSERT(fixedpoint_is_neg(e));
+
+  Fixedpoint f = fixedpoint_add(e,c);
+  printf("e+c = %i.%i \n",fixedpoint_whole_part(f),fixedpoint_frac_part(f));
+  ASSERT(fixedpoint_whole_part(f) == 4);
+  ASSERT(fixedpoint_frac_part(f) == 9);
+  ASSERT(!fixedpoint_is_neg(f));
   
   
 }
