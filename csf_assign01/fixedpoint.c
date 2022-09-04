@@ -175,7 +175,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     sum.whole = big.whole-little.whole;
     if (big.fractional < little.fractional) {//need carry in fractional side
       sum.whole -= 1;
-      sum.fractional = (big.fractional- little.fractional);//do I need the plus 1?
+      sum.fractional = (((1<<64)-1) - little.fractional) + big.fractional;//do I need the plus 1?
     } else { //fractional component behaves as expected
       sum.fractional = big.fractional - little.fractional;
     }
