@@ -146,7 +146,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     //RESOLVE ISSUES
     //TODO: do we need the final - 1??? 
     if (sum.fractional < left.fractional) {//carry check
-      sum.whole + 1;
+      sum.whole += 1;
     }
     if (sum.whole < sum.fractional) {//overflow check
       sum.flag += 8;
