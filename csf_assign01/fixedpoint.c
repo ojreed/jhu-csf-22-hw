@@ -131,10 +131,12 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
+  printf("Running add");
   if (left.flag & 3 == right.flag & 3) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if (left.flag & 2 == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
     }
+    printf("Running mag increase");
     /* TODO: 
     1) overflow of whole --> throw an overflow flag | DONE
     2) overflow of fractional --> carry 1 to whole part | DONE
@@ -152,6 +154,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
+    printf("Running mag decrease");
     /*
       1) if neg > pos | DONE
       2) borrowing from fractional | DONE
