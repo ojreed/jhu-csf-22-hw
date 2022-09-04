@@ -145,10 +145,10 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
 
     //RESOLVE ISSUES
     //TODO: do we need the final - 1??? 
-    if (((1<<64)-1) - left.fractional < right.fractional - 1) {//carry check
+    if (sum.fractional < left.fractional) {//carry check
       sum.whole + 1;
     }
-    if (((1<<64)-1)  - left.whole < right.whole - 1) {//overflow check
+    if (sum.whole < sum.fractional) {//overflow check
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
@@ -171,7 +171,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     sum.whole = big.whole-little.whole;
     if (big.fractional < little.fractional) {//need carry in fractional side
       sum.whole -= 1;
-      sum.fractional = ((1<<64)-1) - (little.fractional - big.fractional) + 1;//do I need the plus 1?
+      sum.fractional = ((1<<64)) - (little.fractional - big.fractional);//do I need the plus 1?
     } else { //fractional component behaves as expected
       sum.fractional = big.fractional - little.fractional;
     }
