@@ -251,7 +251,7 @@ int fixedpoint_is_overflow_neg(Fixedpoint val) {
 }
 
 int fixedpoint_is_overflow_pos(Fixedpoint val) {
-  if((val.flag & 9) == 9) {
+  if(val.flag == 9) {
     return 1;
   }
   return 0;
