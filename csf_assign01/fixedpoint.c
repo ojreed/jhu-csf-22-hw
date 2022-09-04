@@ -155,7 +155,6 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.whole += 1;
     }
     if (sum.whole < left.whole) {//overflow check
-      printf("\nCHECK\n");
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
