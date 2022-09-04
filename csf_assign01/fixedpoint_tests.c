@@ -48,6 +48,7 @@ int main(int argc, char **argv) {
 
   TEST_INIT();
   TEST(debug_create_from_hex);
+  TEST(debug_add);
   TEST(test_whole_part);
   TEST(test_frac_part);
   TEST(test_create_from_hex);
@@ -120,6 +121,18 @@ void debug_create_from_hex(TestObjs *objs) {
   printf("0 = %lu \n",fixedpoint_frac_part(test3));
 }
 
+void debug_add(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create2(1,0);
+  Fixedpoint b = fixedpoint_create2(1,1);
+  Fixedpoint c = fixedpoint_create2(5,0);
+
+  printf("a = %i.%i \n",fixedpoint_whole_part(a),fixedpoint_frac_part(a));
+  printf("b = %i.%i \n",fixedpoint_whole_part(b),fixedpoint_frac_part(b));
+  printf("c = %i.%i \n",fixedpoint_whole_part(c),fixedpoint_frac_part(c));
+  
+  
+  
+}
 void test_create_from_hex(TestObjs *objs) {
   (void) objs;
 
