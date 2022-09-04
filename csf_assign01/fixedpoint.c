@@ -12,6 +12,7 @@ Functions to implement desired functionality of the Fixedpoint struct
 #include <assert.h>
 #include "fixedpoint.h"
 
+
 // You can remove this once all of the functions are fully implemented
 static Fixedpoint DUMMY;
 
@@ -175,8 +176,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     sum.whole = big.whole-little.whole;
     if (big.fractional < little.fractional) {//need carry in fractional side
       sum.whole -= 1;
-      sum.fractional = (0xFFFFFFFFFFFFFFFF - little.fractional) + big.fractional;//do I need the plus 1?
-      printf("HERE");
+      sum.fractional = (18446744073709551615 - little.fractional) + big.fractional;//do I need the plus 1?
     } else { //fractional component behaves as expected
       sum.fractional = big.fractional - little.fractional;
     }
