@@ -79,42 +79,38 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
 
   // Convert each half to decimal
   // Whole part
-  ptr = whole_arr; // Element of string
-  uint64_t power = 0; // See if we can reuse other variable later
-  uint64_t num;
-  uint64_t whole_sum;
-  for(int i = sizeof(whole_arr); i > 0; i--) { // Traverse from end
-    num = ptr;
-    if((uint64_t)ptr >= 97 && (uint64_t)ptr <= 102){ // a-f
-      num = (uint64_t)ptr - 55;
+  // Test value: char whole_arr[2] = "2b";
+  int length = 64;
+  int whole_sum = 0;
+  int base = 1;
+  for(int i = length--; i >= 0; i--) { // Traverse from end, sixeof
+    if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
+        whole_sum += (whole_arr[i] - 55) * base;
+        base *= 16;
+    } else if (whole_arr[i] >= 'a' && whole_arr[i] <= 'f'){ 
+        whole_sum += (whole_arr[i] - 87) * base;
+        base *= 16;
+    } else if(whole_arr[i] >= '0' && whole_arr[i] <= '9') {
+        whole_sum += (whole_arr[i] - 48) * base;
+        base *= 16;
     }
-    if((uint64_t)ptr >= 48 && (uint64_t)ptr <= 57){ // a-f
-      num = (uint64_t)ptr - 48;
-    }
-    whole_sum += num * pow(16, power);
-    power++;
-    flow_ctr++;
-    ptr++;
   }
   fp.whole = whole_sum;
 
   // Fractional part
-  uint64_t frac_sum;
-  ptr = frac_arr; // Element of string
-  power = -1; 
-
-  for(int i = 0; i < sizeof(frac_arr); i++) { // Traverse from end
-    num = ptr;
-    if((uint64_t)ptr >= 97 && (uint64_t)ptr <= 102){ // a-f
-      num = (uint64_t)ptr - 55;
+  int frac_sum = 0;
+  base = 1;
+  for(int i = length--; i >= 0; i--) { // Traverse from end, sixeof
+    if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ 
+        frac_sum += (frac_arr[i] - 55) * base;
+        base *= 16;
+    } else if (frac_arr[i] >= 'a' && frac_arr[i] <= 'f'){ 
+        frac_sum += (frac_arr[i] - 87) * base;
+        base *= 16;
+    } else if(frac_arr[i] >= '0' && frac_arr[i] <= '9') {
+        frac_sum += (frac_arr[i] - 48) * base;
+        base *= 16;
     }
-    if((uint64_t)ptr >= 48 && (uint64_t)ptr <= 57){ // a-f
-      num = (uint64_t)ptr - 48;
-    }
-    frac_sum += num * pow(16, power);
-    power--;
-    flow_ctr++;
-    ptr++;
   }
   fp.fractional = frac_sum;
 
