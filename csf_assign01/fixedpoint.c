@@ -92,10 +92,10 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Convert each half to decimal
   // Whole part
   // Test value: char whole_arr[2] = "2b";
-  int length = 64;
+  int length = whole_ctr;
   int whole_sum = 0;
   int base = 1;
-  for(int i = whole_ctr-1; i >= 0; i--) { // Traverse from end, sixeof
+  for(int i = length; i>=0; i--) { // Traverse from end, sixeof
     if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
         whole_sum += (whole_arr[i] - 55) * base;
         base *= 16;
