@@ -43,8 +43,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   while (ptr != NULL) {
     // Check for invalid character
-    if (!46 || !45 || !(ptr < 102 && ptr > 97) || !(ptr < 57 || ptr > 48))  {
-      printf("TEST");
+    if (!(ptr == 46) || !(ptr == 45) || !(ptr < 102 && ptr > 97) || !(ptr < 57 || ptr > 48))  {
       fp.flag += 4; // Set error bit in flag
       break;
     }
