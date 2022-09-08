@@ -50,16 +50,16 @@ int main(int argc, char **argv) {
   //SIMPLIFIED MAIN FOR DEBUGGING:
   // TEST(debug_create_from_hex);
   // TEST(debug_add);
-  TEST(test_whole_part);
-  TEST(test_frac_part);
+  // TEST(test_whole_part);
+  // TEST(test_frac_part);
   TEST(test_create_from_hex);
-  TEST(test_format_as_hex);
-  TEST(test_negate);
-  TEST(test_add);
-  TEST(test_sub);
-  TEST(test_is_overflow_pos);
-  TEST(test_is_err);
-  TEST(test_is_zero);
+  // TEST(test_format_as_hex);
+  // TEST(test_negate);
+  // TEST(test_add);
+  //TEST(test_sub);
+  //TEST(test_is_overflow_pos);
+  //TEST(test_is_err);
+  //TEST(test_is_zero);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
@@ -109,6 +109,20 @@ void test_frac_part(TestObjs *objs) {
 }
 
 void debug_create_from_hex(TestObjs *objs) {
+  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
+  printf("a = %lu \n",fixedpoint_whole_part(test1));
+  printf("0 = %lu \n",fixedpoint_frac_part(test1));
+
+  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
+  printf("14 = %lu \n",fixedpoint_whole_part(test2));
+  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
+
+  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
+  printf("1 = %lu \n",fixedpoint_whole_part(test3));
+  printf("0 = %lu \n",fixedpoint_frac_part(test3));
+}
+
+void create_from_hex_segfault(TestObjs *objs) {
   Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
   printf("a = %lu \n",fixedpoint_whole_part(test1));
   printf("0 = %lu \n",fixedpoint_frac_part(test1));
