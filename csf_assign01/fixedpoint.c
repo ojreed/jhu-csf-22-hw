@@ -59,9 +59,9 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
     if(strcmp(*ptr, "-") == 0) {
-      fp.flag |= (1 << 1); // Set flag if negative
+      fp.flag = 2; // Set flag if negative
     } else {
-      fp.flag |= 1;
+      fp.flag = 1;
     }
     printf("\nfinish negation check\n",*ptr);
 
