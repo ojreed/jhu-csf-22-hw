@@ -61,14 +61,14 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
     // printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
-    if(*ptr == "-") {
+    if(*ptr == '-') {
       fp.flag = 2; // Set flag if negative
     } else {
       fp.flag = 1;
     }
     // printf("\nfinish negation check\n",*ptr);
 
-    if(*ptr == "."){ // Returns 0 if identical
+    if(*ptr == '.'){ // Returns 0 if identical
       onto_frac = 1;
       flow_ctr = 0;
       printf("HERE");
