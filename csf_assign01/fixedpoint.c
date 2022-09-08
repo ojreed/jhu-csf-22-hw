@@ -109,6 +109,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         base *= 16;
     }
   }
+  printf("%lu",whole_sum);
   fp.whole = whole_sum;
   // Fractional part
   int frac_sum = 0;
