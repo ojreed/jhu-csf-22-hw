@@ -40,6 +40,8 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   char frac_arr[64];
   int index = 0;
   int flow_ctr = 0;
+  int whole_ctr = 0;
+  int frac_ctr = 0;
 
   // Locate period, then divide into two parts
   while (ptr != NULL) {
@@ -75,8 +77,10 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
 
     if (onto_frac == 0) {
       whole_arr[index] = *ptr;
+      whole_ctr++;
     } else if (onto_frac == 1) {
       frac_arr[index] = *ptr;
+      frac_ctr++;
     }
 
     // printf("\nfinish add to array\n",*ptr);
@@ -91,7 +95,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   int length = 64;
   int whole_sum = 0;
   int base = 1;
-  for(int i = length--; i >= 0; i--) { // Traverse from end, sixeof
+  for(int i = whole_ctr-1; i >= 0; i--) { // Traverse from end, sixeof
     if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
         whole_sum += (whole_arr[i] - 55) * base;
         base *= 16;
@@ -107,7 +111,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Fractional part
   int frac_sum = 0;
   base = 1;
-  for(int i = length--; i >= 0; i--) { // Traverse from end, sixeof
+  for(int i = frac_ctr-1; i >= 0; i--) { // Traverse from end, sixeof
     if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ 
         frac_sum += (frac_arr[i] - 55) * base;
         base *= 16;
