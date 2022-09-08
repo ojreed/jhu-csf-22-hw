@@ -44,7 +44,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   while (ptr != NULL) {
     // Check for invalid character
     if (!(*ptr == 46) || !(*ptr == 45) || !(*ptr < 102 && *ptr > 97) || !(*ptr < 57 || *ptr > 48))  {
-      printf("\n%d\n",*ptr);
+      printf("\n%d\n",ptr);
       fp.flag += 4; // Set error bit in flag
       break;
     }
