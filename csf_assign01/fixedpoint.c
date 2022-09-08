@@ -104,7 +104,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
   }
   fp.whole = whole_sum;
-  return;
   // Fractional part
   int frac_sum = 0;
   base = 1;
