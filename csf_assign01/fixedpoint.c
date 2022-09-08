@@ -43,7 +43,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   while (ptr != NULL) {
     // Check for invalid character
-    if (!(ptr == 46) || !(ptr == 45) || !(ptr < 102 && ptr > 97) || !(ptr < 57 || ptr > 48))  {
+    if (!(*ptr == 46) || !(*ptr == 45) || !(*ptr < 102 && *ptr > 97) || !(*ptr < 57 || *ptr > 48))  {
       fp.flag += 4; // Set error bit in flag
       break;
     }
@@ -56,21 +56,21 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
 
     // Check if neg or pos value
-    if(strcmp(ptr, "-") == 0) {
+    if(strcmp(*ptr, "-") == 0) {
       fp.flag |= (1 << 1); // Set flag if negative
     } else {
       fp.flag |= 1;
     }
 
-    if(strcmp(ptr, ".") == 0){ // Returns 0 if identical
+    if(strcmp(*ptr, ".") == 0){ // Returns 0 if identical
       onto_frac = 1;
       flow_ctr = 0;
     } 
     
     if (onto_frac == 0) {
-      whole_arr[index] = ptr;
+      whole_arr[index] = *ptr;
     } else if (onto_frac == 1) {
-      frac_arr[index] = ptr;
+      frac_arr[index] = *ptr;
     }
 
     index++;
