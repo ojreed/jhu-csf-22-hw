@@ -50,28 +50,28 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       fp.flag += 4; // Set error bit in flag
       break;
     }
-    printf("\nfinish error check\n",*ptr);
+    // printf("\nfinish error check\n",*ptr);
     // Check for overflow
     if(onto_frac == 0 && flow_ctr > 8) {
       fp.flag += 8;
     } else if(onto_frac == 1 && flow_ctr > 8) {
       fp.flag += 16;
     }
-    printf("\nfinish overflow check\n",*ptr);
+    // printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
     if(*ptr == "-") {
       fp.flag = 2; // Set flag if negative
     } else {
       fp.flag = 1;
     }
-    printf("\nfinish negation check\n",*ptr);
+    // printf("\nfinish negation check\n",*ptr);
 
     if(*ptr == "."){ // Returns 0 if identical
       onto_frac = 1;
       flow_ctr = 0;
     } 
     
-    printf("\nfinish decimal check\n",*ptr);
+    // printf("\nfinish decimal check\n",*ptr);
 
     if (onto_frac == 0) {
       whole_arr[index] = *ptr;
@@ -79,7 +79,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       frac_arr[index] = *ptr;
     }
 
-    printf("\nfinish add to array\n",*ptr);
+    // printf("\nfinish add to array\n",*ptr);
 
     index++;
     ptr++; // Next element of char array
