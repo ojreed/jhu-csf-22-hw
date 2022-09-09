@@ -111,17 +111,17 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   fp.whole = whole_sum;
   // Fractional part
   int frac_sum = 0;
-  base = 1;
+  base = -1;
   for(int i = 0; i <frac_ctr-1; i++) { // Traverse from end, sixeof
     if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ 
         frac_sum += (frac_arr[i] - 55) * base;
-        base *= 16;
+        base /= 16;
     } else if (frac_arr[i] >= 'a' && frac_arr[i] <= 'f'){ 
         frac_sum += (frac_arr[i] - 87) * base;
-        base *= 16;
+        base /= 16;
     } else if(frac_arr[i] >= '0' && frac_arr[i] <= '9') {
         frac_sum += (frac_arr[i] - 48) * base;
-        base *= 16;
+        base /= 16;
     }
   }
   fp.fractional = frac_sum;
