@@ -50,16 +50,17 @@ int main(int argc, char **argv) {
   //SIMPLIFIED MAIN FOR DEBUGGING:
   // TEST(debug_create_from_hex);
   // TEST(debug_add);
-  TEST(test_whole_part);
-  TEST(test_frac_part);
-  TEST(test_create_from_hex);
-  TEST(test_format_as_hex);
-  TEST(test_negate);
-  TEST(test_add);
-  TEST(test_sub);
-  TEST(test_is_overflow_pos);
-  TEST(test_is_err);
-  TEST(test_is_zero);
+  TEST(debug_add2);
+  // TEST(test_whole_part);
+  // TEST(test_frac_part);
+  // TEST(test_create_from_hex);
+  // TEST(test_format_as_hex);
+  // TEST(test_negate);
+  // TEST(test_add);
+  // TEST(test_sub);
+  // TEST(test_is_overflow_pos);
+  // TEST(test_is_err);
+  // TEST(test_is_zero);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
@@ -134,6 +135,25 @@ void create_from_hex_segfault(TestObjs *objs) {
   Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
   printf("1 = %lu \n",fixedpoint_whole_part(test3));
   printf("0 = %lu \n",fixedpoint_frac_part(test3));
+}
+
+void debug_add2(TestObjs *objs) {
+  (void) objs;
+
+  Fixedpoint lhs, rhs, sum;
+
+  lhs = fixedpoint_create_from_hex("-c7252a193ae07.7a51de9ea0538c5");
+  rhs = fixedpoint_create_from_hex("d09079.1e6d601");
+
+  sum = fixedpoint_add(lhs, rhs);
+
+  printf("a = %i.%i \n",fixedpoint_whole_part(lhs),fixedpoint_frac_part(lhs));
+  printf("b = %i.%i \n",fixedpoint_whole_part(rhs),fixedpoint_frac_part(rhs));
+  printf("|a+b| = %i.%i \n",fixedpoint_whole_part(sum),fixedpoint_frac_part(sum));
+
+  ASSERT(fixedpoint_is_neg(sum));
+  ASSERT(0xc7252a0c31d8eUL == fixedpoint_whole_part(sum));
+  ASSERT(0x5be47e8ea0538c50UL == fixedpoint_frac_part(sum));
 }
 
 void debug_add(TestObjs *objs) {
