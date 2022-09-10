@@ -32,7 +32,7 @@ Fixedpoint fixedpoint_create2(uint64_t whole, uint64_t frac) {
 
 Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   Fixedpoint fp;
-  fp.flag = 0;
+  fp.flag = 1;
   char *ptr = hex; // Pointer is memory address of first element
   int period;
   int onto_frac = 0;
@@ -46,7 +46,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   for (int i = 0; i < strlen(hex); i++) {
     // Check for invalid character
-    fp.flag = 1;
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 || *ptr >= 48))  {
       
       fp.flag += 4; // Set error bit in flag
