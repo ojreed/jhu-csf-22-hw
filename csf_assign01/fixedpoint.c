@@ -74,13 +74,14 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     } 
     
     // printf("\nfinish decimal check\n",*ptr);
-
-    if (onto_frac == 0) {
-      whole_arr[index] = *ptr;
-      whole_ctr++;
-    } else if (onto_frac == 1) {
-      frac_arr[index] = *ptr;
-      frac_ctr++;
+    if (*ptr != '.'){
+      if (onto_frac == 0) {
+        whole_arr[index] = *ptr;
+        whole_ctr++;
+      } else if (onto_frac == 1) {
+        frac_arr[index] = *ptr;
+        frac_ctr++;
+      }
     }
 
     // printf("\nfinish add to array\n",*ptr);
