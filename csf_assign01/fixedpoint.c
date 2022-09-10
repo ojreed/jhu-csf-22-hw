@@ -113,7 +113,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   fp.whole = whole_sum;
   // Fractional part
   int frac_sum = 0;
-  base = pow(2,60);
+  base = pow(16,15);
   printf("\n%lu\n",base);
   printf("BEFORE LOOP\n");
   for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
@@ -129,7 +129,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         frac_sum += (frac_arr[i] - 48) * base;
         base /= 16;
     }
-    printf("\n%lu\n",frac_sum);
   }
   printf("\n%lu\n",frac_sum);
   fp.fractional = frac_sum;
