@@ -398,7 +398,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     }
   }
   printf("FRAC COMPLETE\n");
-
+  printf("\n%c\n",s[0]);
   return s;
 }
 
