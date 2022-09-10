@@ -349,7 +349,7 @@ int fixedpoint_is_valid(Fixedpoint val) {
 //   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("START\n");
-  char *s = malloc(34);
+  char *s = (char*) malloc(34*sizeof(char));
   if((val.flag & 2) == 2){
     printf("INSIDE NEG\n");
     *s = '-';
@@ -370,7 +370,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     } else {
       hex += 48;
     }
-    *s = (char)hex;
+    *s = (char) hex;
     s++;
     back_shift = back_shift >> 4;
   }
@@ -392,7 +392,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       } else {
         hex += 48;
       }
-      *s = (char)hex;
+      *s = (char) hex;
       s++;
       back_shift = back_shift >> 4;
     }
