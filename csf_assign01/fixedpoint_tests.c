@@ -150,7 +150,7 @@ void debug_add2(TestObjs *objs) {
   printf("a = %lu.%lu \n",fixedpoint_whole_part(lhs),fixedpoint_frac_part(lhs));
   printf("b = %lu.%lu \n",fixedpoint_whole_part(rhs),fixedpoint_frac_part(rhs));
   printf("|a+b| = %lu.%lu \n",fixedpoint_whole_part(sum),fixedpoint_frac_part(sum));
-
+  printf("|a+b| actual = 3503398930554254.35895529729925907281");
   ASSERT(fixedpoint_is_neg(sum));
   ASSERT(0xc7252a0c31d8eUL == fixedpoint_whole_part(sum));
   ASSERT(0x5be47e8ea0538c50UL == fixedpoint_frac_part(sum));
