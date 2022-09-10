@@ -364,13 +364,14 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
         hex += (val.whole & ptr) >> back_shift;
         ptr = ptr >> 1;
     }
+    printf("%i\n",hex);
     //convert hex to char
     if(hex >= 10 && hex <= 15) {// A and F
       hex += 87;
     } else {
       hex += 48;
     }
-    printf("%c",hex);
+    printf("%c\n",hex);
     *s = (char) hex;
     s++;
     back_shift = back_shift >> 4;
@@ -381,7 +382,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     s++;
     ptr = (1<<63);
     back_shift = (1<<60);
-    for(int i = 0; i < strlen(val.fractional); i++) { //67
+    for(int i = 0; i < (int) (val.whole/16); i++) { //67
       int hex = 0;
       for(int j = 0; i < 4; j++){
           hex += (val.fractional & ptr) >> back_shift;
