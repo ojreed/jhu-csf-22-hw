@@ -53,6 +53,13 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       fp.flag += 4; // Set error bit in flag
       return fp;
     }
+
+    if(*ptr == '.'){ // Returns 0 if identical
+      onto_frac = 1;
+      flow_ctr = 0;
+      index = -1;
+    } 
+
     // printf("\nfinish error check\n",*ptr);
     // Check for overflow
     if(onto_frac == 0 && flow_ctr > 16) {
@@ -70,12 +77,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       fp.flag = 2; // Set flag if negative
     }
     // printf("\nfinish negation check\n",*ptr);
-
-    if(*ptr == '.'){ // Returns 0 if identical
-      onto_frac = 1;
-      flow_ctr = 0;
-      index = -1;
-    } 
     
     // printf("\nfinish decimal check\n",*ptr);
     if ((*ptr != '.')) {
