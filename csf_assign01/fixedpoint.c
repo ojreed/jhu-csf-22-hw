@@ -228,20 +228,18 @@ Fixedpoint fixedpoint_halve(Fixedpoint val) {
   }
   val.fractional = val.fractional >> 1; //divide frac by two
   if ((val.whole & 1) == 1) { //need to shift 1 to frac
-    printf("\n%li\n%li\n",val.whole,val.fractional);
-    val.fractional += (1<63);
+    val.fractional += (1<<63);
   }
   val.whole = val.whole >> 1; //divide whole by two
-  printf("\n%li\n%li\n",val.whole,val.fractional);
   return val;
 }
 
 Fixedpoint fixedpoint_double(Fixedpoint val) {
-  if ((val.whole & (1<63)) == (1<63)) { //overflow exists
+  if ((val.whole & (1<<63)) == (1<<63)) { //overflow exists
     val.flag += 8;
   }
   val.whole = val.whole << 1; //mult whole by two
-  if ((val.fractional & (1<63)) == (1<63)) { //need to shift 1 to whole
+  if ((val.fractional & (1<<63)) == (1<<63)) { //need to shift 1 to whole
     val.whole = val.whole | 1;
   }
   val.fractional = val.fractional << 1; //divide whole by two
