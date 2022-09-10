@@ -111,7 +111,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   fp.whole = whole_sum;
   // Fractional part
   int frac_sum = 0;
-  base = pow(16,8);
+  base = pow(16,16);
   printf("\n%d\n",base);
   for(int i = 0; i <frac_ctr-1; i++) { // Traverse from end, sixeof
     if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ 
