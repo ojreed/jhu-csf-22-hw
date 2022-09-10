@@ -370,6 +370,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     } else {
       hex += 48;
     }
+    printf("%c",hex);
     *s = (char) hex;
     s++;
     back_shift = back_shift >> 4;
@@ -392,13 +393,14 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       } else {
         hex += 48;
       }
+      printf("%c",hex);
       *s = (char) hex;
       s++;
       back_shift = back_shift >> 4;
     }
   }
   printf("FRAC COMPLETE\n");
-  printf("\n%c\n",*s[0]);
+  printf("\n%c\n",s[0]);
   return s;
 }
 
