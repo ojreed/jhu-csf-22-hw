@@ -351,7 +351,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("START");
   uint64_t length = strlen(val.whole) + strlen(val.fractional);
   char *s = malloc(34);
-  if(val.flag | 2){
+  if((val.flag & 2) == 2){
     *s = '-';
     s++;
   }
