@@ -325,7 +325,7 @@ int fixedpoint_is_underflow_pos(Fixedpoint val) {
 }
 
 int fixedpoint_is_valid(Fixedpoint val) {
-  if (val.flag <= 2 && val.flag > 0) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
+  if ((val.flag <= 2) && (val.flag > 0)) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
     return 1;
   }
   return 0;
