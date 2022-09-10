@@ -53,11 +53,11 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
     // printf("\nfinish error check\n",*ptr);
     // Check for overflow
-    if(onto_frac == 0 && flow_ctr > 8) {
+    if(onto_frac == 0 && flow_ctr > 16) {
       fp.flag += 8;
       fp.flag += 4;
       return fp;
-    } else if(onto_frac == 1 && flow_ctr > 8) {
+    } else if(onto_frac == 1 && flow_ctr > 16) {
       fp.flag += 16;
       fp.flag += 4;
       return fp;
@@ -87,7 +87,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
 
     // printf("\nfinish add to array\n",*ptr);
-    // flow_ctr ++;
+    flow_ctr ++;
     index++;
     ptr++; // Next element of char array
   }
