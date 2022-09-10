@@ -76,7 +76,8 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     } 
     
     // printf("\nfinish decimal check\n",*ptr);
-    if (*ptr != '.') {
+    if ((*ptr != '.') && (*ptr != '-')) {
+      flow_ctr ++;
       if (onto_frac == 0) {
         whole_arr[index] = *ptr;
         whole_ctr++; 
@@ -87,7 +88,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
 
     // printf("\nfinish add to array\n",*ptr);
-    flow_ctr ++;
     index++;
     ptr++; // Next element of char array
   }
