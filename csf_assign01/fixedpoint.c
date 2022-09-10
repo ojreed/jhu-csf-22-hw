@@ -348,29 +348,17 @@ int fixedpoint_is_valid(Fixedpoint val) {
 //   dynamically allocated character string containing the representation
 //   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
+  printf("START");
   uint64_t length = strlen(val.whole) + strlen(val.fractional);
-  if(val.flag | 2) { //Negative value
-    if(val.fractional == 0) {
-      length += 1;
-    } else{
-      length += 2;
-    }
-  } else {
-    if(val.fractional == 0) {
-      length = length;
-    } else{
-      length += 1;
-    }
-  }
   char *s = malloc(34);
   if(val.flag | 2){
     *s = '-';
     s++;
   }
+  printf("NEG CHECKED");
   int ptr = (1<<63);
   int back_shift = (1<<60);
   for(int i = 0; i < strlen(val.whole); i++) { //67
-    
     int hex = 0;
     for(int j = 0; i < 4; j++){
         hex += (val.whole & ptr) >> back_shift;
@@ -386,7 +374,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     s++;
     back_shift = back_shift >> 4;
   }
-
+  printf("WHOLE COMPLETE");
   if(val.fractional != 0) {
     *s = '.';
     s++;
@@ -409,6 +397,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       back_shift = back_shift >> 4;
     }
   }
+  printf("FRAC COMPLETE");
 
   return s;
 }
