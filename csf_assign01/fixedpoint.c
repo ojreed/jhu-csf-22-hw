@@ -145,7 +145,7 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
-  printf("Running add\n");
+  // printf("Running add\n");
   // printf("Flags Right = %d, Left = %d\n",right.flag,left.flag);
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
@@ -153,7 +153,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     } else {
       sum.flag = 1;
     }
-    printf("Running mag increase\n");
+    // printf("Running mag increase\n");
     /* TODO: 
     1) overflow of whole --> throw an overflow flag | DONE
     2) overflow of fractional --> carry 1 to whole part | DONE
@@ -171,7 +171,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
-    printf("Running mag decrease (correct)\n");
+    // printf("Running mag decrease (correct)\n");
     /*
       1) if neg > pos | DONE
       2) borrowing from fractional | DONE
@@ -181,27 +181,27 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     //Subtract smaller value from the larger 
     Fixedpoint big, little;
     if (left.whole<right.whole || (left.whole == right.whole && left.fractional < right.fractional)) { //right has the larger magnitude 
-     printf("Right Bigger\n");
+    //  printf("Right Bigger\n");
      big = right;
      little = left;
     } else { // right has the higher magnitude 
-    printf("Left Bigger (correct for test)\n");
+    // printf("Left Bigger (correct for test)\n");
      big = left;
      little = right;
     }
     //COMPUTATION
     sum.whole = big.whole-little.whole;
-    printf("Added whole\n");
+    // printf("Added whole\n");
     if (big.fractional < little.fractional) {//need carry in fractional side
-      printf("Flipped Fractional\n");
+      // printf("Flipped Fractional\n");
       sum.whole -= 1;
       sum.fractional =  (((uint64_t)-1) - little.fractional) + big.fractional;//do I need the plus 1?
     } else { //fractional component behaves as expected
-      printf("Regular Fractional\n");
+      // printf("Regular Fractional\n");
       sum.fractional = big.fractional - little.fractional;
     }
     sum.flag = big.flag; //maintain sign of the larger magnitude component  
-    printf("FINISHED\n");
+    // printf("FINISHED\n");
   }
   return sum;
 }
