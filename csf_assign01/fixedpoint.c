@@ -129,6 +129,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         frac_sum += (frac_arr[i] - 48) * base;
         base /= 16;
     }
+    printf("\n%lu\n",frac_sum);
   }
   printf("\n%lu\n",frac_sum);
   fp.fractional = frac_sum;
