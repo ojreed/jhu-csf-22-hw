@@ -346,11 +346,69 @@ int fixedpoint_is_valid(Fixedpoint val) {
 //   dynamically allocated character string containing the representation
 //   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
-  // TODO: implement
-  //assert(0);
-  //char *s = malloc(20);
-  //strcpy(s, "<invalid>");
-  //return s;
+  uint64_t length = strlen(val.whole) + strleng(val.fractional);
+  if(val.flag | 2) { //Negative value
+    if(val.fractional == 0) {
+      length += 1;
+    } else{
+      length += 2;
+    }
+  } else {
+    if(val.fractional == 0) {
+      length = length;
+    } else{
+      length += 1;
+    }
+  }
+  char *s = malloc(34);
+  if(val.flag | 2){
+    *s = '-';
+    s++;
+  }
+  int ptr = (1<<63);
+  int back_shift = (1<<60);
+  for(int i = 0; i < strlen(val.whole); i++) { //67
+    
+    int hex = 0;
+    for(int j = 0; i < 4; j++){
+        hex += (val.whole & ptr) >> back_shift;
+        ptr = ptr >> 1;
+    }
+    //convert hex to char
+    if(hex >= 10 && hex <= 15) {// A and F
+      hex += 87;
+    } else {
+      hex += 48;
+    }
+    *s = (char)hex;
+    s++;
+    back_shift = back_shift >> 4;
+  }
+
+  if(val.fractional != 0) {
+    *s = '.';
+    s++;
+    ptr = (1<<63);
+    back_shift = (1<<60);
+    for(int i = 0; i < strlen(val.fractional); i++) { //67
+      int hex = 0;
+      for(int j = 0; i < 4; j++){
+          hex += (val.fractional & ptr) >> back_shift;
+          ptr = ptr >> 1;
+      }
+      //convert hex to char
+      if(hex >= 10 && hex <= 15) {// A and F
+        hex += 87;
+      } else {
+        hex += 48;
+      }
+      *s = (char)hex;
+      s++;
+      back_shift = back_shift >> 4;
+    }
+  }
+
+  return s;
 }
 
 // Power function instead of using pow
