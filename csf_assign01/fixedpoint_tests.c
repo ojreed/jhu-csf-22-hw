@@ -37,6 +37,8 @@ void test_add(TestObjs *objs);
 void test_sub(TestObjs *objs);
 void test_is_overflow_pos(TestObjs *objs);
 void test_is_err(TestObjs *objs);
+void test_compare(TestObjs *objs);
+void test_halving(TestObjs *objs);
 // TODO: add more test functions
 
 int main(int argc, char **argv) {
@@ -61,6 +63,8 @@ int main(int argc, char **argv) {
   TEST(test_is_overflow_pos);
   TEST(test_is_err);
   TEST(test_is_zero);
+  TEST(test_compare);
+  TEST(test_halving);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
@@ -358,3 +362,17 @@ void test_is_err(TestObjs *objs) {
 }
 
 // TODO: implement more test functions
+void test_compare(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create2(56,0);
+  Fixedpoint b = fixedpoint_create2(78,15);
+  Fixedpoint c = fixedpoint_create2(78,15);
+  ASSERT(fixedpoint_compare(a, b) != 0);
+  ASSERT(fixedpoint_compare(b, c) == 0);
+}
+
+void test_halving(TestObjs *objs) {
+  Fixedpoint pt = fixedpoint_create2(1,0); //should end up as 
+  Fixedpoint correct = fixedpoint_create(0,((uint64_t)-1));
+  Fixedpoint result = fixedpoint_halve(pt);
+  ASSERT(0 == fixedpoint_compare(result, correct));
+}
