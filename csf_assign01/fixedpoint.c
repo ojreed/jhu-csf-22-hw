@@ -95,7 +95,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Test value: char whole_arr[2] = "2b";
   int length = whole_ctr;
   int whole_sum = 0;
-  int base = 1;
+  uint64_t base = 1;
   // printf("\n%d\n",length);
   for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
     if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
