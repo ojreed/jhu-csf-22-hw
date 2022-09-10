@@ -245,6 +245,14 @@ void test_format_as_hex(TestObjs *objs) {
   free(s);
 }
 
+void fixedpoint_format_as_hex_2(TestObjs *objs) {
+  char *s;
+  Fixedpoint pt = fixedpoint_create2(-5,0);
+  s = fixedpoint_format_as_hex(pt);
+  ASSERT(0 == strcmp(s, "-5"));
+  free(s);
+}
+
 void test_negate(TestObjs *objs) {
   // none of the test fixture objects are negative
   ASSERT(!fixedpoint_is_neg(objs->zero));
