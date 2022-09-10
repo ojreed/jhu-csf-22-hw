@@ -249,7 +249,8 @@ void test_format_as_hex(TestObjs *objs) {
 
 void fixedpoint_format_as_hex_2(TestObjs *objs) {
   char *s;
-  Fixedpoint pt = fixedpoint_create2(-5,0);
+  Fixedpoint pt = fixedpoint_create2(5,0);
+  pt = fixedpoint_negate(pt);
   s = fixedpoint_format_as_hex(pt);
   ASSERT(0 == strcmp(s, "-5"));
   free(s);
