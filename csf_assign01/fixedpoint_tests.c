@@ -147,9 +147,9 @@ void debug_add2(TestObjs *objs) {
 
   sum = fixedpoint_add(lhs, rhs);
 
-  printf("a = %i.%i \n",fixedpoint_whole_part(lhs),fixedpoint_frac_part(lhs));
-  printf("b = %i.%i \n",fixedpoint_whole_part(rhs),fixedpoint_frac_part(rhs));
-  printf("|a+b| = %i.%i \n",fixedpoint_whole_part(sum),fixedpoint_frac_part(sum));
+  printf("a = %lu.%lu \n",fixedpoint_whole_part(lhs),fixedpoint_frac_part(lhs));
+  printf("b = %lu.%lu \n",fixedpoint_whole_part(rhs),fixedpoint_frac_part(rhs));
+  printf("|a+b| = %lu.%lu \n",fixedpoint_whole_part(sum),fixedpoint_frac_part(sum));
 
   ASSERT(fixedpoint_is_neg(sum));
   ASSERT(0xc7252a0c31d8eUL == fixedpoint_whole_part(sum));
