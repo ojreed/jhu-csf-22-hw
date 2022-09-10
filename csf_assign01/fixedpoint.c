@@ -348,7 +348,7 @@ int fixedpoint_is_valid(Fixedpoint val) {
 //   dynamically allocated character string containing the representation
 //   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
-  uint64_t length = strlen(val.whole) + strleng(val.fractional);
+  uint64_t length = strlen(val.whole) + strlen(val.fractional);
   if(val.flag | 2) { //Negative value
     if(val.fractional == 0) {
       length += 1;
