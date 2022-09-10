@@ -70,11 +70,11 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     if(*ptr == '.'){ // Returns 0 if identical
       onto_frac = 1;
       flow_ctr = 0;
-      index = 0;
+      index = -1;
     } 
     
     // printf("\nfinish decimal check\n",*ptr);
-    if (*ptr != '.'){
+    if (*ptr != '.') {
       if (onto_frac == 0) {
         whole_arr[index] = *ptr;
         whole_ctr++;
