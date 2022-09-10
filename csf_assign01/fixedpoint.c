@@ -358,7 +358,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("NEG CHECKED\n");
   int ptr = (1<<63);
   int back_shift = (1<<60);
-  for(int i = 0; i < (int) (val.whole/16); i++) { //67
+  for(int i = 0; i < 16; i++) { //67
     int hex = 0;
     for(int j = 0; i < 4; j++){
         hex += (val.whole & ptr) >> back_shift;
@@ -382,7 +382,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     s++;
     ptr = (1<<63);
     back_shift = (1<<60);
-    for(int i = 0; i < (int) (val.whole/16); i++) { //67
+    for(int i = 0; i < 16; i++) { //67
       int hex = 0;
       for(int j = 0; i < 4; j++){
           hex += (val.fractional & ptr) >> back_shift;
