@@ -39,6 +39,7 @@ void test_is_overflow_pos(TestObjs *objs);
 void test_is_err(TestObjs *objs);
 void test_compare(TestObjs *objs);
 void test_halving(TestObjs *objs);
+void fixedpoint_format_as_hex_2(TestObjs *objs);
 // TODO: add more test functions
 
 int main(int argc, char **argv) {
@@ -65,6 +66,7 @@ int main(int argc, char **argv) {
   TEST(test_is_zero);
   TEST(test_compare);
   TEST(test_halving);
+  TEST(TestObjs *objs);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
