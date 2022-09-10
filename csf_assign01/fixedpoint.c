@@ -87,7 +87,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
 
     // printf("\nfinish add to array\n",*ptr);
-    flow_ctr ++;
+    // flow_ctr ++;
     index++;
     ptr++; // Next element of char array
   }
