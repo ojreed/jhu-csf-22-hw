@@ -349,7 +349,6 @@ int fixedpoint_is_valid(Fixedpoint val) {
 //   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("START\n");
-  uint64_t length = strlen(val.whole) + strlen(val.fractional);
   char *s = malloc(34);
   if((val.flag & 2) == 2){
     printf("INSIDE NEG\n");
