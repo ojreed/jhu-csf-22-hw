@@ -55,8 +55,12 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     // Check for overflow
     if(onto_frac == 0 && flow_ctr > 8) {
       fp.flag += 8;
+      fp.flag += 4;
+      break;
     } else if(onto_frac == 1 && flow_ctr > 8) {
       fp.flag += 16;
+      fp.flag += 4;
+      break;
     }
     // printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
