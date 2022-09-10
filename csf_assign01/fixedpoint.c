@@ -47,7 +47,9 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   for (int i = 0; i < strlen(hex); i++) {
     // Check for invalid character
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 || *ptr >= 48))  {
-      
+      if(*ptr != '-') {
+        flow_ctr++;
+      }
       fp.flag += 4; // Set error bit in flag
       return fp;
     }
@@ -65,7 +67,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     // printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
     if(*ptr == '-') {
-      flow_ctr--;
       fp.flag = 2; // Set flag if negative
     }
     // printf("\nfinish negation check\n",*ptr);
@@ -78,7 +79,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     
     // printf("\nfinish decimal check\n",*ptr);
     if ((*ptr != '.')) {
-      flow_ctr ++;
       if (onto_frac == 0) {
         whole_arr[index] = *ptr;
         whole_ctr++; 
