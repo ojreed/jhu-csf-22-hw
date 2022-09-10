@@ -46,6 +46,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   for (int i = 0; i < strlen(hex); i++) {
     // Check for invalid character
+    fp.flag = 1;
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 || *ptr >= 48))  {
       
       fp.flag += 4; // Set error bit in flag
@@ -62,8 +63,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     // Check if neg or pos value
     if(*ptr == '-') {
       fp.flag = 2; // Set flag if negative
-    } else {
-      fp.flag = 1;
     }
     // printf("\nfinish negation check\n",*ptr);
 
