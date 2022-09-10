@@ -318,7 +318,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
 // Power function instead of using pow
 uint64_t pow(uint64_t base, uint64_t power) {
   int ctr = 0;
-  int result = 1;
+  uint64_t result = 1;
   while(ctr < power) {
     result *= base;
     ctr++;
