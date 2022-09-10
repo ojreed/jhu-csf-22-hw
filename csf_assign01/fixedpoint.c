@@ -94,7 +94,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   int length = whole_ctr;
   int whole_sum = 0;
   int base = 1;
-  printf("\n%d\n",length);
+  // printf("\n%d\n",length);
   for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
     if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
         whole_sum += (whole_arr[i] - 55) * base;
@@ -107,7 +107,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         base *= 16;
     }
   }
-  printf("%lu",whole_sum);
+  // printf("%lu",whole_sum);
   fp.whole = whole_sum;
   // Fractional part
   int frac_sum = 0;
@@ -124,6 +124,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         base /= 16;
     }
   }
+  printf("\n%lu\n",frac_sum);
   fp.fractional = frac_sum;
 
   // Return Fixedpoint value
