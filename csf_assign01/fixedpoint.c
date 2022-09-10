@@ -49,18 +49,18 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 || *ptr >= 48))  {
       
       fp.flag += 4; // Set error bit in flag
-      break;
+      return fp;
     }
     // printf("\nfinish error check\n",*ptr);
     // Check for overflow
     if(onto_frac == 0 && flow_ctr > 8) {
       fp.flag += 8;
       fp.flag += 4;
-      break;
+      return fp;
     } else if(onto_frac == 1 && flow_ctr > 8) {
       fp.flag += 16;
       fp.flag += 4;
-      break;
+      return fp;
     }
     // printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
