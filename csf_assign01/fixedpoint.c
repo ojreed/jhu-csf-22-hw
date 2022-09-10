@@ -49,7 +49,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 || *ptr >= 48))  {
       
       fp.flag += 4; // Set error bit in flag
-      break;
+      return fp;
     }
     // printf("\nfinish error check\n",*ptr);
     // Check for overflow
@@ -77,7 +77,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     
     // printf("\nfinish decimal check\n",*ptr);
     if (*ptr != '.') {
-      flow_ctr ++;
       if (onto_frac == 0) {
         whole_arr[index] = *ptr;
         whole_ctr++; 
@@ -88,7 +87,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
 
     // printf("\nfinish add to array\n",*ptr);
-
+    flow_ctr ++;
     index++;
     ptr++; // Next element of char array
   }
