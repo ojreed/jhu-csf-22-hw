@@ -46,18 +46,28 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   for (int i = 0; i < strlen(hex); i++) {
     // Check for invalid character
-    if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 || *ptr >= 48))  {
-      
+    if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 && *ptr >= 48))  {
       fp.flag += 4; // Set error bit in flag
       return fp;
     }
+
+    if(*ptr != '-') {
+      flow_ctr++;
+    }
+
+    if(*ptr == '.'){ // Returns 0 if identical
+      onto_frac = 1;
+      flow_ctr = 0;
+      index = -1;
+    } 
+
     // printf("\nfinish error check\n",*ptr);
     // Check for overflow
-    if(onto_frac == 0 && flow_ctr > 8) {
+    if(onto_frac == 0 && flow_ctr > 16) {
       fp.flag += 8;
       fp.flag += 4;
       return fp;
-    } else if(onto_frac == 1 && flow_ctr > 8) {
+    } else if(onto_frac == 1 && flow_ctr > 16) {
       fp.flag += 16;
       fp.flag += 4;
       return fp;
@@ -68,16 +78,9 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       fp.flag = 2; // Set flag if negative
     }
     // printf("\nfinish negation check\n",*ptr);
-
-    if(*ptr == '.'){ // Returns 0 if identical
-      onto_frac = 1;
-      flow_ctr = 0;
-      index = -1;
-    } 
     
     // printf("\nfinish decimal check\n",*ptr);
-    if (*ptr != '.') {
-      flow_ctr ++;
+    if ((*ptr != '.')) {
       if (onto_frac == 0) {
         whole_arr[index] = *ptr;
         whole_ctr++; 
@@ -88,7 +91,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
     }
 
     // printf("\nfinish add to array\n",*ptr);
-
     index++;
     ptr++; // Next element of char array
   }
@@ -326,7 +328,7 @@ int fixedpoint_is_underflow_pos(Fixedpoint val) {
 }
 
 int fixedpoint_is_valid(Fixedpoint val) {
-  if (val.flag <= 2 && val.flag > 0) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
+  if ((val.flag <= 2) && (val.flag > 0)) { //only flags are pos/neg nothing else (and not both which shouldnt happen)
     return 1;
   }
   return 0;
