@@ -358,6 +358,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("NEG CHECKED\n");
   int ptr = (1<<63);
   int back_shift = (1<<60);
+  int leading_zero = 1;
   for(int i = 0; i < 16; i++) { //67
     int hex = 0;
     for(int j = 0; j < 4; j++){
@@ -372,8 +373,11 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       hex += 48;
     }
     printf("%c\n",hex);
-    *s = (char) hex;
-    s++;
+    if (!(leading_zero && hex == 48)) {
+      *s = (char) hex;
+      s++;
+      leading_zero = 0;
+    }
     back_shift = back_shift >> 4;
   }
   printf("WHOLE COMPLETE\n");
