@@ -223,21 +223,50 @@ Fixedpoint fixedpoint_negate(Fixedpoint val) {
 }
 
 Fixedpoint fixedpoint_halve(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  if ((val.fractional & 1) == 1) { //underflow exists
+    val.flag += 16;
+  }
+  val.fractional = val.fractional >> 1; //divide frac by two
+  if ((val.whole & 1) == 1) { //need to shift 1 to frac
+    val.fractional = val.fractional | (1<63);
+  }
+  val.whole = val.whole >> 1; //divide whole by two
+  return val;
 }
 
 Fixedpoint fixedpoint_double(Fixedpoint val) {
-  // TODO: implement
-  assert(0);
-  return DUMMY;
+  if ((val.whole & (1<63)) == (1<63)) { //overflow exists
+    val.flag += 8;
+  }
+  val.whole = val.whole << 1; //mult whole by two
+  if ((val.fractional & (1<63)) == (1<63)) { //need to shift 1 to whole
+    val.whole = val.whole | 1;
+  }
+  val.fractional = val.fractional << 1; //divide whole by two
+  return val;
 }
 
 int fixedpoint_compare(Fixedpoint left, Fixedpoint right) {
-  // TODO: implement
-  assert(0);
-  return 0;
+  if ((left.flag & 3) == (right.flag & 3)) { //same sign
+    if (left.whole > right.whole) { //left whole is bigger
+      return 1;
+    } else if (left.whole < right.whole) { //right whole is bigger
+      return -1;
+    } else { //wholes are the same need to compare fracs
+      if (left.fractional > right.fractional) { //left frac is bigger 
+        return 1;
+      } else if (left.fractional < right.fractional) { //right frac is bigger
+        return -1;
+      } else { //fracs are the same --> all equal
+        return 0;
+      }
+    }
+  } else { //diff sign
+    if ((left.flag & 3) == 2) {//left is negative
+      return -1;
+    } 
+    return 1; //right is negative
+  }
 }
 
 int fixedpoint_is_zero(Fixedpoint val) {
