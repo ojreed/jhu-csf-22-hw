@@ -364,8 +364,10 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   for(int i = 0; i < 16; i++) { //67
     int hex = 0;
     for(int j = 0; j < 4; j++){
+      if ((val.whole & ptr) != NULL) {
         hex += (val.whole & ptr) >> back_shift;
         ptr = ptr >> 1;
+      }
     }
     //convert hex to char
     if(hex >= 10 && hex <= 15) {// A and F
@@ -390,8 +392,10 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     for(int i = 0; i < 16; i++) { //67
       int hex = 0;
       for(int j = 0; j < 4; j++){
+        if ((val.whole & ptr) != NULL) {
           hex += (val.fractional & ptr) >> back_shift;
           ptr = ptr >> 1;
+        }
       }
       //convert hex to char
       if(hex >= 10 && hex <= 15) {// A and F
