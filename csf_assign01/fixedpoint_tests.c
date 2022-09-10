@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
   TEST(test_is_zero);
   TEST(test_compare);
   TEST(test_halving);
-  TEST(TestObjs *objs);
+  TEST(fixedpoint_format_as_hex_2);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
