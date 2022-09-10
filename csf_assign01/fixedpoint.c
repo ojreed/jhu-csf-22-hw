@@ -373,7 +373,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       hex += 48;
     }
     printf("%c\n",hex);
-    if (!(leading_zero && hex == 48)) {
+    if (!((leading_zero == 1) && ((hex == 48)))) {
       *s = (char) hex;
       s++;
       leading_zero = 0;
