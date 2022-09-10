@@ -360,7 +360,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   int back_shift = (1<<60);
   for(int i = 0; i < 16; i++) { //67
     int hex = 0;
-    for(int j = 0; i < 4; j++){
+    for(int j = 0; j < 4; j++){
         hex += (val.whole & ptr) >> back_shift;
         ptr = ptr >> 1;
     }
@@ -384,7 +384,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     back_shift = (1<<60);
     for(int i = 0; i < 16; i++) { //67
       int hex = 0;
-      for(int j = 0; i < 4; j++){
+      for(int j = 0; j < 4; j++){
           hex += (val.fractional & ptr) >> back_shift;
           ptr = ptr >> 1;
       }
