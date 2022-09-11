@@ -355,7 +355,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     printf("INSIDE NEG\n");
     s[string_ptr] = '-';
     string_ptr++;
-    printf("\n%s\n",*s);
+    printf("\n%s\n",s);
   }
   printf("NEG CHECKED\n");
   int ptr = (1<<63);
