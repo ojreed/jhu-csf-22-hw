@@ -360,7 +360,8 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("NEG CHECKED\n");
   uint64_t ptr = 1;
   ptr = (ptr<<63);
-  uint64_t back_shift = (1<<60);
+  uint64_t back_shift = 1
+  back_shift = (back_shift<<60);
   int leading_zero = 1;
   for(int i = 0; i < 16; i++) { //67
     uint64_t hex = 0;
