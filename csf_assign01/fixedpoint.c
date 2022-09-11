@@ -427,6 +427,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       back_shift -= 4;
     }
   }
+  s[string_ptr] = '/0';
   printf("FRAC COMPLETE\n");
   printf("\n%s\n",s);
   return s;
