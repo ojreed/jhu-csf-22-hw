@@ -27,6 +27,7 @@ Fixedpoint fixedpoint_create2(uint64_t whole, uint64_t frac) {
 }
 
 Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
+  //init impt vars
   Fixedpoint fp;
   fp.flag = 1;
   fp.whole = 0;
@@ -49,7 +50,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       return fp;
     }
 
-    if(*ptr != '-') {
+    if(*ptr != '-') {//dont count bit size for -
       flow_ctr++;
     }
 
@@ -59,12 +60,12 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       index = -1;
     } 
 
-    // Check for overflow
-    if(onto_frac == 0 && flow_ctr > 16) {
+    // Check for overflow error
+    if(onto_frac == 0 && flow_ctr > 16) { //
       fp.flag += 8;
       fp.flag += 4;
       return fp;
-    } else if(onto_frac == 1 && flow_ctr > 16) {
+    } else if(onto_frac == 1 && flow_ctr > 16) {//check for underflow error
       fp.flag += 16;
       fp.flag += 4;
       return fp;
@@ -74,11 +75,11 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       fp.flag = 2; // Set flag if negative
     }
 
-    if ((*ptr != '.')) {
-      if (onto_frac == 0) {
-        whole_arr[index] = *ptr;
+    if ((*ptr != '.')) { //dont count decimal as a number
+      if (onto_frac == 0) { // add to whole
+        whole_arr[index] = *ptr; 
         whole_ctr++; 
-      } else if (onto_frac == 1) {
+      } else if (onto_frac == 1) {//add to frac
         frac_arr[index] = *ptr;
         frac_ctr++;
       }
@@ -93,13 +94,13 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   uint64_t whole_sum = 0;
   uint64_t base = 1;
   for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
-    if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
+    if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ //uppercase hex
         whole_sum += (whole_arr[i] - 55) * base;
         base *= 16;
-    } else if (whole_arr[i] >= 'a' && whole_arr[i] <= 'f'){ 
+    } else if (whole_arr[i] >= 'a' && whole_arr[i] <= 'f'){ //lowercase hex
         whole_sum += (whole_arr[i] - 87) * base;
         base *= 16;
-    } else if(whole_arr[i] >= '0' && whole_arr[i] <= '9') {
+    } else if(whole_arr[i] >= '0' && whole_arr[i] <= '9') {//digits
         whole_sum += (whole_arr[i] - 48) * base;
         base *= 16;
     }
@@ -111,13 +112,13 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   base = poww(16,15);
 
   for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
-    if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ 
+    if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ //uppercase hex
         frac_sum += (frac_arr[i] - 55) * base;
         base /= 16;
-    } else if (frac_arr[i] >= 'a' && frac_arr[i] <= 'f'){ 
+    } else if (frac_arr[i] >= 'a' && frac_arr[i] <= 'f'){  //lowercase hex
         frac_sum += (frac_arr[i] - 87) * base;
         base /= 16;
-    } else if(frac_arr[i] >= '0' && frac_arr[i] <= '9') {
+    } else if(frac_arr[i] >= '0' && frac_arr[i] <= '9') { //digits
         frac_sum += (frac_arr[i] - 48) * base;
         base /= 16;
     }
@@ -142,8 +143,6 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   sum.flag = 0;
   sum.whole = 0;
   sum.fractional = 0;
-  //a-b where a<b a.f>b.f
-  //0.01 - 111111.1111
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag |= 2;
@@ -176,10 +175,10 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     //COMPUTATION
     sum.whole = big.whole-little.whole;
     if (big.fractional < little.fractional) {//need carry in fractional side
-      if (sum.whole >= 1) {
+      if (sum.whole >= 1) {// flipped fracs
         sum.whole -= 1;
         sum.fractional =  ((uint64_t) - little.fractional) + big.fractional;
-      } else {
+      } else { //zero edge case flipped fracs
         sum.flag |= 2;
         sum.fractional = little.fractional - big.fractional;
         return sum;
@@ -326,50 +325,51 @@ int fixedpoint_is_valid(Fixedpoint val) {
 char *fixedpoint_format_as_hex(Fixedpoint val) {
   int string_ptr = 0;
   char *s = (char*) malloc(35*sizeof(char));
-  if((val.flag & 2) == 2){
+  if((val.flag & 2) == 2){ //insert negative sign if needed
     s[string_ptr] = '-';
     string_ptr++;
   }
+  //init imporant vars
   uint64_t ptr = 1;
   ptr = (ptr<<63);
   int back_shift = 60;
   int leading_zero = 1;
-  for(int i = 0; i < 16; i++) { //67
+  for(int i = 0; i < 16; i++) { //loop through all sets of 4 bits of whole
     uint64_t hex = 0;
-    for(int j = 0; j < 4; j++){
+    for(int j = 0; j < 4; j++){ //loop through chunk of 4 bits
       uint64_t temp = (val.whole & ptr);
       hex += (temp>>back_shift);
       ptr = ptr >> 1;
     }
     //convert hex to char
-    if(hex >= 10 && hex <= 15) {// A and F
+    if(hex >= 10 && hex <= 15) {// A - F
       hex += 87;
-    } else {
+    } else { //digits
       hex += 48;
     }
-    if (!((leading_zero == 1) && ((hex == 48)))) {
-      s[string_ptr] = (char) hex;
+    if (!((leading_zero == 1) && ((hex == 48)))) { //make sure we dont save leading zeros
+      s[string_ptr] = (char) hex; //add correct char 
       string_ptr++;
       leading_zero = 0;
     }
     back_shift -= 4;
   }
-  if (leading_zero == 1) {
+  if (leading_zero == 1) { // kill leading zero stipulation
     s[string_ptr] = '0';
     string_ptr++;
     leading_zero = 0;
   }
-  if(val.fractional != 0) {
-    s[string_ptr] = '.';
+  if(val.fractional != 0) { // only add fractional part if one exists 
+    s[string_ptr] = '.'; //add decimal 
     string_ptr++;
+    //init impt vars
     ptr = 1;
     ptr = (ptr<<63);
     back_shift = 60;
     int trail_zeros = 0;
-    for(int i = 0; i < 16; i++) { //67
+    for(int i = 0; i < 16; i++) { //loop through 16 chunks of 4 bits
       uint64_t hex = 0;
-      for(int j = 0; j < 4; j++){
-        
+      for(int j = 0; j < 4; j++){//loop through chunks of 4
         uint64_t temp = (val.fractional & ptr);
         hex += (temp>>back_shift);
         ptr = (ptr >> 1);
@@ -386,7 +386,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
           s[string_ptr] = (char) 48;
           string_ptr++;
         }
-        s[string_ptr] = (char) hex;
+        s[string_ptr] = (char) hex; //add correct char
         string_ptr++;
         trail_zeros = 0;
       } else { //if we find a zero tally it up in case we need to add it (if zeros arent trail)
@@ -395,7 +395,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       back_shift -= 4;
     }
   }
-  s[string_ptr] = '\0';
+  s[string_ptr] = '\0';//end string
   return s;
 }
 

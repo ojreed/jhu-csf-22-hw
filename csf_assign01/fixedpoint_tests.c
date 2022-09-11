@@ -98,69 +98,23 @@ void cleanup(TestObjs *objs) {
   free(objs);
 }
 
-void test_add_2(TestObjs *objs) {
-  Fixedpoint a = fixedpoint_create2(1,0);
-  Fixedpoint b = fixedpoint_create2(1,1);
-  Fixedpoint c = fixedpoint_create2(5,0);
-
-  printf("\n");
-  printf("a = %i.%i \n",fixedpoint_whole_part(a),fixedpoint_frac_part(a));
-  printf("b = %i.%i \n",fixedpoint_whole_part(b),fixedpoint_frac_part(b));
-  printf("c = %i.%i \n",fixedpoint_whole_part(c),fixedpoint_frac_part(c));
-  
-  Fixedpoint d = fixedpoint_add(a,b);
-  printf("a+b = %i.%i \n",fixedpoint_whole_part(d),fixedpoint_frac_part(d));
-  ASSERT(fixedpoint_whole_part(d) == 2);
-  ASSERT(fixedpoint_frac_part(d) == 1);
-  ASSERT(!fixedpoint_is_neg(d));
-
+void test_compare(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create2(56,0);
+  Fixedpoint b = fixedpoint_create2(78,15);
+  Fixedpoint c = fixedpoint_create2(78,15);
+  ASSERT(fixedpoint_compare(a, b) != 0);
+  ASSERT(fixedpoint_compare(b, c) == 0);
 }
 
-void test_whole_part(TestObjs *objs) {
-  ASSERT(0UL == fixedpoint_whole_part(objs->zero));
-  ASSERT(1UL == fixedpoint_whole_part(objs->one));
-  ASSERT(0UL == fixedpoint_whole_part(objs->one_half));
-  ASSERT(0UL == fixedpoint_whole_part(objs->one_fourth));
-  ASSERT(0x4b19efceaUL == fixedpoint_whole_part(objs->large1));
-  ASSERT(0xfcbf3d5UL == fixedpoint_whole_part(objs->large2));
+void test_halving(TestObjs *objs) {
+  Fixedpoint pt = fixedpoint_create2(1,0); //should end up as 
+  Fixedpoint correct = fixedpoint_create2(0,(1UL<<63));
+  Fixedpoint result = fixedpoint_halve(pt);
+  ASSERT(0 == fixedpoint_compare(result, correct));
 }
 
-void test_frac_part(TestObjs *objs) {
-  ASSERT(0UL == fixedpoint_frac_part(objs->zero));
-  ASSERT(0UL == fixedpoint_frac_part(objs->one));
-  ASSERT(0x8000000000000000UL == fixedpoint_frac_part(objs->one_half));
-  ASSERT(0x4000000000000000UL == fixedpoint_frac_part(objs->one_fourth));
-  ASSERT(0xec9a1e2418UL == fixedpoint_frac_part(objs->large1));
-  ASSERT(0x4d1a23c24fafUL == fixedpoint_frac_part(objs->large2));
-}
 
-void debug_create_from_hex(TestObjs *objs) {
-  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
-  printf("a = %lu \n",fixedpoint_whole_part(test1));
-  printf("0 = %lu \n",fixedpoint_frac_part(test1));
-
-  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
-  printf("14 = %lu \n",fixedpoint_whole_part(test2));
-  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
-
-  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
-  printf("1 = %lu \n",fixedpoint_whole_part(test3));
-  printf("0 = %lu \n",fixedpoint_frac_part(test3));
-}
-
-void create_from_hex_segfault(TestObjs *objs) {
-  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
-  printf("a = %lu \n",fixedpoint_whole_part(test1));
-  printf("0 = %lu \n",fixedpoint_frac_part(test1));
-
-  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
-  printf("14 = %lu \n",fixedpoint_whole_part(test2));
-  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
-
-  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
-  printf("1 = %lu \n",fixedpoint_whole_part(test3));
-  printf("0 = %lu \n",fixedpoint_frac_part(test3));
-}
+//CUSTOM TESTS
 
 void test_compare2(TestObjs *objs) {
   Fixedpoint a = fixedpoint_create2(56,0);
@@ -182,6 +136,28 @@ void test_compare2(TestObjs *objs) {
   c = fixedpoint_create2(78,15);
   ASSERT(fixedpoint_compare(a, c) <= 0);
   ASSERT(fixedpoint_compare(c, a) >= 0);
+
+  a = fixedpoint_create2(0,1);
+  b = fixedpoint_create2((1UL<<63),0);
+  ASSERT(fixedpoint_compare(a, b) <= 0);
+}
+
+void test_add_2(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create2(1,0);
+  Fixedpoint b = fixedpoint_create2(1,1);
+  Fixedpoint c = fixedpoint_create2(5,0);
+
+  printf("\n");
+  printf("a = %i.%i \n",fixedpoint_whole_part(a),fixedpoint_frac_part(a));
+  printf("b = %i.%i \n",fixedpoint_whole_part(b),fixedpoint_frac_part(b));
+  printf("c = %i.%i \n",fixedpoint_whole_part(c),fixedpoint_frac_part(c));
+  
+  Fixedpoint d = fixedpoint_add(a,b);
+  printf("a+b = %i.%i \n",fixedpoint_whole_part(d),fixedpoint_frac_part(d));
+  ASSERT(fixedpoint_whole_part(d) == 2);
+  ASSERT(fixedpoint_frac_part(d) == 1);
+  ASSERT(!fixedpoint_is_neg(d));
+
 }
 
 void debug_add2(TestObjs *objs) {
@@ -202,6 +178,21 @@ void debug_add2(TestObjs *objs) {
   ASSERT(0xc7252a0c31d8eUL == fixedpoint_whole_part(sum));
   ASSERT(0x5be47e8ea0538c50UL == fixedpoint_frac_part(sum));
 }
+
+void debug_create_from_hex(TestObjs *objs) {
+  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
+  printf("a = %lu \n",fixedpoint_whole_part(test1));
+  printf("0 = %lu \n",fixedpoint_frac_part(test1));
+
+  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
+  printf("14 = %lu \n",fixedpoint_whole_part(test2));
+  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
+
+  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
+  printf("1 = %lu \n",fixedpoint_whole_part(test3));
+  printf("0 = %lu \n",fixedpoint_frac_part(test3));
+}
+
 
 void debug_add(TestObjs *objs) {
   Fixedpoint a = fixedpoint_create2(1,0);
@@ -233,9 +224,51 @@ void debug_add(TestObjs *objs) {
   ASSERT(fixedpoint_whole_part(f) == 4);
   ASSERT(fixedpoint_frac_part(f) == 18446744073709551614);//dumb because of how FP representation works
   ASSERT(!fixedpoint_is_neg(f));
-  
-  
+   
 }
+
+//TODO: 
+//Write tests for create1/2, halve, double, compare, add
+//try to write as many edge cases using the max and min values as possible like add(max,max) or double(max)
+//from head CA max --> supposed to have abt 3 edge cases for each function
+
+
+//standard tests
+
+void create_from_hex_segfault(TestObjs *objs) {
+  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
+  printf("a = %lu \n",fixedpoint_whole_part(test1));
+  printf("0 = %lu \n",fixedpoint_frac_part(test1));
+
+  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
+  printf("14 = %lu \n",fixedpoint_whole_part(test2));
+  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
+
+  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
+  printf("1 = %lu \n",fixedpoint_whole_part(test3));
+  printf("0 = %lu \n",fixedpoint_frac_part(test3));
+}
+
+
+void test_whole_part(TestObjs *objs) {
+  ASSERT(0UL == fixedpoint_whole_part(objs->zero));
+  ASSERT(1UL == fixedpoint_whole_part(objs->one));
+  ASSERT(0UL == fixedpoint_whole_part(objs->one_half));
+  ASSERT(0UL == fixedpoint_whole_part(objs->one_fourth));
+  ASSERT(0x4b19efceaUL == fixedpoint_whole_part(objs->large1));
+  ASSERT(0xfcbf3d5UL == fixedpoint_whole_part(objs->large2));
+}
+
+void test_frac_part(TestObjs *objs) {
+  ASSERT(0UL == fixedpoint_frac_part(objs->zero));
+  ASSERT(0UL == fixedpoint_frac_part(objs->one));
+  ASSERT(0x8000000000000000UL == fixedpoint_frac_part(objs->one_half));
+  ASSERT(0x4000000000000000UL == fixedpoint_frac_part(objs->one_fourth));
+  ASSERT(0xec9a1e2418UL == fixedpoint_frac_part(objs->large1));
+  ASSERT(0x4d1a23c24fafUL == fixedpoint_frac_part(objs->large2));
+}
+
+
 void test_create_from_hex(TestObjs *objs) {
   (void) objs;
 
@@ -413,18 +446,3 @@ void test_is_err(TestObjs *objs) {
   ASSERT(fixedpoint_is_err(err7));
 }
 
-// TODO: implement more test functions
-void test_compare(TestObjs *objs) {
-  Fixedpoint a = fixedpoint_create2(56,0);
-  Fixedpoint b = fixedpoint_create2(78,15);
-  Fixedpoint c = fixedpoint_create2(78,15);
-  ASSERT(fixedpoint_compare(a, b) != 0);
-  ASSERT(fixedpoint_compare(b, c) == 0);
-}
-
-void test_halving(TestObjs *objs) {
-  Fixedpoint pt = fixedpoint_create2(1,0); //should end up as 
-  Fixedpoint correct = fixedpoint_create2(0,(1UL<<63));
-  Fixedpoint result = fixedpoint_halve(pt);
-  ASSERT(0 == fixedpoint_compare(result, correct));
-}
