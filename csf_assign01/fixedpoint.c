@@ -145,21 +145,21 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   //a-b where a<b a.f>b.f
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
-      sum.flag = 2;
+      sum.flag |= 2;
     } else {
-      sum.flag = 1;
+      sum.flag |= 1;
     }
    //ADD COMPONENTS SEPERATLY 
     sum.whole = left.whole + right.whole;
     if (sum.whole < left.whole) {//overflow check
-      sum.flag += 8;
+      sum.flag |= 8;
     } 
     sum.fractional = left.fractional + right.fractional; 
     if (sum.fractional < left.fractional) {//carry check
-      sum.whole += 1;
+      sum.whole |= 1;
     }
-    if ((sum.whole < left.whole) && ((sum.flag & 8) != 8)) {//overflow check
-      sum.flag += 8;
+    if ((sum.whole < left.whole)) {//overflow check
+      sum.flag |= 8;
     } 
   } else { //magnitude decreases 
     //SETUP
