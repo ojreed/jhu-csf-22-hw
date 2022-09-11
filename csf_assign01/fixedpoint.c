@@ -365,6 +365,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     int hex = 0;
     for(int j = 0; j < 4; j++){
       if ((val.whole & ptr) != NULL) {
+        printf("BIT VAL: %d", (val.whole & ptr) >> back_shift);
         hex += (val.whole & ptr) >> back_shift;
         ptr = ptr >> 1;
       }
@@ -375,7 +376,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     } else {
       hex += 48;
     }
-    printf("%c\n",hex);
+    printf("%d\n",hex);
     if (!((leading_zero == 1) && ((hex == 48)))) {
       s[string_ptr] = (char) hex;
       string_ptr++;
