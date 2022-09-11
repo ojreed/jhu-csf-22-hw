@@ -383,6 +383,11 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     }
     back_shift = back_shift >> 4;
   }
+  if (leading_zero == 1) {
+    s[string_ptr] = (char) hex;
+    string_ptr++;
+    leading_zero = 0;
+  }
   printf("WHOLE COMPLETE\n");
   if(val.fractional != 0) {
     s[string_ptr] = '.';
