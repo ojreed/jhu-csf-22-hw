@@ -400,7 +400,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     for(int i = 0; i < 16; i++) { //67
       uint64_t hex = 0;
       for(int j = 0; j < 4; j++){
-        printf("#%li BIT VAL: %li ",ptr, ((val.whole & ptr) >> back_shift));
+        printf("#%li BIT VAL: %li ",ptr, ((val.fractional & ptr) >> back_shift));
         hex += ((val.fractional & ptr) >> back_shift);
         ptr = (ptr >> 1);
       }
