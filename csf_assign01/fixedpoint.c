@@ -33,8 +33,7 @@ Fixedpoint fixedpoint_create2(uint64_t whole, uint64_t frac) {
 Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   Fixedpoint fp;
   fp.flag = 1;
-  char *ptr = hex; // Pointer is memory address of first element
-  int period;
+  const char *ptr = hex; // Pointer is memory address of first element
   int onto_frac = 0;
   char whole_arr[64];
   char frac_arr[64];
@@ -118,7 +117,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   fp.whole = whole_sum;
   // Fractional part
   uint64_t frac_sum = 0;
-  base = pow(16,15);
+  base = poww(16,15);
   // printf("\n%lu\n",base);
   // printf("BEFORE LOOP\n");
   for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
@@ -235,18 +234,18 @@ Fixedpoint fixedpoint_halve(Fixedpoint val) {
   }
   val.fractional = val.fractional >> 1; //divide frac by two
   if ((val.whole & 1) == 1) { //need to shift 1 to frac
-    val.fractional += (1<<63);
+    val.fractional += (1UL<<63);
   }
   val.whole = val.whole >> 1; //divide whole by two
   return val;
 }
 
 Fixedpoint fixedpoint_double(Fixedpoint val) {
-  if ((val.whole & (1<<63)) == (1<<63)) { //overflow exists
+  if ((val.whole & (1UL<<63)) == (1UL<<63)) { //overflow exists
     val.flag += 8;
   }
   val.whole = val.whole << 1; //mult whole by two
-  if ((val.fractional & (1<<63)) == (1<<63)) { //need to shift 1 to whole
+  if ((val.fractional & (1UL<<63)) == (1UL<<63)) { //need to shift 1 to whole
     val.whole = val.whole | 1;
   }
   val.fractional = val.fractional << 1; //divide whole by two
@@ -434,7 +433,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
 }
 
 // Power function instead of using pow
-uint64_t pow(uint64_t base, uint64_t power) {
+uint64_t poww(uint64_t base, uint64_t power) {
   int ctr = 0;
   uint64_t result = 1;
   while(ctr < power) {
