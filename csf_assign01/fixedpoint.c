@@ -241,6 +241,9 @@ int fixedpoint_compare(Fixedpoint left, Fixedpoint right) {
       }
     }
   } else { //diff sign
+    if (fixedpoint_is_zero(left) && fixedpoint_is_zero(right)) {
+      return 0;
+    }
     if ((left.flag & 3) == 2) {//left is negative
       return -1;
     } 
