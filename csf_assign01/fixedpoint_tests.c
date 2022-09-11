@@ -151,17 +151,17 @@ void test_compare2(TestObjs *objs) {
   ASSERT(fixedpoint_compare(a, b) != 0);
   ASSERT(fixedpoint_compare(b, c) == 0);
 
-  Fixedpoint a = fixedpoint_create2(78,14);
-  Fixedpoint b = fixedpoint_create2(78,16);
-  Fixedpoint c = fixedpoint_create2(78,15);
+  a = fixedpoint_create2(78,14);
+  b = fixedpoint_create2(78,16);
+  c = fixedpoint_create2(78,15);
   ASSERT(fixedpoint_compare(a, b) <= 0);
   ASSERT(fixedpoint_compare(b, c) >= 0);
 
 
-  Fixedpoint a = fixedpoint_create2(78,15);
+  a = fixedpoint_create2(78,15);
   a = fixedpoint_negate(a);
-  Fixedpoint b = fixedpoint_create2(78,16);
-  Fixedpoint c = fixedpoint_create2(78,15);
+  b = fixedpoint_create2(78,16);
+  c = fixedpoint_create2(78,15);
   ASSERT(fixedpoint_compare(a, c) <= 0);
   ASSERT(fixedpoint_compare(c, a) >= 0);
 }
