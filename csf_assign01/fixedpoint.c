@@ -396,6 +396,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     ptr = 1;
     ptr = (ptr<<63);
     back_shift = 60;
+    int trail_zeros = 0;
     for(int i = 0; i < 16; i++) { //67
       uint64_t hex = 0;
       for(int j = 0; j < 4; j++){
@@ -411,8 +412,17 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
         hex += 48;
       }
       printf("%c",hex);
-      s[string_ptr] = (char) hex;
-      string_ptr++;
+      if (hex != 48) { //only add a char directly if not a zero
+        for (int i = 0; i <trail_zeros; i++) { //add saved up zeros
+          s[string_ptr] = (char) 48;
+          string_ptr++;
+        }
+        s[string_ptr] = (char) hex;
+        string_ptr++;
+        trail_zeros = 0;
+      } else { //if we find a zero tally it up in case we need to add it (if zeros arent trail)
+        trail_zeros++;
+      }
       back_shift = (back_shift >> 4);
     }
   }
