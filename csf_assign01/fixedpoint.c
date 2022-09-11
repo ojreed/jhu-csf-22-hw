@@ -384,7 +384,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     back_shift = back_shift >> 4;
   }
   if (leading_zero == 1) {
-    s[string_ptr] = (char) hex;
+    s[string_ptr] = '0';
     string_ptr++;
     leading_zero = 0;
   }
