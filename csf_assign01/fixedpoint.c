@@ -415,18 +415,6 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   }
   printf("FRAC COMPLETE\n");
   printf("\n%s\n",s);
-  int needed_space = 0;
-  for (int i = 0; i < 34 ; i++) {
-    if (s[i] != '\0'){
-      needed_space++;
-    }
-  }
-  char temp[34] = s;
-  s = realloc(s,needed_space);
-  for (int i = 0; i < needed_space ; i++) {
-    s[i] = temp[i];
-  }
-  printf("\n%s\n",s);
   return s;
 }
 
