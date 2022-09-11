@@ -203,13 +203,11 @@ Fixedpoint fixedpoint_negate(Fixedpoint val) {
 
 Fixedpoint fixedpoint_halve(Fixedpoint val) {
   if ((val.fractional & 1) == 1) { //underflow exists
-    val.flag += 16;
+    val.flag |= 16;
   }
   val.fractional = (val.fractional >> 1); //divide frac by two
   if ((val.whole & 1) == 1) { //need to shift 1 to frac
-    uint64_t temp = 0;
-    temp--;
-    val.fractional |= temp;
+    val.fractional |= (1UL<<63);
   }
   val.whole = (val.whole >> 1); //divide whole by two
   return val;
