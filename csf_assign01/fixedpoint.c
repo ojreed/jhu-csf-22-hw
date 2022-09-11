@@ -380,7 +380,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       string_ptr++;
       leading_zero = 0;
     }
-    back_shift = back_shift >> 4;
+    back_shift = (back_shift >> 4);
   }
   if (leading_zero == 1) {
     s[string_ptr] = '0';
@@ -408,7 +408,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       printf("%c",hex);
       s[string_ptr] = (char) hex;
       string_ptr++;
-      back_shift = back_shift >> 4;
+      back_shift = (back_shift >> 4);
     }
   }
   printf("FRAC COMPLETE\n");
