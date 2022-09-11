@@ -12,19 +12,6 @@ Functions to implement desired functionality of the Fixedpoint struct
 #include <assert.h>
 #include "fixedpoint.h"
 
-
-
-// Power function instead of using pow
-uint64_t poww(uint64_t base, uint64_t power) {
-  int ctr = 0;
-  uint64_t result = 1;
-  while(ctr < power) {
-    result *= base;
-    ctr++;
-  }
-  return result;
-}
-
 Fixedpoint fixedpoint_create(uint64_t whole) {
   Fixedpoint fp;
   fp.whole = whole;
@@ -439,5 +426,16 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   // printf("FRAC COMPLETE\n");
   // printf("\n%s\n",s);
   return s;
+}
+
+// Power function instead of using pow
+uint64_t poww(uint64_t base, uint64_t power) {
+  int ctr = 0;
+  uint64_t result = 1;
+  while(ctr < power) {
+    result *= base;
+    ctr++;
+  }
+  return result;
 }
 
