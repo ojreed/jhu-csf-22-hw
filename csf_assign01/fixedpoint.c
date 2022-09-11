@@ -364,6 +364,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   for(int i = 0; i < 16; i++) { //67
     uint64_t hex = 0;
     for(int j = 0; j < 4; j++){
+      printf("%li",ptr);
       printf("%lith BIT VAL: %li ",ptr, ((val.whole & ptr) >> back_shift));
       hex += ((val.whole & ptr) >> back_shift);
       ptr = ptr >> 1;
