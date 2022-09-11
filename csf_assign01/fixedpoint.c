@@ -41,7 +41,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   for (uint64_t i = 0; i < strlen(hex); i++) {
     // Check for invalid character
-    if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 65 && *ptr >= 70) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 && *ptr >= 48))  {
+    if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 70 && *ptr >= 65) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 && *ptr >= 48))  {
       fp.flag += 4; // Set error bit in flag
       return fp;
     }
