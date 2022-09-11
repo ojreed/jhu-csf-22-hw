@@ -200,7 +200,7 @@ Fixedpoint fixedpoint_halve(Fixedpoint val) {
   if ((val.whole & 1) == 1) { //need to shift 1 to frac
     val.fractional += (1UL<<63);
   }
-  val.whole = val.whole >> 1; //divide whole by two
+  val.whole = (val.whole >> 1); //divide whole by two
   return val;
 }
 
@@ -210,9 +210,9 @@ Fixedpoint fixedpoint_double(Fixedpoint val) {
   }
   val.whole = val.whole << 1; //mult whole by two
   if ((val.fractional & (1UL<<63)) == (1UL<<63)) { //need to shift 1 to whole
-    val.whole = val.whole | 1;
+    val.whole += 1;
   }
-  val.fractional = val.fractional << 1; //divide whole by two
+  val.fractional = (val.fractional << 1); //divide whole by two
   return val;
 }
 
