@@ -370,7 +370,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       // hex += ((uint64_t) (val.whole & ptr) >> back_shift);
       if (val.whole & ptr) {
           hex += pow(2,3-j);
-        }
+      }
       ptr = ptr >> 1;
     }
     //convert hex to char
@@ -406,7 +406,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
         // printf("#%li BIT VAL: %li ",ptr, ((uint64_t) (val.fractional & ptr) >> (uint64_t) back_shift));
         if (val.fractional & ptr) {
           hex += pow(2,3-j);
-          printf("#%li BIT VAL: %li ",ptr, ((uint64_t) (val.fractional & ptr) >> (uint64_t) back_shift));
+          printf("#%li BIT VAL: %li ",ptr, pow(2,3-j));
         }
         // hex += ((uint64_t) (val.fractional & ptr) >> back_shift);
         ptr = (ptr >> 1);
