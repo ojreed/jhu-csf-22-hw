@@ -401,8 +401,8 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       uint64_t hex = 0;
       for(int j = 0; j < 4; j++){
         printf("#%li BIT VAL: %li ",ptr, ((val.whole & ptr) >> back_shift));
-        hex += (val.fractional & ptr) >> back_shift;
-        ptr = ptr >> 1;
+        hex += ((val.fractional & ptr) >> back_shift);
+        ptr = (ptr >> 1);
       }
       //convert hex to char
       if(hex >= 10 && hex <= 15) {// A and F
