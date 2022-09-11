@@ -227,18 +227,24 @@ Fixedpoint fixedpoint_double(Fixedpoint val) {
 
 int fixedpoint_compare(Fixedpoint left, Fixedpoint right) {
   if ((left.flag & 3) == (right.flag & 3)) { //same sign
+    int output;
     if (left.whole > right.whole) { //left whole is bigger
-      return 1;
+      output = 1;
     } else if (left.whole < right.whole) { //right whole is bigger
-      return -1;
+      output = -1;
     } else { //wholes are the same need to compare fracs
       if (left.fractional > right.fractional) { //left frac is bigger 
-        return 1;
+        output = 1;
       } else if (left.fractional < right.fractional) { //right frac is bigger
-        return -1;
+        output = -1;
       } else { //fracs are the same --> all equal
         return 0;
       }
+    }
+    if ((left.flag & 3) == 1) {
+      return output;
+    } else {
+      return 1-output;
     }
   } else { //diff sign
     if (fixedpoint_is_zero(left) && fixedpoint_is_zero(right)) {
