@@ -368,7 +368,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     for(int j = 0; j < 4; j++){
       // printf("#%li BIT VAL: %li ",ptr, ((uint64_t) (val.whole & ptr) >> (uint64_t)back_shift));
       // hex += ((uint64_t) (val.whole & ptr) >> back_shift);
-      if (val.fractional & ptr) {
+      if (val.whole & ptr) {
           hex += pow(2,8>>j);
         }
       ptr = ptr >> 1;
