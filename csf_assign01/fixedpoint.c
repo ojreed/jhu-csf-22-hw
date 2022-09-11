@@ -366,8 +366,11 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   for(int i = 0; i < 16; i++) { //67
     uint64_t hex = 0;
     for(int j = 0; j < 4; j++){
-      printf("#%li BIT VAL: %li ",ptr, ((uint64_t) (val.whole & ptr) >> (uint64_t)back_shift));
-      hex += ((uint64_t) (val.whole & ptr) >> back_shift);
+      // printf("#%li BIT VAL: %li ",ptr, ((uint64_t) (val.whole & ptr) >> (uint64_t)back_shift));
+      // hex += ((uint64_t) (val.whole & ptr) >> back_shift);
+      if (val.fractional & ptr) {
+          hex += pow(2,8>>j);
+        }
       ptr = ptr >> 1;
     }
     //convert hex to char
@@ -402,7 +405,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       for(int j = 0; j < 4; j++){
         // printf("#%li BIT VAL: %li ",ptr, ((uint64_t) (val.fractional & ptr) >> (uint64_t) back_shift));
         if (val.fractional & ptr) {
-          hex += pow(2,4-j);
+          hex += pow(2,8>>j);
         }
         // hex += ((uint64_t) (val.fractional & ptr) >> back_shift);
         ptr = (ptr >> 1);
