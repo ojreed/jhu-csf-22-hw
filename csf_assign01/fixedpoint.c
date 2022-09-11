@@ -412,7 +412,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       } else {
         hex += 48;
       }
-      printf("%c",hex);
+      // printf("%c",hex);
       if (hex != 48) { //only add a char directly if not a zero
         for (int i = 0; i <trail_zeros; i++) { //add saved up zeros
           s[string_ptr] = (char) 48;
