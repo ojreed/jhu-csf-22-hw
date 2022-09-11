@@ -142,6 +142,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   sum.flag = 0;
   sum.whole = 0;
   sum.fractional = 0;
+  //a-b where a<b a.f>b.f
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
@@ -174,8 +175,13 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     //COMPUTATION
     sum.whole = big.whole-little.whole;
     if (big.fractional < little.fractional) {//need carry in fractional side
-      sum.whole -= 1;
-      sum.fractional =  (((uint64_t)-1) - little.fractional) + big.fractional;
+      if (sum.whole >= 1) {
+        sum.whole -= 1;
+        sum.fractional =  (((uint64_t)-1) - little.fractional) + big.fractional;
+      } else {
+        sum.flag |= 2;
+        sum.fractional = little.fractional - big.fractional;
+      }
     } else { //fractional component behaves as expected
       sum.fractional = big.fractional - little.fractional;
     }
