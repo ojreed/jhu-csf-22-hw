@@ -362,9 +362,9 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   uint64_t back_shift = (1<<60);
   int leading_zero = 1;
   for(int i = 0; i < 16; i++) { //67
-    int hex = 0;
+    uint64_t hex = 0;
     for(int j = 0; j < 4; j++){
-      printf("%dth BIT VAL: %d ",ptr, ((val.whole & ptr) >> back_shift));
+      printf("%lith BIT VAL: %li ",ptr, ((val.whole & ptr) >> back_shift));
       hex += ((val.whole & ptr) >> back_shift);
       ptr = ptr >> 1;
     }
@@ -394,7 +394,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     ptr = (1<<63);
     back_shift = (1<<60);
     for(int i = 0; i < 16; i++) { //67
-      int hex = 0;
+      uint64_t hex = 0;
       for(int j = 0; j < 4; j++){
         hex += (val.fractional & ptr) >> back_shift;
         ptr = ptr >> 1;
