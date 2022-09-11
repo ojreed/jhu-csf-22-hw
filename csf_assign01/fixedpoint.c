@@ -91,7 +91,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   uint64_t base = 1;
   for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
     if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
-        whole_sum += (whole_arr[i] - 55) * base;
+        whole_sum += (whole_arr[i] - 65) * base;
         base *= 16;
     } else if (whole_arr[i] >= 'a' && whole_arr[i] <= 'f'){ 
         whole_sum += (whole_arr[i] - 87) * base;
