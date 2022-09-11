@@ -417,7 +417,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   printf("\n%s\n",s);
   int needed_space = 0;
   for (int i = 0; i < 34 ; i++) {
-    if (s[i] != null){
+    if (s[i] != '\0'){
       needed_space++;
     }
   }
