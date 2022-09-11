@@ -56,7 +56,6 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       index = -1;
     } 
 
-    // printf("\nfinish error check\n",*ptr);
     // Check for overflow
     if(onto_frac == 0 && flow_ctr > 16) {
       fp.flag += 8;
@@ -67,14 +66,11 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
       fp.flag += 4;
       return fp;
     }
-    // printf("\nfinish overflow check\n",*ptr);
     // Check if neg or pos value
     if(*ptr == '-') {
       fp.flag = 2; // Set flag if negative
     }
-    // printf("\nfinish negation check\n",*ptr);
-    
-    // printf("\nfinish decimal check\n",*ptr);
+
     if ((*ptr != '.')) {
       if (onto_frac == 0) {
         whole_arr[index] = *ptr;
@@ -84,19 +80,15 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         frac_ctr++;
       }
     }
-
-    // printf("\nfinish add to array\n",*ptr);
     index++;
     ptr++; // Next element of char array
   }
 
   // Convert each half to decimal
   // Whole part
-  // Test value: char whole_arr[2] = "2b";
   int length = whole_ctr;
   uint64_t whole_sum = 0;
   uint64_t base = 1;
-  // printf("\n%d\n",length);
   for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
     if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ 
         whole_sum += (whole_arr[i] - 55) * base;
@@ -109,16 +101,13 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         base *= 16;
     }
   }
-  // printf("%lu",whole_sum);
   fp.whole = whole_sum;
+
   // Fractional part
   uint64_t frac_sum = 0;
   base = poww(16,15);
-  // printf("\n%lu\n",base);
-  // printf("BEFORE LOOP\n");
+
   for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
-    // printf("IN LOOP\n");
-    // printf("\n%c\n",frac_arr[i]);
     if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ 
         frac_sum += (frac_arr[i] - 55) * base;
         base /= 16;
@@ -130,7 +119,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
         base /= 16;
     }
   }
-  // printf("\n%lu\n",frac_sum);
+
   fp.fractional = frac_sum;
 
   // Return Fixedpoint value
@@ -147,25 +136,16 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
-  // printf("Running add\n");
-  // printf("Flags Right = %d, Left = %d\n",right.flag,left.flag);
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
     } else {
       sum.flag = 1;
     }
-    // printf("Running mag increase\n");
-    /* TODO: 
-    1) overflow of whole --> throw an overflow flag | DONE
-    2) overflow of fractional --> carry 1 to whole part | DONE
-    */
    //ADD COMPONENTS SEPERATLY 
     sum.whole = left.whole + right.whole;
     sum.fractional = left.fractional + right.fractional; 
 
-    //RESOLVE ISSUES
-    //TODO: do we need the final - 1??? 
     if (sum.fractional < left.fractional) {//carry check
       sum.whole += 1;
     }
@@ -173,37 +153,25 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
-    // printf("Running mag decrease (correct)\n");
-    /*
-      1) if neg > pos | DONE
-      2) borrowing from fractional | DONE
-
-    */
     //SETUP
     //Subtract smaller value from the larger 
     Fixedpoint big, little;
     if (left.whole<right.whole || (left.whole == right.whole && left.fractional < right.fractional)) { //right has the larger magnitude 
-    //  printf("Right Bigger\n");
      big = right;
      little = left;
     } else { // right has the higher magnitude 
-    // printf("Left Bigger (correct for test)\n");
      big = left;
      little = right;
     }
     //COMPUTATION
     sum.whole = big.whole-little.whole;
-    // printf("Added whole\n");
     if (big.fractional < little.fractional) {//need carry in fractional side
-      // printf("Flipped Fractional\n");
       sum.whole -= 1;
-      sum.fractional =  (((uint64_t)-1) - little.fractional) + big.fractional;//do I need the plus 1?
+      sum.fractional =  (((uint64_t)-1) - little.fractional) + big.fractional;
     } else { //fractional component behaves as expected
-      // printf("Regular Fractional\n");
       sum.fractional = big.fractional - little.fractional;
     }
     sum.flag = big.flag; //maintain sign of the larger magnitude component  
-    // printf("FINISHED\n");
   }
   return sum;
 }
@@ -329,30 +297,13 @@ int fixedpoint_is_valid(Fixedpoint val) {
   return 0;
 }
 
-// Return a dynamically allocated C character string with the representation of
-// the given valid Fixedpoint value.  The string should start with "-" if the
-// value is negative, and should use the characters 0-9 and a-f to represent
-// each hex digit of the whole and fractional parts. As a special case, if the
-// Fixedpoint value represents an integer (i.e., the fractional part is 0),
-// then no "decimal point" ('.') should be included.
-//
-// Parameters:
-//   val - the Fixedpoint value
-//
-// Returns:
-//   dynamically allocated character string containing the representation
-//   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val) {
   int string_ptr = 0;
-  // printf("START\n");
   char *s = (char*) malloc(35*sizeof(char));
   if((val.flag & 2) == 2){
-    // printf("INSIDE NEG\n");
     s[string_ptr] = '-';
     string_ptr++;
-    // printf("\n%s\n",s);
   }
-  // printf("NEG CHECKED\n");
   uint64_t ptr = 1;
   ptr = (ptr<<63);
   int back_shift = 60;
@@ -360,7 +311,6 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   for(int i = 0; i < 16; i++) { //67
     uint64_t hex = 0;
     for(int j = 0; j < 4; j++){
-      // printf("#%li BIT VAL: %li ",ptr, ((val.whole & ptr) >> back_shift));
       uint64_t temp = (val.whole & ptr);
       hex += (temp>>back_shift);
       ptr = ptr >> 1;
@@ -371,7 +321,6 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     } else {
       hex += 48;
     }
-    // printf("%d\n",hex);
     if (!((leading_zero == 1) && ((hex == 48)))) {
       s[string_ptr] = (char) hex;
       string_ptr++;
@@ -384,7 +333,6 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     string_ptr++;
     leading_zero = 0;
   }
-  // printf("WHOLE COMPLETE\n");
   if(val.fractional != 0) {
     s[string_ptr] = '.';
     string_ptr++;
@@ -397,7 +345,6 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       for(int j = 0; j < 4; j++){
         
         uint64_t temp = (val.fractional & ptr);
-        // printf("#%li BIT VAL: %li ",16-i, (temp>>back_shift));
         hex += (temp>>back_shift);
         ptr = (ptr >> 1);
       }
@@ -407,7 +354,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       } else {
         hex += 48;
       }
-      // printf("%c",hex);
+
       if (hex != 48) { //only add a char directly if not a zero
         for (int i = 0; i <trail_zeros; i++) { //add saved up zeros
           s[string_ptr] = (char) 48;
@@ -423,8 +370,6 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     }
   }
   s[string_ptr] = '\0';
-  // printf("FRAC COMPLETE\n");
-  // printf("\n%s\n",s);
   return s;
 }
 
