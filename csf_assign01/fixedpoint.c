@@ -395,8 +395,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     string_ptr++;
     ptr = 1;
     ptr = (ptr<<63);
-    back_shift = 1;
-    back_shift = (back_shift<<59);
+    back_shift = 59;
     for(int i = 0; i < 16; i++) { //67
       uint64_t hex = 0;
       for(int j = 0; j < 4; j++){
