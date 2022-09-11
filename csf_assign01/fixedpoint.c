@@ -402,7 +402,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       for(int j = 0; j < 4; j++){
         
         uint64_t temp = (val.fractional & ptr);
-        printf("#%li BIT VAL: %li ",16-i, (temp>>back_shift));
+        // printf("#%li BIT VAL: %li ",16-i, (temp>>back_shift));
         hex += (temp>>back_shift);
         ptr = (ptr >> 1);
       }

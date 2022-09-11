@@ -227,7 +227,7 @@ void test_format_as_hex(TestObjs *objs) {
   free(s);
 
   s = fixedpoint_format_as_hex(objs->one);
-  // ASSERT(0 == strcmp(s, "1"));
+  ASSERT(0 == strcmp(s, "1"));
   free(s);
 
   s = fixedpoint_format_as_hex(objs->one_half);
