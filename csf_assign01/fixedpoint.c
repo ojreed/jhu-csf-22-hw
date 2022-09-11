@@ -421,7 +421,11 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       needed_space++;
     }
   }
+  char temp[34] = s;
   s = realloc(s,needed_space);
+  for (int i = 0; i < needed_space ; i++) {
+    s[i] = temp[i]
+  }
   printf("\n%s\n",s);
   return s;
 }
