@@ -67,6 +67,7 @@ int main(int argc, char **argv) {
   TEST(test_compare);
   TEST(test_halving);
   TEST(fixedpoint_format_as_hex_2);
+  TEST(test_compare2);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
@@ -141,6 +142,28 @@ void create_from_hex_segfault(TestObjs *objs) {
   Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
   printf("1 = %lu \n",fixedpoint_whole_part(test3));
   printf("0 = %lu \n",fixedpoint_frac_part(test3));
+}
+
+void test_compare2(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create2(56,0);
+  Fixedpoint b = fixedpoint_create2(78,15);
+  Fixedpoint c = fixedpoint_create2(78,15);
+  ASSERT(fixedpoint_compare(a, b) != 0);
+  ASSERT(fixedpoint_compare(b, c) == 0);
+
+  Fixedpoint a = fixedpoint_create2(78,14);
+  Fixedpoint b = fixedpoint_create2(78,16);
+  Fixedpoint c = fixedpoint_create2(78,15);
+  ASSERT(fixedpoint_compare(a, b) <= 0);
+  ASSERT(fixedpoint_compare(b, c) >= 0);
+
+
+  Fixedpoint a = fixedpoint_create2(78,15);
+  a = fixedpoint_negate(a);
+  Fixedpoint b = fixedpoint_create2(78,16);
+  Fixedpoint c = fixedpoint_create2(78,15);
+  ASSERT(fixedpoint_compare(a, c) <= 0);
+  ASSERT(fixedpoint_compare(c, a) >= 0);
 }
 
 void debug_add2(TestObjs *objs) {
