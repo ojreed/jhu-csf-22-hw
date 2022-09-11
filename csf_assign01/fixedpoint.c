@@ -29,6 +29,8 @@ Fixedpoint fixedpoint_create2(uint64_t whole, uint64_t frac) {
 Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   Fixedpoint fp;
   fp.flag = 1;
+  fp.whole = 0;
+  fp.fractional = 0;
   const char *ptr = hex; // Pointer is memory address of first element
   int onto_frac = 0;
   char whole_arr[64];
@@ -41,6 +43,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Locate period, then divide into two parts
   for (uint64_t i = 0; i < strlen(hex); i++) {
     // Check for invalid character
+
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 70 && *ptr >= 65) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 && *ptr >= 48))  {
       fp.flag += 4; // Set error bit in flag
       return fp;
@@ -136,6 +139,9 @@ uint64_t fixedpoint_frac_part(Fixedpoint val) {
 
 Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
   Fixedpoint sum;
+  sum.flag = 0;
+  sum.whole = 0;
+  sum.fractional = 0;
   if ((left.flag & 3) == (right.flag & 3)) { // magnitudes increases ie. + and + or - and - NOTE: Bitwise and comparison
     if ((left.flag & 2) == 2) { //neg + neg --> sum is neg so set flag  NOTE: bitwise and comparison 
       sum.flag = 2;
@@ -145,7 +151,9 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
    //ADD COMPONENTS SEPERATLY 
     sum.whole = left.whole + right.whole;
     sum.fractional = left.fractional + right.fractional; 
-
+    if (sum.whole < left.whole) {//overflow check
+      sum.flag += 8;
+    } 
     if (sum.fractional < left.fractional) {//carry check
       sum.whole += 1;
     }
@@ -173,6 +181,7 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     }
     sum.flag = big.flag; //maintain sign of the larger magnitude component  
   }
+
   return sum;
 }
 
