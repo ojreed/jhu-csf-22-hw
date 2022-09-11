@@ -350,7 +350,7 @@ int fixedpoint_is_valid(Fixedpoint val) {
 char *fixedpoint_format_as_hex(Fixedpoint val) {
   int string_ptr = 0;
   printf("START\n");
-  char *s = (char*) malloc(34*sizeof(char));
+  char *s = (char*) malloc(35*sizeof(char));
   if((val.flag & 2) == 2){
     printf("INSIDE NEG\n");
     s[string_ptr] = '-';
