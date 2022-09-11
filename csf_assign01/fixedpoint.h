@@ -273,4 +273,7 @@ int fixedpoint_is_valid(Fixedpoint val);
 //   of the Fixedpoint value
 char *fixedpoint_format_as_hex(Fixedpoint val);
 
+// Function to raise base number to a power
+uint64_t poww(uint64_t base, uint64_t power);
+
 #endif // FIXEDPREC_H

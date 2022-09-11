@@ -13,8 +13,17 @@ Functions to implement desired functionality of the Fixedpoint struct
 #include "fixedpoint.h"
 
 
-// You can remove this once all of the functions are fully implemented
-static Fixedpoint DUMMY;
+
+// Power function instead of using pow
+uint64_t poww(uint64_t base, uint64_t power) {
+  int ctr = 0;
+  uint64_t result = 1;
+  while(ctr < power) {
+    result *= base;
+    ctr++;
+  }
+  return result;
+}
 
 Fixedpoint fixedpoint_create(uint64_t whole) {
   Fixedpoint fp;
@@ -432,13 +441,3 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   return s;
 }
 
-// Power function instead of using pow
-uint64_t poww(uint64_t base, uint64_t power) {
-  int ctr = 0;
-  uint64_t result = 1;
-  while(ctr < power) {
-    result *= base;
-    ctr++;
-  }
-  return result;
-}
