@@ -424,7 +424,7 @@ void test_compare(TestObjs *objs) {
 
 void test_halving(TestObjs *objs) {
   Fixedpoint pt = fixedpoint_create2(1,0); //should end up as 
-  Fixedpoint correct = fixedpoint_create2(0,(1<<63));
+  Fixedpoint correct = fixedpoint_create2(0,(1UL<<63));
   Fixedpoint result = fixedpoint_halve(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
 }
