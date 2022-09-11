@@ -424,7 +424,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
       } else { //if we find a zero tally it up in case we need to add it (if zeros arent trail)
         trail_zeros++;
       }
-      back_shift = (back_shift >> 4);
+      back_shift -= 4;
     }
   }
   printf("FRAC COMPLETE\n");
