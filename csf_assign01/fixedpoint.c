@@ -39,7 +39,7 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   int frac_ctr = 0;
 
   // Locate period, then divide into two parts
-  for (int i = 0; i < strlen(hex); i++) {
+  for (uint64_t i = 0; i < strlen(hex); i++) {
     // Check for invalid character
     if (!(*ptr == 46) && !(*ptr == 45) && !(*ptr <= 102 && *ptr >= 97) && !(*ptr <= 57 && *ptr >= 48))  {
       fp.flag += 4; // Set error bit in flag
@@ -430,7 +430,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
 
 // Power function instead of using pow
 uint64_t poww(uint64_t base, uint64_t power) {
-  int ctr = 0;
+  uint64_t ctr = 0;
   uint64_t result = 1;
   while(ctr < power) {
     result *= base;
