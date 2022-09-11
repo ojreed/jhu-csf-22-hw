@@ -393,10 +393,8 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
   if(val.fractional != 0) {
     s[string_ptr] = '.';
     string_ptr++;
-    ptr = 1;
-    ptr = (ptr<<63);
-    back_shift = 1;
-    back_shift = (back_shift<<60);
+    ptr = (1<<63);
+    back_shift = (1<<60);
     for(int i = 0; i < 16; i++) { //67
       uint64_t hex = 0;
       for(int j = 0; j < 4; j++){
