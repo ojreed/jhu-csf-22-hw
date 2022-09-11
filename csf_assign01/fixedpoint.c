@@ -422,6 +422,7 @@ char *fixedpoint_format_as_hex(Fixedpoint val) {
     }
   }
   s = realloc(s,needed_space);
+  printf("\n%s\n",s);
   return s;
 }
 
