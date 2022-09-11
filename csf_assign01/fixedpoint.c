@@ -150,14 +150,14 @@ Fixedpoint fixedpoint_add(Fixedpoint left, Fixedpoint right) {
     }
    //ADD COMPONENTS SEPERATLY 
     sum.whole = left.whole + right.whole;
-    sum.fractional = left.fractional + right.fractional; 
     if (sum.whole < left.whole) {//overflow check
       sum.flag += 8;
     } 
+    sum.fractional = left.fractional + right.fractional; 
     if (sum.fractional < left.fractional) {//carry check
       sum.whole += 1;
     }
-    if (sum.whole < left.whole) {//overflow check
+    if ((sum.whole < left.whole) && (sum.flag & 8) != 8) {//overflow check
       sum.flag += 8;
     } 
   } else { //magnitude decreases 
