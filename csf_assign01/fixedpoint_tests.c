@@ -421,7 +421,7 @@ void test_add_opposite_signs(TestObjs *objs) {
   printf("sum = %lu \n",fixedpoint_frac_part(sum));
   ASSERT(fixedpoint_is_neg(sum));
   ASSERT(0xf20a7dUL == fixedpoint_whole_part(sum));
-  ASSERT(0x1cf4f19f786daUL == fixedpoint_frac_part(sum));
+  ASSERT(0x1cf4f19f786da000UL == fixedpoint_frac_part(sum));
 }
 
 
@@ -446,10 +446,10 @@ void test_sub_both_neg(TestObjs *objs) { //add left to the negated right
   lhs = fixedpoint_create_from_hex("-fed1d2.4ae"); 
   rhs = fixedpoint_create_from_hex("-b4e76253f1.b703f"); 
   diff = fixedpoint_sub(lhs, rhs);
-  printf("sum = %lu \n",fixedpoint_frac_part(diff));
+  printf("diff= %lu \n", fixedpoint_whole_part(diff));
   ASSERT(!fixedpoint_is_neg(diff)); 
   ASSERT(0xb4e663821UL == fixedpoint_whole_part(diff));
-  ASSERT(0x6c23fUL == fixedpoint_frac_part(diff));
+  ASSERT(0x6c23f00000000000UL == fixedpoint_frac_part(diff));
 }
 
 void test_is_overflow_pos(TestObjs *objs) {
