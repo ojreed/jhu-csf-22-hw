@@ -445,7 +445,6 @@ void test_sub_both_neg(TestObjs *objs) { //add left to the negated right
   lhs = fixedpoint_create_from_hex("-fed1d2.4ae"); 
   rhs = fixedpoint_create_from_hex("-b4e76253f1.b703f"); 
   diff = fixedpoint_sub(lhs, rhs);
-  printf("diff= %lu \n", fixedpoint_whole_part(diff));
   ASSERT(!fixedpoint_is_neg(diff)); 
   ASSERT(0xb4e663821fUL == fixedpoint_whole_part(diff));
   ASSERT(0x6c23f00000000000UL == fixedpoint_frac_part(diff));
