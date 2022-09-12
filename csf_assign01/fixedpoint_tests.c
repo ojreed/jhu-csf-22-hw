@@ -401,7 +401,7 @@ void debug_add2(TestObjs *objs) {
 
 void test_add_both_neg(TestObjs *objs) {
   (void) objs;
-  
+
   Fixedpoint a, b, sum;
   a = fixedpoint_create_from_hex("-6f8e0a363.9bd4aa4e8f");
   b = fixedpoint_create_from_hex("-1fce627b9.8ccb70d3");
@@ -448,6 +448,7 @@ void test_sub_both_neg(TestObjs *objs) { //add left to the negated right
   ASSERT(fixedpoint_is_neg(diff));
   ASSERT(0xb4e663821UL == fixedpoint_whole_part(diff));
   ASSERT(0x6c23fUL == fixedpoint_frac_part(diff));
+  printf("|a+b| = %lu.%lu \n",fixedpoint_whole_part(diff),fixedpoint_frac_part(diff));
 }
 
 void test_is_overflow_pos(TestObjs *objs) {
