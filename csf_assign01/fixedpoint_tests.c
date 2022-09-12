@@ -400,8 +400,6 @@ void debug_add2(TestObjs *objs) {
 }
 
 void test_add_both_neg(TestObjs *objs) {
-  (void) objs;
-
   Fixedpoint a, b, sum;
   a = fixedpoint_create_from_hex("-6f8e0a363.9bd4aa4e8f");
   b = fixedpoint_create_from_hex("-1fce627b9.8ccb70d3");
