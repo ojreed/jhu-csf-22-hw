@@ -37,20 +37,20 @@ void test_add(TestObjs *objs);
 void test_sub(TestObjs *objs);
 void test_is_overflow_pos(TestObjs *objs);
 void test_is_err(TestObjs *objs);
-void test_compare(TestObjs *objs);
-void test_compare2(TestObjs *objs);
-void test_halving(TestObjs *objs);
+void test_compare();
+void test_compare2();
+void test_halving();
 void test_fixedpoint_format_as_hex_2(TestObjs *objs);
 void test_sub_both_neg(TestObjs *objs);
 void test_create_from_hex_edge(TestObjs *objs);
 void test_add_both_neg(TestObjs *objs);
 void test_add_opposite_signs(TestObjs *objs);
-void test_compare_sign_difference(TestObjs *objs);
-void test_compare_created_from_hex(TestObjs *objs);
-void test_double(TestObjs *objs);
-void test_double_hex(TestObjs *objs);
-void test_double_neg(TestObjs *objs);
-void test_halving_edge(TestObjs *objs);
+void test_compare_sign_difference();
+void test_compare_created_from_hex();
+void test_double();
+void test_double_hex();
+void test_double_neg();
+void test_halving_edge();
 
 
 int main(int argc, char **argv) {
