@@ -89,7 +89,6 @@ int main(int argc, char **argv) {
   TEST(test_compare_sign_difference);
   TEST(test_compare_created_from_hex);
   TEST(test_double);
-  // TEST(test_double_hex);
   TEST(test_double_neg);
   TEST(test_halving_edge);
 
@@ -137,7 +136,7 @@ void test_halving_edge() {
   Fixedpoint correct2 = fixedpoint_create2(2,75);
   Fixedpoint result2 = fixedpoint_halve(pt3);
   ASSERT(0 == fixedpoint_compare(result2, correct2));
-  ASSERT(fixedpoint_is_neg(result));
+  ASSERT(fixedpoint_is_neg(result2));
 }
 
 void test_double() {
@@ -158,15 +157,6 @@ void test_double_neg() {
   Fixedpoint result = fixedpoint_double(d);
   ASSERT(10 == fixedpoint_whole_part(result));
   ASSERT(fixedpoint_is_neg(result));
-}
-
-void test_double_hex() {
-  Fixedpoint a = fixedpoint_create_from_hex("f6a.f2");
-  Fixedpoint b = fixedpoint_double(a);
-  ASSERT(0x1ed == fixedpoint_whole_part(b));
-  printf("%lu \n", fixedpoint_whole_part(b));
-  ASSERT(0xe4UL == fixedpoint_whole_part(b));
-  printf("%lu \n", fixedpoint_frac_part(b));
 }
 
 void test_compare() {
