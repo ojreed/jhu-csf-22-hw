@@ -115,7 +115,7 @@ void cleanup(TestObjs *objs) {
 }
 
 void test_halving() {
-  Fixedpoint pt = fixedpoint_create2(1,0); 
+  Fixedpoint pt = fixedpoint_create(1); 
   Fixedpoint correct = fixedpoint_create2(0,(1UL<<63));
   Fixedpoint result = fixedpoint_halve(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
@@ -141,8 +141,8 @@ void test_halving_edge() {
 }
 
 void test_double() {
-  Fixedpoint pt = fixedpoint_create2(5,0); 
-  Fixedpoint correct = fixedpoint_create2(10,0);
+  Fixedpoint pt = fixedpoint_create(5); 
+  Fixedpoint correct = fixedpoint_create(10);
   Fixedpoint result = fixedpoint_double(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
 
@@ -153,7 +153,7 @@ void test_double() {
 }
 
 void test_double_neg() {
-  Fixedpoint c = fixedpoint_create2(5,0); 
+  Fixedpoint c = fixedpoint_create(5); 
   Fixedpoint d = fixedpoint_negate(c);
   Fixedpoint result = fixedpoint_double(d);
   ASSERT(10 == fixedpoint_whole_part(result));
@@ -170,7 +170,7 @@ void test_double_hex() {
 }
 
 void test_compare() {
-  Fixedpoint a = fixedpoint_create2(56,0);
+  Fixedpoint a = fixedpoint_create(56);
   Fixedpoint b = fixedpoint_create2(78,15);
   Fixedpoint c = fixedpoint_create2(78,15);
   ASSERT(fixedpoint_compare(a, b) == -1);
@@ -178,7 +178,7 @@ void test_compare() {
 }
 
 void test_compare2() {
-  Fixedpoint a = fixedpoint_create2(56,0);
+  Fixedpoint a = fixedpoint_create(56);
   Fixedpoint b = fixedpoint_create2(78,15);
   Fixedpoint c = fixedpoint_create2(78,15);
   ASSERT(fixedpoint_compare(a, b) != 0);
