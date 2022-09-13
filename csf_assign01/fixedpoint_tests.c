@@ -133,7 +133,7 @@ void test_halving_edge() {
 
   Fixedpoint pt2 = fixedpoint_create2(1,0);
   Fixedpoint pt3 = fixedpoint_negate(pt2); 
-  Fixedpoint correct2 = fixedpoint_create2(0,(1UL<<63));
+  Fixedpoint correct2 = fixedpoint_create2(0,(1UL<<64));
   Fixedpoint result2 = fixedpoint_halve(pt3);
   ASSERT(0 == fixedpoint_compare(result2, correct2));
   ASSERT(fixedpoint_is_neg(result2));
