@@ -43,7 +43,6 @@ void test_halving(TestObjs *objs);
 void test_fixedpoint_format_as_hex_2(TestObjs *objs);
 void test_sub_both_neg(TestObjs *objs);
 void test_create_from_hex_edge(TestObjs *objs);
-void test_create_from_hex_segfault(TestObjs *objs);
 void test_add_both_neg(TestObjs *objs);
 void test_add_opposite_signs(TestObjs *objs);
 void test_compare_sign_difference(TestObjs *objs);
@@ -80,7 +79,6 @@ int main(int argc, char **argv) {
   TEST(test_create_from_hex_edge);
   TEST(test_add_both_neg);
   TEST(test_add_opposite_signs);
-  TEST(test_create_from_hex_segfault);
   TEST(test_compare_sign_difference);
   TEST(test_compare_created_from_hex);
 
@@ -165,21 +163,6 @@ void test_compare_created_from_hex(TestObjs *objs) {
   ASSERT(fixedpoint_compare(a, b) == -1);
 }
 
-
-void debug_create_from_hex(TestObjs *objs) {
-  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
-  printf("a = %lu \n",fixedpoint_whole_part(test1));
-  printf("0 = %lu \n",fixedpoint_frac_part(test1));
-
-  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
-  printf("14 = %lu \n",fixedpoint_whole_part(test2));
-  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
-
-  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
-  printf("1 = %lu \n",fixedpoint_whole_part(test3));
-  printf("0 = %lu \n",fixedpoint_frac_part(test3));
-}
-
 void test_create_from_hex_edge(TestObjs *objs){
   (void) objs;
   Fixedpoint test1 = fixedpoint_create_from_hex("0.0");
@@ -192,21 +175,6 @@ void test_create_from_hex_edge(TestObjs *objs){
   ASSERT(0x77d3UL== fixedpoint_whole_part(test2));
   ASSERT(0UL == fixedpoint_frac_part(test2));
 }
-
-void test_create_from_hex_segfault(TestObjs *objs) {
-  Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
-  printf("a = %lu \n",fixedpoint_whole_part(test1));
-  printf("0 = %lu \n",fixedpoint_frac_part(test1));
-
-  Fixedpoint test2 = fixedpoint_create_from_hex("14.0005");
-  printf("14 = %lu \n",fixedpoint_whole_part(test2));
-  printf("0005 = %lu \n",fixedpoint_frac_part(test2));
-
-  Fixedpoint test3 = fixedpoint_create_from_hex("1.0");
-  printf("1 = %lu \n",fixedpoint_whole_part(test3));
-  printf("0 = %lu \n",fixedpoint_frac_part(test3));
-}
-
 
 void test_whole_part(TestObjs *objs) {
   ASSERT(0UL == fixedpoint_whole_part(objs->zero));
@@ -343,39 +311,6 @@ void test_add(TestObjs *objs) {
   ASSERT(0x5be47e8ea0538c50UL == fixedpoint_frac_part(sum));
 }
 
-void debug_add(TestObjs *objs) {
-  Fixedpoint a = fixedpoint_create2(1,0);
-  Fixedpoint b = fixedpoint_create2(1,1);
-  Fixedpoint c = fixedpoint_create2(5,0);
-
-  printf("\n");
-  printf("a = %i.%i \n",fixedpoint_whole_part(a),fixedpoint_frac_part(a));
-  printf("b = %i.%i \n",fixedpoint_whole_part(b),fixedpoint_frac_part(b));
-  printf("c = %i.%i \n",fixedpoint_whole_part(c),fixedpoint_frac_part(c));
-  
-  Fixedpoint d = fixedpoint_add(a,b);
-  printf("a+b = %i.%i \n",fixedpoint_whole_part(d),fixedpoint_frac_part(d));
-  ASSERT(fixedpoint_whole_part(d) == 2);
-  ASSERT(fixedpoint_frac_part(d) == 1);
-  ASSERT(!fixedpoint_is_neg(d));
-
-  Fixedpoint e = fixedpoint_add(a,fixedpoint_negate(b));
-  printf("b.flag = %d\n",b.flag);
-  printf("-b.flag = %d\n",fixedpoint_negate(b).flag);
-  printf("|a-b| = %i.%i \n",fixedpoint_whole_part(e),fixedpoint_frac_part(e));
-  ASSERT(fixedpoint_whole_part(e) == 0);
-  ASSERT(fixedpoint_frac_part(e) == 1);
-  printf("e.flag = %d\n",e.flag);
-  ASSERT(fixedpoint_is_neg(e));
-
-  Fixedpoint f = fixedpoint_add(e,c);
-  printf("e+c = %lu.%lu \n",fixedpoint_whole_part(f),fixedpoint_frac_part(f));
-  ASSERT(fixedpoint_whole_part(f) == 4);
-  ASSERT(fixedpoint_frac_part(f) == 18446744073709551614);//dumb because of how FP representation works
-  ASSERT(!fixedpoint_is_neg(f));
-   
-}
-
 void test_add_2(TestObjs *objs) {
   Fixedpoint a = fixedpoint_create2(1,0);
   Fixedpoint b = fixedpoint_create2(1,1);
@@ -392,25 +327,6 @@ void test_add_2(TestObjs *objs) {
   ASSERT(fixedpoint_frac_part(d) == 1);
   ASSERT(!fixedpoint_is_neg(d));
 
-}
-
-void debug_add2(TestObjs *objs) {
-  (void) objs;
-
-  Fixedpoint lhs, rhs, sum;
-
-  lhs = fixedpoint_create_from_hex("-c7252a193ae07.7a51de9ea0538c5");
-  rhs = fixedpoint_create_from_hex("d09079.1e6d601");
-
-  sum = fixedpoint_add(lhs, rhs);
-
-  printf("a = %lu.%lu \n",fixedpoint_whole_part(lhs),fixedpoint_frac_part(lhs));
-  printf("b = %lu.%lu \n",fixedpoint_whole_part(rhs),fixedpoint_frac_part(rhs));
-  printf("|a+b| = %lu.%lu \n",fixedpoint_whole_part(sum),fixedpoint_frac_part(sum));
-  printf("|a+b| actual = 3503398930554254.35895529729925907281");
-  ASSERT(fixedpoint_is_neg(sum));
-  ASSERT(0xc7252a0c31d8eUL == fixedpoint_whole_part(sum));
-  ASSERT(0x5be47e8ea0538c50UL == fixedpoint_frac_part(sum));
 }
 
 void test_add_both_neg(TestObjs *objs) {
@@ -436,7 +352,6 @@ void test_add_opposite_signs(TestObjs *objs) {
   ASSERT(0xf20a7dUL == fixedpoint_whole_part(sum));
   ASSERT(0x1cf4f19f786da000UL == fixedpoint_frac_part(sum));
 }
-
 
 void test_sub(TestObjs *objs) {
   (void) objs;
