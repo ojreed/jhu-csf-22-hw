@@ -50,6 +50,7 @@ void test_compare_created_from_hex(TestObjs *objs);
 void test_double(TestObjs *objs);
 void test_double_hex(TestObjs *objs);
 void test_double_neg(TestObjs *objs);
+void test_halving_edge(TestObjs *objs);
 
 
 int main(int argc, char **argv) {
@@ -87,15 +88,8 @@ int main(int argc, char **argv) {
   TEST(test_double);
   // TEST(test_double_hex);
   TEST(test_double_neg);
-
-  // IMPORTANT: if you add additional test functions (which you should!),
-  // make sure they are included here.  E.g., if you add a test function
-  // "my_awesome_tests", you should add
-  //
-  //   TEST(my_awesome_tests);
-  //
-  // here. This ensures that your test function will actually be executed.
-
+  TEST(test_halving_edge);
+  
   TEST_FINI();
 }
 
