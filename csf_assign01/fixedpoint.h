@@ -264,4 +264,10 @@ char *fixedpoint_format_as_hex(Fixedpoint val);
 // Function to raise base number to a power
 uint64_t poww(uint64_t base, uint64_t power);
 
+//Function to convert chars into the whole number 
+uint64_t whole_sum(char whole_arr[], int length);
+
+//Function to convert chars into the fractional number 
+uint64_t frac_sum(char frac_arr[], int frac_ctr);
+
 #endif // FIXEDPREC_H

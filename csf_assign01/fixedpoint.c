@@ -399,7 +399,7 @@ uint64_t whole_sum(char whole_arr[], int length){
   return whole_sum;
 }
 
-uint64_t whole_sum(char frac_arr[], int frac_ctr){
+uint64_t frac_sum(char frac_arr[], int frac_ctr){
   uint64_t frac_sum = 0;
   uint64_t base = poww(16,15);
   for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
