@@ -48,7 +48,7 @@ void test_add_opposite_signs(TestObjs *objs);
 void test_compare_sign_difference(TestObjs *objs);
 void test_compare_created_from_hex(TestObjs *objs);
 void test_double(TestObjs *objs);
-// void test_double_hex(TestObjs *objs);
+void test_double_hex(TestObjs *objs);
 void test_double_neg(TestObjs *objs);
 
 
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
   TEST(test_compare_sign_difference);
   TEST(test_compare_created_from_hex);
   TEST(test_double);
-  TEST(test_double_hex);
+  // TEST(test_double_hex);
   TEST(test_double_neg);
 
   // IMPORTANT: if you add additional test functions (which you should!),
