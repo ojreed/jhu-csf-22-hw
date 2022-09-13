@@ -133,9 +133,10 @@ void test_halving_edge() {
 
   Fixedpoint pt2 = fixedpoint_create2(5,0);
   Fixedpoint pt3 = fixedpoint_negate(pt2); 
-  Fixedpoint correct2 = fixedpoint_create2(2,(1UL<<63));
+  Fixedpoint correct2 = fixedpoint_create_from_hex("-2.8");
   Fixedpoint result2 = fixedpoint_halve(pt3);
   printf("%s",fixedpoint_format_as_hex(result2));
+  printf("%s",fixedpoint_format_as_hex(correct2));
   ASSERT(0 == fixedpoint_compare(result2, correct2));
   ASSERT(fixedpoint_is_neg(result2));
 }
