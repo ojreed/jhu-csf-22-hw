@@ -48,7 +48,7 @@ void test_add_opposite_signs(TestObjs *objs);
 void test_compare_sign_difference(TestObjs *objs);
 void test_compare_created_from_hex(TestObjs *objs);
 void test_double(TestObjs *objs);
-void test_double_hex(TestObjs *objs);
+// void test_double_hex(TestObjs *objs);
 void test_double_neg(TestObjs *objs);
 
 
@@ -131,7 +131,7 @@ void test_double(TestObjs *objs) {
   ASSERT(0 == fixedpoint_compare(result, correct));
 
   pt = fixedpoint_create2(5,25); 
-  correct = fixedpoint_create2(10,5);
+  correct = fixedpoint_create2(10,50);
   result = fixedpoint_double(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
 }
@@ -140,7 +140,8 @@ void test_double_neg(TestObjs *objs) {
   Fixedpoint c = fixedpoint_create2(5,0); 
   Fixedpoint d = fixedpoint_negate(c);
   Fixedpoint result = fixedpoint_double(d);
-  ASSERT(-10 == fixedpoint_whole_part(result));
+  ASSERT(10 == fixedpoint_whole_part(result));
+  ASSERT(fixedpoint_is_neg(result));
   printf("%lu \n", fixedpoint_whole_part(result));
 }
 
