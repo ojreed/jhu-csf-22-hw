@@ -38,13 +38,17 @@ void test_sub(TestObjs *objs);
 void test_is_overflow_pos(TestObjs *objs);
 void test_is_err(TestObjs *objs);
 void test_compare(TestObjs *objs);
+void test_compare2(TestObjs *objs);
 void test_halving(TestObjs *objs);
-void fixedpoint_format_as_hex_2(TestObjs *objs);
+void test_fixedpoint_format_as_hex_2(TestObjs *objs);
 void test_sub_both_neg(TestObjs *objs);
-void create_from_hex_edge(TestObjs *objs);
+void test_create_from_hex_edge(TestObjs *objs);
+void test_create_from_hex_segfault(TestObjs *objs);
 void test_add_both_neg(TestObjs *objs);
 void test_add_opposite_signs(TestObjs *objs);
-// TODO: add more test functions
+void test_compare_sign_difference(TestObjs *objs);
+void test_compare_created_from_hex(TestObjs *objs);
+
 
 int main(int argc, char **argv) {
   // if a testname was specified on the command line, only that
@@ -70,12 +74,15 @@ int main(int argc, char **argv) {
   TEST(test_is_zero);
   TEST(test_compare);
   TEST(test_halving);
-  TEST(fixedpoint_format_as_hex_2);
+  TEST(test_fixedpoint_format_as_hex_2);
   TEST(test_compare2);
   TEST(test_sub_both_neg);
-  TEST(create_from_hex_edge);
+  TEST(test_create_from_hex_edge);
   TEST(test_add_both_neg);
   TEST(test_add_opposite_signs);
+  TEST(test_create_from_hex_segfault);
+  TEST(test_compare_sign_difference);
+  TEST(test_compare_created_from_hex);
 
   // IMPORTANT: if you add additional test functions (which you should!),
   // make sure they are included here.  E.g., if you add a test function
@@ -106,19 +113,19 @@ void cleanup(TestObjs *objs) {
   free(objs);
 }
 
-void test_compare(TestObjs *objs) {
-  Fixedpoint a = fixedpoint_create2(56,0);
-  Fixedpoint b = fixedpoint_create2(78,15);
-  Fixedpoint c = fixedpoint_create2(78,15);
-  ASSERT(fixedpoint_compare(a, b) != 0);
-  ASSERT(fixedpoint_compare(b, c) == 0);
-}
-
 void test_halving(TestObjs *objs) {
   Fixedpoint pt = fixedpoint_create2(1,0); //should end up as 
   Fixedpoint correct = fixedpoint_create2(0,(1UL<<63));
   Fixedpoint result = fixedpoint_halve(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
+}
+
+void test_compare(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create2(56,0);
+  Fixedpoint b = fixedpoint_create2(78,15);
+  Fixedpoint c = fixedpoint_create2(78,15);
+  ASSERT(fixedpoint_compare(a, b) == -1);
+  ASSERT(fixedpoint_compare(b, c) == 0);
 }
 
 void test_compare2(TestObjs *objs) {
@@ -134,18 +141,30 @@ void test_compare2(TestObjs *objs) {
   ASSERT(fixedpoint_compare(a, b) <= 0);
   ASSERT(fixedpoint_compare(b, c) >= 0);
 
-
-  a = fixedpoint_create2(78,15);
-  a = fixedpoint_negate(a);
-  b = fixedpoint_create2(78,16);
-  c = fixedpoint_create2(78,15);
-  ASSERT(fixedpoint_compare(a, c) <= 0);
-  ASSERT(fixedpoint_compare(c, a) >= 0);
-
   a = fixedpoint_create2(0,1);
   b = fixedpoint_create2((1UL<<63),0);
   ASSERT(fixedpoint_compare(a, b) <= 0);
 }
+
+void test_compare_sign_difference(TestObjs *objs) {
+  Fixedpoint a, b, c;
+
+  a = fixedpoint_create2(67,12);
+  a = fixedpoint_negate(a);
+  c = fixedpoint_create2(67,12);
+  ASSERT(fixedpoint_compare(a, c) < 0); //<=
+  ASSERT(fixedpoint_compare(c, a) > 0);
+}
+
+void test_compare_created_from_hex(TestObjs *objs) {
+  Fixedpoint a = fixedpoint_create_from_hex("f6a5865.00f2");
+  Fixedpoint b = fixedpoint_create_from_hex("a.0");
+  ASSERT(fixedpoint_compare(a, b) == 1);
+
+  Fixedpoint c = fixedpoint_negate(a);
+  ASSERT(fixedpoint_compare(a, b) == -1);
+}
+
 
 void debug_create_from_hex(TestObjs *objs) {
   Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
@@ -161,7 +180,7 @@ void debug_create_from_hex(TestObjs *objs) {
   printf("0 = %lu \n",fixedpoint_frac_part(test3));
 }
 
-void create_from_hex_edge(TestObjs *objs){
+void test_create_from_hex_edge(TestObjs *objs){
   (void) objs;
   Fixedpoint test1 = fixedpoint_create_from_hex("0.0");
   ASSERT(fixedpoint_is_valid(test1));
@@ -174,12 +193,7 @@ void create_from_hex_edge(TestObjs *objs){
   ASSERT(0UL == fixedpoint_frac_part(test2));
 }
 
-//TODO: 
-//Write tests for create1/2, halve, double, compare, add
-//try to write as many edge cases using the max and min values as possible like add(max,max) or double(max)
-//from head CA max --> supposed to have abt 3 edge cases for each function
-
-void create_from_hex_segfault(TestObjs *objs) {
+void test_create_from_hex_segfault(TestObjs *objs) {
   Fixedpoint test1 = fixedpoint_create_from_hex("a.0");
   printf("a = %lu \n",fixedpoint_whole_part(test1));
   printf("0 = %lu \n",fixedpoint_frac_part(test1));
@@ -265,7 +279,7 @@ void test_format_as_hex(TestObjs *objs) {
   free(s);
 }
 
-void fixedpoint_format_as_hex_2(TestObjs *objs) {
+void test_fixedpoint_format_as_hex_2(TestObjs *objs) {
   char *s;
   Fixedpoint pt = fixedpoint_create2(5,0);
   pt = fixedpoint_negate(pt);
