@@ -37,13 +37,15 @@ void test_add(TestObjs *objs);
 void test_sub(TestObjs *objs);
 void test_is_overflow_pos(TestObjs *objs);
 void test_is_err(TestObjs *objs);
+void test_is_zero();
 void test_compare();
 void test_compare2();
 void test_halving();
-void test_fixedpoint_format_as_hex_2(TestObjs *objs);
+void test_fixedpoint_format_as_hex_2();
 void test_sub_both_neg(TestObjs *objs);
 void test_create_from_hex_edge(TestObjs *objs);
 void test_add_both_neg(TestObjs *objs);
+void test_add2();
 void test_add_opposite_signs(TestObjs *objs);
 void test_compare_sign_difference();
 void test_compare_created_from_hex();
@@ -71,6 +73,7 @@ int main(int argc, char **argv) {
   TEST(test_format_as_hex);
   TEST(test_negate);
   TEST(test_add);
+  TEST(test_add2);
   TEST(test_sub);
   TEST(test_is_overflow_pos);
   TEST(test_is_err);
@@ -131,9 +134,9 @@ void test_halving_edge() {
 
   Fixedpoint pt2 = fixedpoint_create2(5,5);
   Fixedpoint pt3 = fixedpoint_negate(pt2); 
-  Fixedpoint correct = fixedpoint_create2(2,75);
-  Fixedpoint result = fixedpoint_halve(pt3);
-  ASSERT(0 == fixedpoint_compare(result, correct));
+  Fixedpoint correct2 = fixedpoint_create2(2,75);
+  Fixedpoint result2 = fixedpoint_halve(pt3);
+  ASSERT(0 == fixedpoint_compare(result2, correct2));
   ASSERT(fixedpoint_is_neg(result));
 }
 
@@ -295,7 +298,7 @@ void test_format_as_hex(TestObjs *objs) {
   free(s);
 }
 
-void test_fixedpoint_format_as_hex_2(TestObjs *objs) {
+void test_fixedpoint_format_as_hex_2() {
   char *s;
   Fixedpoint pt = fixedpoint_create2(5,0);
   pt = fixedpoint_negate(pt);
@@ -359,7 +362,7 @@ void test_add(TestObjs *objs) {
   ASSERT(0x5be47e8ea0538c50UL == fixedpoint_frac_part(sum));
 }
 
-void test_add_2(TestObjs *objs) {
+void test_add2() {
   Fixedpoint a = fixedpoint_create2(1,0);
   Fixedpoint b = fixedpoint_create2(1,1);
   
