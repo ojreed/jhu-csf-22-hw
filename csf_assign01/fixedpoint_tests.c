@@ -122,6 +122,25 @@ void test_halving(TestObjs *objs) {
   Fixedpoint correct = fixedpoint_create2(0,(1UL<<63));
   Fixedpoint result = fixedpoint_halve(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
+
+  Fixedpoint pt2 = fixedpoint_create2(0,0);
+  Fixedpoint correct2 = fixedpoint_create2(0,0);
+  Fixedpoint result2 = fixedpoint_halve(pt2);
+  ASSERT(0 == fixedpoint_compare(result2, correct2));
+}
+
+void test_halving_edge(TestObjs *objs) {
+  Fixedpoint pt = fixedpoint_create2(0,5); 
+  Fixedpoint correct = fixedpoint_create2(0,(1UL<<1));
+  Fixedpoint result = fixedpoint_halve(pt);
+  ASSERT(0 == fixedpoint_compare(result, correct));
+
+  Fixedpoint pt2 = fixedpoint_create2(5,5);
+  Fixedpoint pt3 = fixedpoint_negate(pt2); 
+  Fixedpoint correct = fixedpoint_create2(2,75);
+  Fixedpoint result = fixedpoint_halve(pt3);
+  ASSERT(0 == fixedpoint_compare(result, correct));
+  ASSERT(fixedpoint_is_neg(result));
 }
 
 void test_double(TestObjs *objs) {
@@ -142,7 +161,6 @@ void test_double_neg(TestObjs *objs) {
   Fixedpoint result = fixedpoint_double(d);
   ASSERT(10 == fixedpoint_whole_part(result));
   ASSERT(fixedpoint_is_neg(result));
-  printf("%lu \n", fixedpoint_whole_part(result));
 }
 
 void test_double_hex(TestObjs *objs) {
