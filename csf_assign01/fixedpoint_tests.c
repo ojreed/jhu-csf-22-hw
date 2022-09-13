@@ -131,9 +131,9 @@ void test_halving_edge() {
   Fixedpoint result = fixedpoint_halve(pt);
   ASSERT(0 == fixedpoint_compare(result, correct));
 
-  Fixedpoint pt2 = fixedpoint_create2(5,50);
+  Fixedpoint pt2 = fixedpoint_create2(5,4);
   Fixedpoint pt3 = fixedpoint_negate(pt2); 
-  uint64_t frac_part = 25UL + (1UL<<63);
+  uint64_t frac_part = 2UL + (1UL<<63);
   Fixedpoint correct2 = fixedpoint_create2(2,frac_part);
   Fixedpoint result2 = fixedpoint_halve(pt3);
   ASSERT(0 == fixedpoint_compare(result2, correct2));
