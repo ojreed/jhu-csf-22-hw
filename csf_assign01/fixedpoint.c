@@ -90,41 +90,12 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
 
   // Convert each half to decimal
   // Whole part
-  int length = whole_ctr;
-  uint64_t whole_sum = 0;
-  uint64_t base = 1;
-  for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
-    if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ //uppercase hex
-        whole_sum += (whole_arr[i] - 55) * base;
-        base *= 16;
-    } else if (whole_arr[i] >= 'a' && whole_arr[i] <= 'f'){ //lowercase hex
-        whole_sum += (whole_arr[i] - 87) * base;
-        base *= 16;
-    } else if(whole_arr[i] >= '0' && whole_arr[i] <= '9') {//digits
-        whole_sum += (whole_arr[i] - 48) * base;
-        base *= 16;
-    }
-  }
-  fp.whole = whole_sum;
+  fp.whole = whole_sum(whole_arr,whole_ctr);
 
   // Fractional part
-  uint64_t frac_sum = 0;
-  base = poww(16,15);
+  
 
-  for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
-    if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ //uppercase hex
-        frac_sum += (frac_arr[i] - 55) * base;
-        base /= 16;
-    } else if (frac_arr[i] >= 'a' && frac_arr[i] <= 'f'){  //lowercase hex
-        frac_sum += (frac_arr[i] - 87) * base;
-        base /= 16;
-    } else if(frac_arr[i] >= '0' && frac_arr[i] <= '9') { //digits
-        frac_sum += (frac_arr[i] - 48) * base;
-        base /= 16;
-    }
-  }
-
-  fp.fractional = frac_sum;
+  fp.fractional = frac_sum(frac_arr,frac_ctr);
 
   // Return Fixedpoint value
   return fp;
@@ -408,5 +379,41 @@ uint64_t poww(uint64_t base, uint64_t power) {
     ctr++;
   }
   return result;
+}
+
+uint64_t whole_sum(char whole_arr[], int length){
+  uint64_t whole_sum = 0;
+  uint64_t base = 1;
+  for(int i = length-1; i>=0; i--) { // Traverse from end, sixeof
+    if(whole_arr[i] >= 'A' && whole_arr[i] <= 'F'){ //uppercase hex
+        whole_sum += (whole_arr[i] - 55) * base;
+        base *= 16;
+    } else if (whole_arr[i] >= 'a' && whole_arr[i] <= 'f'){ //lowercase hex
+        whole_sum += (whole_arr[i] - 87) * base;
+        base *= 16;
+    } else if(whole_arr[i] >= '0' && whole_arr[i] <= '9') {//digits
+        whole_sum += (whole_arr[i] - 48) * base;
+        base *= 16;
+    }
+  }
+  return whole_sum;
+}
+
+uint64_t whole_sum(char frac_arr[], int frac_ctr){
+  uint64_t frac_sum = 0;
+  uint64_t base = poww(16,15);
+  for(int i = 0; i <= frac_ctr-1; i++) { // Traverse from end, sixeof
+    if(frac_arr[i] >= 'A' && frac_arr[i] <= 'F'){ //uppercase hex
+        frac_sum += (frac_arr[i] - 55) * base;
+        base /= 16;
+    } else if (frac_arr[i] >= 'a' && frac_arr[i] <= 'f'){  //lowercase hex
+        frac_sum += (frac_arr[i] - 87) * base;
+        base /= 16;
+    } else if(frac_arr[i] >= '0' && frac_arr[i] <= '9') { //digits
+        frac_sum += (frac_arr[i] - 48) * base;
+        base /= 16;
+    }
+  }
+  return frac_sum;
 }
 
