@@ -10,6 +10,21 @@
 ////////////////////////////////////////////////////////////////////////
 
 // TODO: implement helper functions
+uint32_t blur_colors(uint32_t foreground, uint32_t background) {
+  uint32_t final_color;
+  uint8_t f;
+  uint8_t b;
+  uint8_t a = (foreground | 255);
+  final_color += a;
+  
+  for(int i = 1; i < 4; i++) {
+    f = (foreground | (255 << 8*i));
+    b = (background | (255 << 8*i));
+    final_color += (((a*f + (255 - a)*b)/255) << 8*i);
+  }
+
+  return final_color;
+}
 
 ////////////////////////////////////////////////////////////////////////
 // API functions
@@ -26,6 +41,7 @@
 //
 void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
   // TODO: implement
+
 }
 
 //
