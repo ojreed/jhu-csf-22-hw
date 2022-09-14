@@ -27,11 +27,10 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
 }
 
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
-  uint32_t color;
   uint8_t rows = img->height;
   uint8_t cols = img->width;
-
-  return color;
+  uint8_t location = y*cols + x;
+  return img->data[location]; 
 }
 
 ////////////////////////////////////////////////////////////////////////
