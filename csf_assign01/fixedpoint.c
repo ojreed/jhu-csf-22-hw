@@ -91,12 +91,8 @@ Fixedpoint fixedpoint_create_from_hex(const char *hex) { // Hex to decimal
   // Convert each half to decimal
   // Whole part
   fp.whole = whole_sum(whole_arr,whole_ctr);
-
   // Fractional part
-  
-
   fp.fractional = frac_sum(frac_arr,frac_ctr);
-
   // Return Fixedpoint value
   return fp;
 }
@@ -381,6 +377,7 @@ uint64_t poww(uint64_t base, uint64_t power) {
   return result;
 }
 
+//Function to convert chars into the whole number 
 uint64_t whole_sum(char whole_arr[], int length){
   uint64_t whole_sum = 0;
   uint64_t base = 1;
@@ -399,6 +396,7 @@ uint64_t whole_sum(char whole_arr[], int length){
   return whole_sum;
 }
 
+//Function to convert chars into the fractional number 
 uint64_t frac_sum(char frac_arr[], int frac_ctr){
   uint64_t frac_sum = 0;
   uint64_t base = poww(16,15);
