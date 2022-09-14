@@ -74,6 +74,15 @@ void draw_rect(struct Image *img,
                const struct Rect *rect,
                uint32_t color) {
   // TODO: implement
+  uint32_t x = rect->x;
+  uint32_t y = rect->x;
+  uint32_t width = rect->x;
+  uint32_t height = rect->x;
+  for (int i = x; i<x+width; i++) {
+    for (int j = y; j<y+height; j++) {
+      draw_pixel(img,i,j,color);
+    }
+  }
 }
 
 //
