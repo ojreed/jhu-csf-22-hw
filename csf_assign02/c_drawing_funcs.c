@@ -37,7 +37,7 @@ void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
   uint8_t rows = img->height;
   uint8_t cols = img->width;
   uint8_t location = y*cols + x;
-   img->data[location]; 
+  img->data[location] = color; 
 }
 
 ////////////////////////////////////////////////////////////////////////
