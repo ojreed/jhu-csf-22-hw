@@ -75,9 +75,9 @@ void draw_rect(struct Image *img,
                uint32_t color) {
   // TODO: implement
   uint32_t x = rect->x;
-  uint32_t y = rect->x;
-  uint32_t width = rect->x;
-  uint32_t height = rect->x;
+  uint32_t y = rect->y;
+  uint32_t width = rect->width;
+  uint32_t height = rect->height;
   for (int i = x; i<x+width; i++) {
     for (int j = y; j<y+height; j++) {
       draw_pixel(img,i,j,color);
@@ -129,7 +129,15 @@ void draw_tile(struct Image *img,
                int32_t x, int32_t y,
                struct Image *tilemap,
                const struct Rect *tile) {
- // TODO: implement
+  uint32_t color;
+  uint32_t width = tile->width;
+  uint32_t height = tile->height;
+  for (int i = x; i<x+width; i++) {
+    for (int j = y; j<y+height; j++) {
+      color = get_pix(tilemap,i-x,j-y); //shift the pix coords back to (0,0) to start
+      draw_pixel(img,i,j,color); //map color to coord on main image
+    }
+  }
 }
 
 //
