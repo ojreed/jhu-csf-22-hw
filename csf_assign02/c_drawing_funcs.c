@@ -155,9 +155,19 @@ void draw_tile(struct Image *img,
 //   spritemap - pointer to Image (the spritemap)
 //   sprite    - pointer to Rect (the sprite)
 //
-void draw_sprite(struct Image *img,
-                 int32_t x, int32_t y,
-                 struct Image *spritemap,
-                 const struct Rect *sprite) {
-  // TODO: implement
+void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritemap, const struct Rect *sprite) {
+  uint32_t height = sprite->height;
+  uint32_t width = sprite->width;
+  uint32_t color;
+  uint32_t background_color;
+  uint32_t combo_color;
+
+  for (int i = x; i < x+width; i++) {
+    for (int j = y; j < y+height; j++) {
+      color = get_pix(spritemap,i-x,j-y); // color of sprite
+      background_color = get_pix(img,i-x,j-y);
+      combo_color = blur_colors(color, background_color);
+      draw_pixel(img,i,j,combo_color); // img is the destination 
+    }
+  }
 }
