@@ -50,14 +50,12 @@ int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
 }
 
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
-  uint8_t rows = img->height;
   uint8_t cols = img->width;
   uint8_t location = y*cols + x;
   return img->data[location]; 
 }
 
 void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
-  uint8_t rows = img->height;
   uint8_t cols = img->width;
   uint8_t location = y*cols + x;
   img->data[location] = color; 
@@ -154,7 +152,7 @@ void draw_circle(struct Image *img,
 int rec_in_bounds(struct Image *img, int32_t x, int32_t y,const struct Rect *tile ) {
   uint32_t width = tile->width;
   uint32_t height = tile->height;
-  if (is_in_bounds(img,x,y) == is_in_bounds(img,x+width,y) == is_in_bounds(img,x,y+height) == is_in_bounds(img,x+width,y+height) == 1) {
+  if (is_in_bounds(img,x,y) == is_in_bounds(img,x+width-1,y) == is_in_bounds(img,x,y+height-1) == is_in_bounds(img,x+width-1,y+height-1) == 1) {
     return 1;
   }
   return 0;
