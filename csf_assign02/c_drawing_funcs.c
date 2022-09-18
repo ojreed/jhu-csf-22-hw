@@ -28,9 +28,9 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   final_color += a;
 
   for(int i = 1; i < 4; i++) {
-    f = (foreground | (255UL << 8*i)) >> 8*i;
-    b = (background | (255UL << 8*i)) >> 8*i;
-    final_color += (((a*f + (255 - a)*b)/255) << 8*i);
+    f = (foreground | (255UL << (8*i))) >> (8*i);
+    b = (background | (255UL << (8*i))) >> (8*i);
+    final_color += (((a*f + (255 - a)*b)/255) << (8*i));
   }
 
   return final_color;
