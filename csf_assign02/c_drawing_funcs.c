@@ -30,9 +30,9 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   for(int i = 1; i < 4; i++) {
     f = ((foreground & (255U << (8*i))) >> (8*i));
     b = ((background & (255U << (8*i))) >> (8*i));
-    printf("%u ",f);
-    printf("%u ",b);
-    printf("%u   ",(((a*f + (255 - a)*b)/255)));
+    // printf("%u ",f);
+    // printf("%u ",b);
+    // printf("%u   ",(((a*f + (255 - a)*b)/255)));
     final_color += (((a*f + (255 - a)*b)/255) << (8*i));
     // printf("%u",final_color);
   }
