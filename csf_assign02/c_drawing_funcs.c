@@ -25,7 +25,7 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   uint32_t f;
   uint32_t b;
   uint8_t a = (foreground & 255);
-  final_color += a;
+  final_color += 255;
 
   for(int i = 1; i < 4; i++) {
     f = ((foreground & (255UL << (8*i))) >> (8*i));
