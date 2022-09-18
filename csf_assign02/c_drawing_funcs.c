@@ -124,8 +124,8 @@ void draw_rect(struct Image *img,
 void draw_circle(struct Image *img,
                  int32_t x, int32_t y, int32_t r,
                  uint32_t color) {
-  uint32_t xcorner = x-r;
-  uint32_t ycorner = y-r;
+  int xcorner = x-r;
+  int ycorner = y-r;
   for (int i = xcorner; i <= xcorner + 2*r; i++) {
     for (int j = ycorner; j <= ycorner + 2*r; j++) {
       int32_t dist = (x-i)*(x-i) + (y-j)*(y-j);
