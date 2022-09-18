@@ -126,8 +126,8 @@ void draw_circle(struct Image *img,
                  uint32_t color) {
   uint32_t xcorner = x-r;
   uint32_t ycorner = y-r;
-  for (int i = xcorner; i < xcorner + 2*r; i++) {
-    for (int j = ycorner; j < ycorner + 2*r; j++) {
+  for (int i = xcorner; i < xcorner + 2*r - 1; i++) {
+    for (int j = ycorner; j < ycorner + 2*r - 1; j++) {
       int32_t dist = (x-i)*(x-i) + (y-j)*(y-j);
       if(dist <= r*r){
         draw_pixel(img,i,j,color);
