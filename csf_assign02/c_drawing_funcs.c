@@ -157,8 +157,7 @@ int rec_in_bounds(struct Image *img, int32_t x, int32_t y,const struct Rect *til
   if (is_in_bounds(img,x,y) == is_in_bounds(img,x+width,y) == is_in_bounds(img,x,y+height) == is_in_bounds(img,x+width,y+height) == 1) {
     return 1;
   }
-  return 0
-
+  return 0;
 }
 
 void draw_tile(struct Image *img,
@@ -168,7 +167,7 @@ void draw_tile(struct Image *img,
   uint32_t color;
   uint32_t width = tile->width;
   uint32_t height = tile->height;
-  if (rec_in_bounds(tile) == 1) {
+  if (rec_in_bounds(img,x,y,tile) == 1) {
     for (int i = x; i<x+width; i++) {
       for (int j = y; j<y+height; j++) {
         color = get_pix(tilemap,i-x,j-y); //shift the pix coords back to (0,0) to start
