@@ -39,10 +39,14 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
 int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
   uint8_t rows = img->height;
   uint8_t cols = img->width;
+  if (0 <= x && x < cols && 0 <= y && x < rows) {
+    return 1;
+  }
+  return 0;
 }
 
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
-  if (is_in_bounds()) {
+  if (is_in_bounds(img,x,y)) {
     uint8_t rows = img->height;
     uint8_t cols = img->width;
     uint8_t location = y*cols + x;
@@ -172,19 +176,9 @@ void draw_tile(struct Image *img,
 //   spritemap - pointer to Image (the spritemap)
 //   sprite    - pointer to Rect (the sprite)
 //
-void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritemap, const struct Rect *sprite) {
-  uint32_t height = sprite->height;
-  uint32_t width = sprite->width;
-  uint32_t color;
-  uint32_t background_color;
-  uint32_t combo_color;
-
-  for (int i = x; i < x+width; i++) {
-    for (int j = y; j < y+height; j++) {
-      color = get_pix(spritemap,i-x,j-y); // color of sprite
-      background_color = get_pix(img,i-x,j-y);
-      combo_color = blur_colors(color, background_color);
-      draw_pixel(img,i,j,combo_color); // img is the destination 
-    }
-  }
+void draw_sprite(struct Image *img,
+                 int32_t x, int32_t y,
+                 struct Image *spritemap,
+                 const struct Rect *sprite) {
+  // TODO: implement
 }
