@@ -76,9 +76,7 @@ void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
 //
 void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
   // TODO: implement
-  printf("HERE1");
   if (is_in_bounds(img,x,y)) {
-    printf("HERE");
     uint32_t background = get_pix(img,x,y); //get pix --> locates pixel returns color (set will set color from x,y)
     background = blur_colors(color,background);
     set_pix(img,x,y,background);
