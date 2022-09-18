@@ -46,12 +46,10 @@ int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
 }
 
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
-  if (is_in_bounds(img,x,y)) {
-    uint8_t rows = img->height;
-    uint8_t cols = img->width;
-    uint8_t location = y*cols + x;
-    return img->data[location]; 
-  }
+  uint8_t rows = img->height;
+  uint8_t cols = img->width;
+  uint8_t location = y*cols + x;
+  return img->data[location]; 
 }
 
 void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
@@ -76,9 +74,11 @@ void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
 //
 void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
   // TODO: implement
-  uint32_t background = get_pix(img,x,y); //get pix --> locates pixel returns color (set will set color from x,y)
-  background = blur_colors(color,background);
-  set_pix(img,x,y,background);
+  if (is_in_bounds(img,x,y)) {
+    uint32_t background = get_pix(img,x,y); //get pix --> locates pixel returns color (set will set color from x,y)
+    background = blur_colors(color,background);
+    set_pix(img,x,y,background);
+  }
 }
 
 //
