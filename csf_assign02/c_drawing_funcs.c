@@ -43,7 +43,7 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
 int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
   uint8_t rows = img->height;
   uint8_t cols = img->width;
-  if (0 <= x && x < cols-1 && 0 <= y && x < rows-1) {
+  if (0 <= x && x < cols && 0 <= y && y < rows) {
     return 1;
   }
   return 0;
