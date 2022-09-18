@@ -9,6 +9,16 @@
 // Helper functions
 ////////////////////////////////////////////////////////////////////////
 
+/*
+NOTE: if source bit is out of bounds for sprite or tile --> end
+else just dont paint the pix
+
+O2 optimization level
+
+
+*/
+
+
 // TODO: implement helper functions
 uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   uint32_t final_color;
@@ -26,11 +36,18 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   return final_color;
 }
 
-uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
+int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
   uint8_t rows = img->height;
   uint8_t cols = img->width;
-  uint8_t location = y*cols + x;
-  return img->data[location]; 
+}
+
+uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
+  if (is_in_bounds()) {
+    uint8_t rows = img->height;
+    uint8_t cols = img->width;
+    uint8_t location = y*cols + x;
+    return img->data[location]; 
+  }
 }
 
 void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
