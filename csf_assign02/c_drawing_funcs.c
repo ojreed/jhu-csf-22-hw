@@ -75,7 +75,6 @@ void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
 //   color - uint32_t color value
 //
 void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
-  // TODO: implement
   if (is_in_bounds(img,x,y)) {
     uint32_t background = get_pix(img,x,y); //get pix --> locates pixel returns color (set will set color from x,y)
     background = blur_colors(color,background);
@@ -83,6 +82,11 @@ void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
   }
 }
 
+void put_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
+  if (is_in_bounds(img,x,y)) {
+    set_pix(img,x,y,color);
+  }
+}
 //
 // Draw a rectangle.
 // The rectangle has rect->x,rect->y as its upper left corner,
@@ -173,7 +177,7 @@ void draw_tile(struct Image *img,
     for (int i = x; i<x+width; i++) {
       for (int j = y; j<y+height; j++) {
         color = get_pix(tilemap,i-x,j-y); //shift the pix coords back to (0,0) to start
-        draw_pixel(img,i,j,color); //map color to coord on main image
+        put_pixel(img,i,j,color); //map color to coord on main image
       }
     }
   }
