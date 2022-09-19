@@ -176,7 +176,7 @@ void draw_tile(struct Image *img,
   if (rec_in_bounds(tilemap,tile) == 1) {
     for (int i = x; i<x+width; i++) {
       for (int j = y; j<y+height; j++) {
-        color = get_pix(tilemap,i-x,j-y); //shift the pix coords back to (0,0) to start
+        color = get_pix(tilemap,i-x + tile->x,j-y + tile->y); //shift the pix coords back to (0,0) to start
         put_pixel(img,i,j,color); //map color to coord on main image
       }
     }
