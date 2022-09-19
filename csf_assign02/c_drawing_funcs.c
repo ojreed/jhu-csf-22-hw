@@ -41,8 +41,8 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
 }
 
 int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
-  uint8_t rows = img->height;
-  uint8_t cols = img->width;
+  int32_t rows = img->height;
+  int32_t cols = img->width;
   if (0 <= x && x < cols && 0 <= y && y < rows) {
     return 1;
   }
@@ -50,14 +50,14 @@ int is_in_bounds(struct Image *img, int32_t x, int32_t y) {
 }
 
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y) {
-  uint8_t cols = img->width;
-  uint8_t location = y*cols + x;
+  int32_t cols = img->width;
+  int32_t location = y*cols + x;
   return img->data[location]; 
 }
 
 void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
-  uint8_t cols = img->width;
-  uint8_t location = y*cols + x;
+  int32_t cols = img->width;
+  int32_t location = y*cols + x;
   img->data[location] = color; 
 }
 
@@ -97,10 +97,10 @@ void draw_rect(struct Image *img,
                const struct Rect *rect,
                uint32_t color) {
   // TODO: implement
-  uint32_t x = rect->x;
-  uint32_t y = rect->y;
-  uint32_t width = rect->width;
-  uint32_t height = rect->height;
+  int32_t x = rect->x;
+  int32_t y = rect->y;
+  int32_t width = rect->width;
+  int32_t height = rect->height;
   for (int i = x; i<x+width; i++) {
     for (int j = y; j<y+height; j++) {
       draw_pixel(img,i,j,color);
@@ -156,11 +156,10 @@ int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
   int32_t t_height = tile->height;
   int32_t i_width = img->width;
   int32_t i_height = img->height;
-  if ((t_width < i_width) || (t_height < i_height)) {
+  if ((t_width > i_width) || (t_height > i_height )) {
     return 0;
   }
   return 1;
-  
 }
 
 void draw_tile(struct Image *img,
