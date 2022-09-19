@@ -168,8 +168,8 @@ void draw_tile(struct Image *img,
                struct Image *tilemap,
                const struct Rect *tile) {
   uint32_t color;
-  uint32_t width = tile->width;
-  uint32_t height = tile->height;
+  int32_t width = tile->width;
+  int32_t height = tile->height;
   if (rec_in_bounds(tilemap,tile) == 1) {
     for (int i = x; i<x+width; i++) {
       for (int j = y; j<y+height; j++) {
@@ -196,8 +196,8 @@ void draw_tile(struct Image *img,
 //   sprite    - pointer to Rect (the sprite)
 //
 void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritemap, const struct Rect *sprite) {
-  uint32_t height = sprite->height;
-  uint32_t width = sprite->width;
+  int32_t height = sprite->height;
+  int32_t width = sprite->width;
   uint32_t color;
   uint32_t background_color;
   uint32_t combo_color;
