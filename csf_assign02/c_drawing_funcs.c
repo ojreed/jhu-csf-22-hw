@@ -152,12 +152,15 @@ void draw_circle(struct Image *img,
 //
 
 int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
-  uint32_t width = tile->width;
-  uint32_t height = tile->height;
-  if (is_in_bounds(img,0,0) == is_in_bounds(img,width,0) == is_in_bounds(img,0,height) == is_in_bounds(img,width,height) == 1) {
-    return 1;
+  uint32_t t_width = tile->width;
+  uint32_t t_height = tile->height;
+  uint32_t i_width = img->width;
+  uint32_t i_height = img->height;
+  if (t_width > i_width || t_height > i_height ) {
+    return 0;
   }
-  return 0;
+  return 1;
+  
 }
 
 void draw_tile(struct Image *img,
