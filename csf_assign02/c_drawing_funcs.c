@@ -84,7 +84,7 @@ void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
 
 void put_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
   if (is_in_bounds(img,x,y)) {
-    set_pix(img,x,y,color);
+    set_pix(img,x,y,(color|255));
   }
 }
 //
