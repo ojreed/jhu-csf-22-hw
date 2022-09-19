@@ -167,7 +167,7 @@ void draw_tile(struct Image *img,
   uint32_t color;
   uint32_t width = tile->width;
   uint32_t height = tile->height;
-  if (rec_in_bounds(img,x,y,tile) == 1) {
+  if (rec_in_bounds(tilemap,x,y,tile) == 1) {
     for (int i = x; i<x+width; i++) {
       for (int j = y; j<y+height; j++) {
         color = get_pix(tilemap,i-x,j-y); //shift the pix coords back to (0,0) to start
@@ -198,7 +198,7 @@ void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritema
   uint32_t color;
   uint32_t background_color;
   uint32_t combo_color;
-  if (rec_in_bounds(img,x,y,sprite) == 1) {
+  if (rec_in_bounds(spritemap,x,y,sprite) == 1) {
     for (int i = x; i < x+width; i++) {
       for (int j = y; j < y+height; j++) {
         color = get_pix(spritemap,i-x,j-y); // color of sprite
