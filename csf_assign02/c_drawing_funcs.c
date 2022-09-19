@@ -198,7 +198,7 @@ void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritema
   uint32_t color;
   uint32_t background_color;
   uint32_t combo_color;
-  if (rec_in_bounds(img,x,y,tile) == 1) {
+  if (rec_in_bounds(img,x,y,sprite) == 1) {
     for (int i = x; i < x+width; i++) {
       for (int j = y; j < y+height; j++) {
         color = get_pix(spritemap,i-x,j-y); // color of sprite
@@ -207,4 +207,5 @@ void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritema
         draw_pixel(img,i,j,combo_color); // img is the destination 
       }
     }
+  }
 }
