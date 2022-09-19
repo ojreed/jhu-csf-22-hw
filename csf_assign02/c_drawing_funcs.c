@@ -199,18 +199,29 @@ void draw_tile(struct Image *img,
 //   sprite    - pointer to Rect (the sprite)
 //
 void draw_sprite(struct Image *img, int32_t x, int32_t y, struct Image *spritemap, const struct Rect *sprite) {
-  int32_t height = sprite->height;
-  int32_t width = sprite->width;
+  // int32_t height = sprite->height;
+  // int32_t width = sprite->width;
+  // uint32_t color;
+  // uint32_t background_color;
+  // uint32_t combo_color;
+  // if (rec_in_bounds(spritemap,sprite) == 1) {
+  //   for (int i = x; i < x+width; i++) {
+  //     for (int j = y; j < y+height; j++) {
+  //       color = get_pix(spritemap,i-x,j-y); // color of sprite
+  //       background_color = get_pix(spritemap,i-x + tile->x,j-y + tile->y);
+  //       combo_color = blur_colors(color, background_color);
+  //       draw_pixel(img,i,j,combo_color); // img is the destination 
+  //     }
+  //   }
+  // }
   uint32_t color;
-  uint32_t background_color;
-  uint32_t combo_color;
+  int32_t width = sprite->width;
+  int32_t height = sprite->height;
   if (rec_in_bounds(spritemap,sprite) == 1) {
-    for (int i = x; i < x+width; i++) {
-      for (int j = y; j < y+height; j++) {
-        color = get_pix(spritemap,i-x,j-y); // color of sprite
-        background_color = get_pix(img,i-x,j-y);
-        combo_color = blur_colors(color, background_color);
-        draw_pixel(img,i,j,combo_color); // img is the destination 
+    for (int i = x; i<x+width; i++) {
+      for (int j = y; j<y+height; j++) {
+        color = get_pix(spritemap,i-x + sprite->x,j-y + sprite->y); //shift the pix coords back to (0,0) to start
+        draw_pixel(img,i,j,color); //map color to coord on main image
       }
     }
   }
