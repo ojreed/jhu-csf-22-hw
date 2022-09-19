@@ -158,7 +158,7 @@ int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
   int32_t i_height = img->height;
   int32_t x = tile->x;
   int32_t y = tile->y;
-  if (0<=x && t_width+x<i_width && 0<=y && t_height+y<i_height) {
+  if (0<=x && t_width+x<=i_width && 0<=y && t_height+y<=i_height) {
     return 1;
   }
   return 0;
