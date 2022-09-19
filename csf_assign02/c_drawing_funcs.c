@@ -30,11 +30,7 @@ uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   for(int i = 1; i < 4; i++) {
     f = ((foreground & (255U << (8*i))) >> (8*i));
     b = ((background & (255U << (8*i))) >> (8*i));
-    // printf("%u ",f);
-    // printf("%u ",b);
-    // printf("%u   ",(((a*f + (255 - a)*b)/255)));
     final_color += (((a*f + (255 - a)*b)/255) << (8*i));
-    // printf("%u",final_color);
   }
 
   return final_color;
@@ -160,10 +156,12 @@ int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
   int32_t t_height = tile->height;
   int32_t i_width = img->width;
   int32_t i_height = img->height;
-  if ((t_width > i_width) || (t_height > i_height )) {
-    return 0;
+  int32_t x = tile->x;
+  int32_t y = tile->y;
+  if (0<=x && t_width+x<i_width && 0<=y && t_height+y<i_height) {
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 void draw_tile(struct Image *img,
