@@ -96,7 +96,6 @@ void put_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
 void draw_rect(struct Image *img,
                const struct Rect *rect,
                uint32_t color) {
-  // TODO: implement
   int32_t x = rect->x;
   int32_t y = rect->y;
   int32_t width = rect->width;
