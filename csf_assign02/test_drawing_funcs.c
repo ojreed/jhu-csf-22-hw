@@ -83,6 +83,11 @@ void test_draw_circle(TestObjs *objs);
 void test_draw_circle_clip(TestObjs *objs);
 void test_draw_tile(TestObjs *objs);
 void test_draw_sprite(TestObjs *objs);
+void test_blur_colors(TestObjs *objs);
+void test_get_pix(TestObjs *objs);
+void test_set_pix(TestObjs *objs);
+void test_is_in_bounds(TestObjs *objs);
+void test_rec_in_bounds(TestObjs *objs);
 
 int main(int argc, char **argv) {
   if (argc > 1) {
@@ -99,6 +104,11 @@ int main(int argc, char **argv) {
   TEST(test_draw_circle_clip);
   TEST(test_draw_tile);
   TEST(test_draw_sprite);
+  TEST(test_blur_colors);
+  TEST(test_get_pix);
+  TEST(test_set_pix);
+  TEST(test_is_in_bounds);
+  TEST(test_rec_in_bounds);
 
   TEST_FINI();
 }
@@ -262,3 +272,91 @@ void test_draw_sprite(TestObjs *objs) {
 
   check_picture(&objs->large, &pic);
 }
+
+void test_blur_colors(TestObjs *objs) {
+  uint32_t computed_color;
+  uint32_t background;
+  uint32_t foreground;
+
+  // Initially pixels are opaque black
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x000000FFU); // 1 byte = 2 hex chars
+  
+  draw_pixel(&objs->small, 3, 2, 0xFF0000FF); // Opaque red
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0xFF0000FF);
+  background = get_pix(objs->small.data, 3, 2);
+
+  draw_pixel(&objs->small, 3, 2, 0x00FF0080); // Half-opaque full-intensity green
+  foreground = 0x00FF0080;
+  computed_color = blur_colors(foreground, background);
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == computed_color);
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x7F8000FF);
+  // Correct value: 0x7F8000FF
+}
+
+void test_get_pix(TestObjs *objs) {
+  struct Rect red_rect = { .x = 2, .y = 2, .width=3, .height=3 };
+  struct Rect blue_rect = { .x = 3, .y = 3, .width=3, .height=3 };
+  draw_rect(&objs->small, &red_rect, 0xFF0000FF); // red is full-intensity, full opacity
+  draw_rect(&objs->small, &blue_rect, 0x0000FF80); // blue is full-intensity, half opacity
+
+  const uint32_t red   = 0xFF0000FF; // expected full red color
+  const uint32_t blue  = 0x000080FF; // expected full blue color
+  const uint32_t blend = 0x7F0080FF; // expected red/blue blend color
+  const uint32_t black = 0x000000FF; // expected black (background) color
+
+  Picture expected = {
+    { {'r', red}, {'b', blue}, {'n', blend}, {' ', black} },
+    "        "
+    "        "
+    "  rrr   "
+    "  rnnb  "
+    "  rnnb  "
+    "   bbb  "
+  };
+
+  //check_picture(&objs->small, &expected); image, picture
+  struct Image *img1 = &objs->small;
+  struct Picture p1 = &expected;
+  unsigned num_pixels = img1->width * img1->height;
+  char c = p1->pic[0];
+  uint32_t expected_color = lookup_color(c, p1->colors);
+  uint32_t actual_color = img1->data[0];
+  ASSERT(actual_color == expected_color);
+  ASSERT(expected_color == get_pix(img1, 0, 0))
+}
+
+void test_set_pix(TestObjs *objs) {
+  ASSERT(objs->small.data[SMALL_IDX(5, 4)] == 0x000000FFU);
+  draw_pixel(&objs->small, 5, 4, 0x800080FF); // opaque magenta (half-intensity)
+  ASSERT(objs->small.data[SMALL_IDX(5, 4)] == 0x800080FF);
+  ASSERT(get_pix(objs->small.data, 5, 4) == 0x800080FF);
+}
+
+void test_is_in_bounds(TestObjs *objs) {
+  int result;
+  draw_circle(&objs->small, 3, 2, 2, 0x00FF00FF);
+  result = is_in_bounds(&objs->small, 10, 10);
+  ASSERT(0 == result); // Out of bounds
+  result = is_in_bounds(&objs->small, 2, 2);
+  ASSERT(1 == result);
+}
+
+void test_rec_in_bounds(TestObjs *objs) {
+  int result;
+  struct Rect red_rect = { .x = 2, .y = 2, .width=3, .height=3 };
+  // draw tile
+  ASSERT(read_image("img/PrtMimi.png", &objs->tilemap) == IMG_SUCCESS);
+  struct Rect r = { .x = 4, .y = 2, .width = 16, .height = 18 };
+  draw_rect(&objs->large, &r, 0x1020D0FF);
+  struct Rect grass = { .x = 0, .y = 16, .width = 16, .height = 16 };
+  result = rec_in_bounds(&objs->tilemap, &grass);
+  ASSERT(result == 1);
+
+  struct Rect grass2 = { .x = 0, .y = 16, .width = 200, .height = 200 };
+  result = rec_in_bounds(&objs->tilemap, &grass2);
+  ASSERT(result == 0);
+}
+
+// Difference between set and put pixel functions?
+//void test_put_pixel(TestObjs *objs) { 
+//}
