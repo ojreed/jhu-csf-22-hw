@@ -316,13 +316,13 @@ void test_get_pix(TestObjs *objs) {
 
   //check_picture(&objs->small, &expected); image, picture
   struct Image *img1 = &objs->small;
-  struct Picture p1 = &expected;
+  // struct Picture p1 = &expected;
   unsigned num_pixels = img1->width * img1->height;
-  char c = p1->pic[0];
-  uint32_t expected_color = lookup_color(c, p1->colors);
+  char c = expected.pic[0];
+  uint32_t expected_color = lookup_color(c, expected.colors);
   uint32_t actual_color = img1->data[0];
   ASSERT(actual_color == expected_color);
-  ASSERT(expected_color == get_pix(img1, 0, 0))
+  ASSERT(expected_color == get_pix(img1, 0, 0));
 }
 
 void test_set_pix(TestObjs *objs) {
