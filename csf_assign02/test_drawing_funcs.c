@@ -322,6 +322,14 @@ void test_set_pix(TestObjs *objs) {
   //draw_pixel(&objs->small, 3, 2, 0x00FF0080); 
   set_pix(&objs->small, 3, 2, 0x00FF0080); //img,x,y,color
   ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x7F8000FF);
+
+  draw_pixel(&objs->small, 3, 2, 0xFF0000FF); // opaque red
+  draw_pixel(&objs->small, 5, 4, 0x800080FF); // opaque magenta (half-intensity)
+  draw_pixel(&objs->small, 3, 2, 0x00FF0080); // half-opaque full-intensity green
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x7F8000FF);
+  set_pix(&objs->small, 4, 2, 0x0000FF40);
+  //draw_pixel(&objs->small, 4, 2, 0x0000FF40); // 1/4-opaque full-intensity blue
+  ASSERT(objs->small.data[SMALL_IDX(4, 2)] == 0x000040FF);
 }
 
 void test_put_pixel(TestObjs *objs) { // doesn't blur
