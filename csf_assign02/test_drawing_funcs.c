@@ -284,6 +284,11 @@ void test_blur_colors(TestObjs *objs) {
   foreground = 0xFF0000FF;
   computed_color = blur_colors(foreground, background);
   ASSERT(computed_color==0xFF0000FF);
+
+  background = 0x000000FFU;
+  foreground = 0xFF0000A5;
+  computed_color = blur_colors(foreground, background);
+  ASSERT(computed_color==0xA50000FF);
 }
 
 void test_get_pix(TestObjs *objs) {
@@ -320,7 +325,6 @@ void test_set_pix(TestObjs *objs) {
   draw_pixel(&objs->small, 3, 2, 0xFF0000FF); 
   set_pix(&objs->small, 3, 2, 0x0000FF40); 
   ASSERT(objs->small.data[SMALL_IDX(3, 2)] != 0xFF0000FF); // Checks blending is happening
-  ASSERT(objs->small.data[SMALL_IDX(3, 2)] != 0x0000FF40);
 }
 
 void test_put_pixel(TestObjs *objs) { // doesn't blur
