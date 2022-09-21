@@ -284,6 +284,11 @@ void test_blur_colors(TestObjs *objs) {
   foreground = 0xFF0000FF;
   computed_color = blur_colors(foreground, background);
   ASSERT(computed_color==0xFF0000FF);
+
+  background = 0x000000FFU;
+  foreground = 0xFF0000A5;
+  computed_color = blur_colors(foreground, background);
+  ASSERT(computed_color==0xA50005FF);
 }
 
 void test_get_pix(TestObjs *objs) {
