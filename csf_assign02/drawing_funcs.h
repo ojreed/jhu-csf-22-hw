@@ -28,9 +28,12 @@ void draw_sprite(struct Image *img,
                  struct Image *spritemap,
                  const struct Rect *sprite);
 
+// Helper functions
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y);
 
 void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color);
+
+void put_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color);
 
 int rec_in_bounds(struct Image *img,const struct Rect *tile);
 

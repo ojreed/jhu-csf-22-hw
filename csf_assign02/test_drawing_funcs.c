@@ -316,6 +316,15 @@ void test_get_pix(TestObjs *objs) {
 }
 
 void test_set_pix(TestObjs *objs) {
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x000000FFU);
+  draw_pixel(&objs->small, 3, 2, 0xFF0000FF); 
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0xFF0000FF);
+  //draw_pixel(&objs->small, 3, 2, 0x00FF0080); 
+  set_pix(objs->small.data, 3, 2, 0x00FF0080); //img,x,y,color
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x7F8000FF);
+}
+
+void test_put_pixel(TestObjs *objs) { // doesn't blur
   ASSERT(objs->small.data[SMALL_IDX(5, 4)] == 0x000000FFU);
   draw_pixel(&objs->small, 5, 4, 0x800080FF); // opaque magenta (half-intensity)
   ASSERT(objs->small.data[SMALL_IDX(5, 4)] == 0x800080FF);
@@ -347,6 +356,3 @@ void test_rec_in_bounds(TestObjs *objs) {
   ASSERT(result == 0);
 }
 
-// Difference between set and put pixel functions?
-//void test_put_pixel(TestObjs *objs) { 
-//}
