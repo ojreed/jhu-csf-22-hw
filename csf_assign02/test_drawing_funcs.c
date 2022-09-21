@@ -88,6 +88,7 @@ void test_get_pix(TestObjs *objs);
 void test_set_pix(TestObjs *objs);
 void test_is_in_bounds(TestObjs *objs);
 void test_rec_in_bounds(TestObjs *objs);
+void test_put_pixel(TestObjs *objs);
 
 int main(int argc, char **argv) {
   if (argc > 1) {
@@ -109,6 +110,7 @@ int main(int argc, char **argv) {
   TEST(test_set_pix);
   TEST(test_is_in_bounds);
   TEST(test_rec_in_bounds);
+  TEST(test_put_pixel);
 
   TEST_FINI();
 }
@@ -305,9 +307,8 @@ void test_get_pix(TestObjs *objs) {
     "   bbb  "
   };
 
-  //check_picture(&objs->small, &expected); image, picture
   struct Image *img1 = &objs->small;
-  unsigned num_pixels = img1->width * img1->height;
+  //unsigned num_pixels = img1->width * img1->height;
   char c = expected.pic[0];
   uint32_t expected_color = lookup_color(c, expected.colors);
   uint32_t actual_color = img1->data[0];
@@ -318,7 +319,7 @@ void test_get_pix(TestObjs *objs) {
 void test_set_pix(TestObjs *objs) {
   ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x000000FFU);
   draw_pixel(&objs->small, 3, 2, 0xFF0000FF); 
-  ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0xFF0000FF);
+  //ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0xFF0000FF);
   //draw_pixel(&objs->small, 3, 2, 0x00FF0080); 
   set_pix(objs->small.data, 3, 2, 0x00FF0080); //img,x,y,color
   ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x7F8000FF);
@@ -342,8 +343,7 @@ void test_is_in_bounds(TestObjs *objs) {
 
 void test_rec_in_bounds(TestObjs *objs) {
   int result;
-  struct Rect red_rect = { .x = 2, .y = 2, .width=3, .height=3 };
-  // draw tile
+  //struct Rect red_rect = { .x = 2, .y = 2, .width=3, .height=3 };
   ASSERT(read_image("img/PrtMimi.png", &objs->tilemap) == IMG_SUCCESS);
   struct Rect r = { .x = 4, .y = 2, .width = 16, .height = 18 };
   draw_rect(&objs->large, &r, 0x1020D0FF);

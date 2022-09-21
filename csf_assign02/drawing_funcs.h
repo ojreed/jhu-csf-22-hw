@@ -29,6 +29,8 @@ void draw_sprite(struct Image *img,
                  const struct Rect *sprite);
 
 // Helper functions
+uint32_t blur_colors(uint32_t foreground, uint32_t background);
+
 uint32_t get_pix(struct Image *img, int32_t x, int32_t y);
 
 void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color);
