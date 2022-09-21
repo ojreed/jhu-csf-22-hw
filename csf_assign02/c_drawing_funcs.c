@@ -9,17 +9,6 @@
 // Helper functions
 ////////////////////////////////////////////////////////////////////////
 
-/*
-NOTE: if source bit is out of bounds for sprite or tile --> end
-else just dont paint the pix
-
-O2 optimization level
-
-
-*/
-
-
-// TODO: implement helper functions
 uint32_t blur_colors(uint32_t foreground, uint32_t background) {
   uint32_t final_color;
   uint32_t f;
@@ -57,6 +46,25 @@ void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color) {
   img->data[location] = color; 
 }
 
+void put_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
+  if (is_in_bounds(img,x,y)) {
+    set_pix(img,x,y,(color|255));
+  }
+}
+
+int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
+  int32_t t_width = tile->width;
+  int32_t t_height = tile->height;
+  int32_t i_width = img->width;
+  int32_t i_height = img->height;
+  int32_t x = tile->x;
+  int32_t y = tile->y;
+  if (0<=x && t_width+x<=i_width && 0<=y && t_height+y<=i_height) {
+    return 1;
+  }
+  return 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 // API functions
 ////////////////////////////////////////////////////////////////////////
@@ -78,11 +86,6 @@ void draw_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
   }
 }
 
-void put_pixel(struct Image *img, int32_t x, int32_t y, uint32_t color) {
-  if (is_in_bounds(img,x,y)) {
-    set_pix(img,x,y,(color|255));
-  }
-}
 //
 // Draw a rectangle.
 // The rectangle has rect->x,rect->y as its upper left corner,
@@ -149,20 +152,6 @@ void draw_circle(struct Image *img,
 //   tilemap - pointer to Image (the tilemap)
 //   tile    - pointer to Rect (the tile)
 //
-
-int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
-  int32_t t_width = tile->width;
-  int32_t t_height = tile->height;
-  int32_t i_width = img->width;
-  int32_t i_height = img->height;
-  int32_t x = tile->x;
-  int32_t y = tile->y;
-  if (0<=x && t_width+x<=i_width && 0<=y && t_height+y<=i_height) {
-    return 1;
-  }
-  return 0;
-}
-
 void draw_tile(struct Image *img,
                int32_t x, int32_t y,
                struct Image *tilemap,

@@ -317,9 +317,9 @@ void test_get_pix(TestObjs *objs) {
 }
 
 void test_set_pix(TestObjs *objs) {
-  draw_pixel(&objs->small, 3, 2, 0xFF0000FF); // opaque red
-  set_pix(&objs->small, 3, 2, 0x0000FF40); //0x0000FF40
-  ASSERT(objs->small.data[SMALL_IDX(3, 2)] != 0xFF0000FF);
+  draw_pixel(&objs->small, 3, 2, 0xFF0000FF); 
+  set_pix(&objs->small, 3, 2, 0x0000FF40); 
+  ASSERT(objs->small.data[SMALL_IDX(3, 2)] != 0xFF0000FF); // Checks blending is happening
 }
 
 void test_put_pixel(TestObjs *objs) { // doesn't blur
