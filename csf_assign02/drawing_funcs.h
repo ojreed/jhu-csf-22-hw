@@ -28,4 +28,12 @@ void draw_sprite(struct Image *img,
                  struct Image *spritemap,
                  const struct Rect *sprite);
 
+uint32_t get_pix(struct Image *img, int32_t x, int32_t y);
+
+void set_pix(struct Image *img, int32_t x, int32_t y, int32_t color);
+
+int rec_in_bounds(struct Image *img,const struct Rect *tile);
+
+int is_in_bounds(struct Image *img, int32_t x, int32_t y);
+
 #endif // DRAWING_FUNCS_H
