@@ -103,7 +103,7 @@ Theoretically we need to pass in the image, x, y
 	//TRUE START OF FUNCTION
 
 	//part 1: compute location offset (y*img->cols + x)
-	movl $0, %r10 // set r10 to proper offset to access 
+	movl IMAGE_WIDTH_OFFSET, %r10 // set r10 to proper offset to access 
 	addl (%rdi), %r10 // add address of image to r10 --> address of columns
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
 	imull %r10, %rxc //r1o = cols * rxc = y --> y = product
@@ -117,10 +117,49 @@ Theoretically we need to pass in the image, x, y
 /*
 helper function passed an image, x, y 
 returns true if that point is in the bounds of the function
+	// img --> rdi
+	// x --> rsi
+	// y --> rxc
 */
 .is_in_bounds:
+	//int32_t rows = img->height;
+  	//int32_t cols = img->width;
+  	
+	
+	//if (0 <= x && x < cols && 0 <= y && y < rows) 
+	
+	//check x > 0
+	cmp $0, %rsi // is 0<x
+	jge .out_o_bounds // jump if 0>=x
+
+	//check y>0
+	cmp $0, %rxc // is 0<y
+	jge .out_o_bounds // jump if 0>=y
+
+	//TODO:: AGAIN
+	//currently r10 = address of col value --> how to access val
+
+	//get cols
+	movl IMAGE_WIDTH_OFFSET, %r10 // set r10 to proper offset to access 
+	addl (%rdi), %r10 // add address of image to r10 --> address of columns
+	cmp %rsi, %r10 // is x < cols
+	jge .out_o_bounds // jump if x>=cols
+
+
+	//get rows
+	movl IMAGE_HEIGHT_OFFSET, %r10 // set r10 to proper offset to access 
+	addl (%rdi), %r10 // add address of image to r10 --> address of rows
+	cmp %rxc, %r10 // is y < cols
+	jge .out_o_bounds // jump if y>=cols
+
+	//return 1 True --> in bounds
+	movl $1, %rax //set return value to 1
 	ret
 
+.out_o_bounds:
+	//return 0 False
+	movl $0, %rax //set return value to 0
+	ret
 
 /*
 passed forground and background color and 
