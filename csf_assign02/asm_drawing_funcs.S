@@ -45,12 +45,89 @@ draw_pixel:
 	// onto the stack in reverse order 
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, op2 // is_in_bounds returns 1 or 0 
-	jne .leave //if value is not 1, jump to .leave
+	jne .leave //if value is not 1, jump to .leave --> jne is ineqaulity
+	//TODO: ADD func params to registers 
+	//NEED: img, x, y --> rdi rsi rdx rcx r8 r9
+	// img --> rdi
+	// x --> rsi
+	// y --> rxc
 	call get_pix //uint32 background = get_pix(img,x,y)
 	call blur_colors //background = blur_colors(color,background)
 	call set_pix //set_pix(img,x,y,background);
 .leave:
 	ret //stores the return address to jump back to on the stack
+
+
+
+/*
+Takes input of an image and a Rect and checks that 
+all corners of the rect are inbounds with the image
+*/
+.rec_in_bounds:
+	ret
+
+
+/*
+draws a pixel on the passed image at x,y of given color
+does not use blur
+passed image, x,y, color
+confirms that x,y are valid 
+*/
+.put_pixel:
+	ret
+
+
+/*
+called by put and draw pix to actually set the value of a given pixel
+passed image, x,y, color
+*/
+.set_pix:
+	ret
+
+/*
+is given an x,y and returns the correct color value at that location
+
+Theoretically we need to pass in the image, x, y
+
+*/
+.get_pix
+	//COPIED FROM MADDIE'S DRAW FUNCTION --> talk to her about it
+	pushl %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
+	// Note: esp is the lower 32-bits of the stack ptr
+	// Note: let's use the stack method for params, the calling program will push stuff
+	// onto the stack in reverse order 
+	// img --> rdi
+	// x --> rsi
+	// y --> rxc
+	//TRUE START OF FUNCTION
+
+	//part 1: compute location offset (y*img->cols + x)
+	movl $0, %r10 // set r10 to proper offset to access 
+	addl (%rdi), %r10 // add address of image to r10 --> address of columns
+	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
+	imull %r10, %rxc //r1o = cols * rxc = y --> y = product
+	addl %rsi, %rxc // add rsi = x to rxc = y*cols --> x+y*cols
+
+	//part 2: access ofset location of img (img + offset)
+  	addl (%rdi), %rxc //rdi = image ptr and rxc = ofset to location
+  	movl TEMP, %rax//return img->data[location]; 
+	ret
+
+/*
+helper function passed an image, x, y 
+returns true if that point is in the bounds of the function
+*/
+.is_in_bounds:
+	ret
+
+
+/*
+passed forground and background color and 
+returns blurring of those two colors
+*/
+.blur_colors:
+	ret
 
 
 /*
