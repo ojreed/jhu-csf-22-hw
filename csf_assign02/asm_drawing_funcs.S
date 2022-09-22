@@ -38,8 +38,19 @@
  */
 	.globl draw_pixel
 draw_pixel:
-	/* TODO: implement */
-	ret
+	pushl %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
+	// Note: esp is the lower 32-bits of the stack ptr
+	// Note: let's use the stack method for params, the calling program will push stuff
+	// onto the stack in reverse order 
+	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
+	cmp $1, op2 // is_in_bounds returns 1 or 0 
+	jne .leave //if value is not 1, jump to .leave
+	call get_pix //uint32 background = get_pix(img,x,y)
+	call blur_colors //background = blur_colors(color,background)
+	call set_pix //set_pix(img,x,y,background);
+.leave:
+	ret //stores the return address to jump back to on the stack
 
 
 /*
