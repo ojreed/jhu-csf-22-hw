@@ -41,20 +41,22 @@ draw_pixel:
 	pushl %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
 	// Note: esp is the lower 32-bits of the stack ptr
-	// Note: let's use the stack method for params, the calling program will push stuff
-	// onto the stack in reverse order 
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
-	cmp $1, op2 // is_in_bounds returns 1 or 0 
-	jne .leave //if value is not 1, jump to .leave --> jne is ineqaulity
+	cmp $1, %rax // is_in_bounds returns 1 or 0 
+	jne .not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 	//TODO: ADD func params to registers 
 	//NEED: img, x, y --> rdi rsi rdx rcx r8 r9
 	// img --> rdi
 	// x --> rsi
 	// y --> rxc
+	// %rax is for return values (from funcs)
 	call get_pix //uint32 background = get_pix(img,x,y)
+	movl %rax, %r12 // r12 is a calle-saved register, we need this value to persist
 	call blur_colors //background = blur_colors(color,background)
+	movl %rbp, %r12 //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
-.leave:
+	ret
+.not_in_bounds:
 	ret //stores the return address to jump back to on the stack
 
 
