@@ -84,6 +84,21 @@ called by put and draw pix to actually set the value of a given pixel
 passed image, x,y, color
 */
 .set_pix:
+	// img --> rdi
+	// x --> rsi
+	// TODO: probably change y to be stored in rdx...
+	// y --> rxc
+	// color --> rcx
+	movl IMAGE_WIDTH_OFFSET, %r10 // set r10 to proper offset to access 
+	leal %rdi, %r11 //store address of rdi in r11
+	addl %r11, %r10 // add address of image to r10 --> address of columns 
+	imull (%r10), %rxc //r1o = cols * rxc = y --> y = product
+	addl %rsi, %rxc // add rsi = x to rxc = y*cols --> x+y*cols == locataion (from data offset)
+
+	movl IMAGE_DATA_OFFSET, %r10 // set r10 to proper offset to access data
+	addl %r11, %r10 // add address of image to r10 --> address of data
+	addl %r10, %rxc //image offset to data + location == pixel address
+  	movl %rcx, (%rxc)// set img->data[location] equal to color
 	ret
 
 /*
@@ -166,6 +181,44 @@ passed forground and background color and
 returns blurring of those two colors
 */
 .blur_colors:
+	// uint32_t final_color; will store final_color in %rax, return register
+	// rdi --> foreground
+	// rsi --> background
+	// uint32_t f; use register %r8
+	// uint32_t b; use register %r9
+	movl $255, %r10
+	and (%rdi), %r10 // uint8_t a = (foreground & 255); 
+	movl $255, %rax // final_color = 255;
+
+	// %r11 is the index counter
+	movl $255, %rcx // %rcx = 255
+	movl $1, %r11 // for(int i = 1; i < 4; i++) --> counter
+	movl $8, %rdx // %rdx = 8
+	movl %rdi, %r13 // %r13 is a
+	and %rcx, %r13 // gets first 8 bits of r13 which is the alpha value!
+
+	// loop starts here
+	.top_loop:
+	imul %r11, %rdx // %rdx = (8*i)
+	sal %rdx, %rcx //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
+	movl %rdi, %r15
+	and %rcx, %r15 // value in rcx is 255 << (8*i)
+	movl %rsi, %r14 // %r14 now stores temp background
+	and %rcx, %r14 //b = ((background & (255U << (8*i))) >> (8*i));
+	shr %rdx, %r14
+	shr %rdx, %r15 // >> (8*i), %r14 = b, %r15 = f
+	imul %r13, %r15 // %r15 = a*f
+	movl $255, %r12
+	subl %13, %r12 // 255 - a
+	imul %r14, %r12 // %r12 = (255 - a)*b
+	addl %r15, %r12 // %r12 = (a*f + (255 - a)*b))
+	divq $255, %r12 // %r12 = (a*f + (255 - a)*b)/255)
+	sal %rdx, %r12 // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+	addl %r12, %rax // store the color channel in %rax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
+	addl $1, %r11 // increment counter
+	cmp %r11, $4
+	jle .top_loop 
+  	//return final_color; value is already in %rax lol
 	ret
 
 
