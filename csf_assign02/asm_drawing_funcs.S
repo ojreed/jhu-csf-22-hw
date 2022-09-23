@@ -91,27 +91,27 @@ Theoretically we need to pass in the image, x, y
 
 */
 .get_pix
-	//COPIED FROM MADDIE'S DRAW FUNCTION --> talk to her about it
-	pushl %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
 	// onto the stack in reverse order 
 	// img --> rdi
 	// x --> rsi
 	// y --> rxc
-	//TRUE START OF FUNCTION
+	//rax is return register 
 
 	//part 1: compute location offset (y*img->cols + x)
 	movl IMAGE_WIDTH_OFFSET, %r10 // set r10 to proper offset to access 
-	addl (%rdi), %r10 // add address of image to r10 --> address of columns
+	leal %rdi, %r11 //store address of rdi in r11
+	addl %r11, %r10 // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
-	imull %r10, %rxc //r1o = cols * rxc = y --> y = product
-	addl %rsi, %rxc // add rsi = x to rxc = y*cols --> x+y*cols
+	imull (%r10), %rxc //r1o = cols * rxc = y --> y = product
+	addl %rsi, %rxc // add rsi = x to rxc = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
-  	addl (%rdi), %rxc //rdi = image ptr and rxc = ofset to location
-  	movl TEMP, %rax//return img->data[location]; 
+	movl IMAGE_DATA_OFFSET, %r10 // set r10 to proper offset to access data
+	addl %r11, %r10 // add address of image to r10 --> address of data
+	addl %r10, %rxc //image offset to data + location == pixel address
+  	movl (%rxc), %rax//return img->data[location]; 
 	ret
 
 /*
@@ -122,10 +122,6 @@ returns true if that point is in the bounds of the function
 	// y --> rxc
 */
 .is_in_bounds:
-	//int32_t rows = img->height;
-  	//int32_t cols = img->width;
-  	
-	
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
 	//check x > 0
@@ -141,15 +137,17 @@ returns true if that point is in the bounds of the function
 
 	//get cols
 	movl IMAGE_WIDTH_OFFSET, %r10 // set r10 to proper offset to access 
-	addl (%rdi), %r10 // add address of image to r10 --> address of columns
-	cmp %rsi, %r10 // is x < cols
+	leal %rdi, %r11 //store address of rdi in r11
+	addl %r11, %r10 // add address of image to r10 --> address of columns
+	cmp %rsi, (%r10) // is x < cols
 	jge .out_o_bounds // jump if x>=cols
 
 
 	//get rows
 	movl IMAGE_HEIGHT_OFFSET, %r10 // set r10 to proper offset to access 
-	addl (%rdi), %r10 // add address of image to r10 --> address of rows
-	cmp %rxc, %r10 // is y < cols
+	leal %rdi, %r11 //store address of rdi in r11
+	addl %r11, %r10 // add address of image to r10 --> address of rows
+	cmp %rxc, (%r10) // is y < cols
 	jge .out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
