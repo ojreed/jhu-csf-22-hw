@@ -90,7 +90,7 @@ passed image, x,y, color
 	// y --> rxc
 	// color --> ecx
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
+	leaq %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	imull (%r10), %edx //r1o = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
@@ -118,7 +118,7 @@ Theoretically we need to pass in the image, x, y
 
 	//part 1: compute location offset (y*img->cols + x)
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
+	leaq %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
 	imull (%r10d), %edx //r1o = cols * edx = y --> y = product
@@ -154,7 +154,7 @@ returns true if that point is in the bounds of the function
 
 	//get cols
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
+	leaq %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns
 	cmp %esi, (%r10d) // is x < cols
 	jge .out_o_bounds // jump if x>=cols
@@ -162,7 +162,7 @@ returns true if that point is in the bounds of the function
 
 	//get rows
 	movl IMAGE_HEIGHT_OFFSET, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
+	leaq %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of rows
 	cmp %edx, (%r10d) // is y < cols
 	jge .out_o_bounds // jump if y>=cols
