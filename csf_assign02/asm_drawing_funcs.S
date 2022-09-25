@@ -38,8 +38,13 @@
  */
 	.globl draw_pixel
 draw_pixel:
+<<<<<<< HEAD
 	pushq %rbp /* save pointer to string locally, implicitly align stack by subtracting 8 bytes */
 	movq %rsp, %rbp /*save value originally in %rbp*/
+=======
+	push %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
+>>>>>>> c573350da552fdcf59acdee286686a3cbf2d6958
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
