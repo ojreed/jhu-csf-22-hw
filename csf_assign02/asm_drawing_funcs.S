@@ -212,7 +212,9 @@ returns blurring of those two colors
 	subl %r13, %r12d // 255 - a
 	imul %r14d, %r12d // %r12 = (255 - a)*b
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
-	divq $255, %r12d // %r12 = (a*f + (255 - a)*b)/255)
+	movl %r12d, %eax //store r12 in eax for division
+	divq $255 // %eax = (a*f + (255 - a)*b)/255)
+	movl %eax, %r12d //move eax back to r12
 	sal %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
