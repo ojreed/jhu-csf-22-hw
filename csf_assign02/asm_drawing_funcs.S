@@ -36,7 +36,7 @@
  *   %edx     - y cooedinate (pixel row)
  *   %ecx     - uint32_t color value
  */
-	.globl draw_pixel
+	.globl draw_pixel:
 draw_pixel:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
@@ -65,7 +65,7 @@ draw_pixel:
 Takes input of an image and a Rect and checks that 
 all corners of the rect are inbounds with the image
 */
-	.globl rec_in_bounds
+	.globl rec_in_bounds:
 .rec_in_bounds:
 	ret
 
@@ -76,7 +76,7 @@ does not use blur
 passed image, x,y, color
 confirms that x,y are valid 
 */
-	.globl put_pixel
+	.globl put_pixel:
 .put_pixel:
 	ret
 
@@ -86,7 +86,7 @@ called by put and draw pix to actually set the value of a given pixel
 passed image, x,y, color
 */
 
-	.globl set_pix
+	.globl set_pix:
 .set_pix:
 	// img --> edi
 	// x --> esi
@@ -111,7 +111,7 @@ is given an x,y and returns the correct color value at that location
 Theoretically we need to pass in the image, x, y
 
 */
-	.globl get_pix
+	.globl get_pix:
 .get_pix:
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
@@ -143,7 +143,7 @@ returns true if that point is in the bounds of the function
 	// x --> esi
 	// y --> edx
 */
-	.globl is_in_bounds
+	.globl is_in_bounds:
 .is_in_bounds:
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
@@ -185,7 +185,7 @@ returns true if that point is in the bounds of the function
 passed forground and background color and 
 returns blurring of those two colors
 */
-	.globl blur_colors
+	.globl blur_colors:
 .blur_colors:
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
