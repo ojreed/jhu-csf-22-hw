@@ -208,7 +208,7 @@ returns blurring of those two colors
 	and %ecx, %r15d // value in ecx is 255 << (8*i)
 	movl %esi, %r14d // %r14 now stores temp background
 	and %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
-	movl %dl, %cl
+	movb %dl, %cl
 	shrl %cl, %r14d
 	shrl %cl, %r15d // >> (8*i), %r14 = b, %r15 = f
 	imul %r13d, %r15d // %r15 = a*f
