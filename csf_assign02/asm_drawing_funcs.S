@@ -38,8 +38,8 @@
  */
 	.globl draw_pixel
 draw_pixel:
-	pushq %rbp // save pointer to string locally, implicitly align stack by subtracting 8 bytes
-	movq %rsp, %rbp //save value originally in %rbp
+	pushl %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -53,7 +53,7 @@ draw_pixel:
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	call blur_colors //background = blur_colors(color,background)
-	movl %r12d, %eax //eax will be where we store the return val of blu_colors
+	movl %rbp, %r12d //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
 	ret
 .not_in_bounds:
@@ -90,8 +90,8 @@ passed image, x,y, color
 	// y --> rxc
 	// color --> ecx
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leaq %edi, %r11 //store address of edi in r11
-	addq %r11, %r10 // add address of image to r10 --> address of columns 
+	leal %edi, %r11d //store address of edi in r11
+	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	imull (%r10), %edx //r1o = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
@@ -118,7 +118,7 @@ Theoretically we need to pass in the image, x, y
 
 	//part 1: compute location offset (y*img->cols + x)
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leaq %edi, %r11d //store address of edi in r11
+	leal %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
 	imull (%r10d), %edx //r1o = cols * edx = y --> y = product
@@ -154,7 +154,7 @@ returns true if that point is in the bounds of the function
 
 	//get cols
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leaq %edi, %r11d //store address of edi in r11
+	leal %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns
 	cmp %esi, (%r10d) // is x < cols
 	jge .out_o_bounds // jump if x>=cols
@@ -162,7 +162,7 @@ returns true if that point is in the bounds of the function
 
 	//get rows
 	movl IMAGE_HEIGHT_OFFSET, %r10d // set r10 to proper offset to access 
-	leaq %edi, %r11d //store address of edi in r11
+	leal %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of rows
 	cmp %edx, (%r10d) // is y < cols
 	jge .out_o_bounds // jump if y>=cols
@@ -216,7 +216,7 @@ returns blurring of those two colors
 	sal %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
-	cmp %r11d, $4
+	cmpl %r11d, $4
 	jle .top_loop 
   	//return final_color; value is already in %eax lol
 	ret
