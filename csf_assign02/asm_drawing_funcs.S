@@ -200,11 +200,11 @@ returns blurring of those two colors
 	// loop starts here
 	.top_loop:
 	imul %r11d, %edx // %edx = (8*i)
-	movl %ecx, %r15d
-	movb %dl, %cl
+	movl %ecx, %r15d //move out of cx register into r15 for shift
+	movb %dl, %cl// move value to shift by into cl
 	sal %cl, %r15d //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
-	movl %r15d, %ecx
-	movl %edi, %r15d
+	movl %r15d, %ecx //move result back into cx
+	movl %edi, %r15d 
 	and %ecx, %r15d // value in ecx is 255 << (8*i)
 	movl %esi, %r14d // %r14 now stores temp background
 	and %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
@@ -219,7 +219,8 @@ returns blurring of those two colors
 	movl %r12d, %eax //store r12 in eax for division
 	divl $255 //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
-	sal %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+	movb %dl, %cl
+	sal %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
