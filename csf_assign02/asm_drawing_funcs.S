@@ -65,6 +65,7 @@ draw_pixel:
 Takes input of an image and a Rect and checks that 
 all corners of the rect are inbounds with the image
 */
+	.globl rec_in_bounds
 .rec_in_bounds:
 	ret
 
@@ -75,6 +76,7 @@ does not use blur
 passed image, x,y, color
 confirms that x,y are valid 
 */
+	.globl put_pixel
 .put_pixel:
 	ret
 
@@ -83,6 +85,8 @@ confirms that x,y are valid
 called by put and draw pix to actually set the value of a given pixel
 passed image, x,y, color
 */
+
+	.globl set_pix
 .set_pix:
 	// img --> edi
 	// x --> esi
@@ -107,6 +111,7 @@ is given an x,y and returns the correct color value at that location
 Theoretically we need to pass in the image, x, y
 
 */
+	.global get_pix
 .get_pix:
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
@@ -138,6 +143,7 @@ returns true if that point is in the bounds of the function
 	// x --> esi
 	// y --> edx
 */
+	.global is_in_bounds
 .is_in_bounds:
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
@@ -170,7 +176,6 @@ returns true if that point is in the bounds of the function
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
 	ret
-
 .out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
@@ -180,6 +185,7 @@ returns true if that point is in the bounds of the function
 passed forground and background color and 
 returns blurring of those two colors
 */
+	.global blu_colors
 .blur_colors:
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
