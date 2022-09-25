@@ -118,7 +118,7 @@ Theoretically we need to pass in the image, x, y
 
 	//part 1: compute location offset (y*img->cols + x)
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
+	leab %edi, %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
 	imull (%r10d), %edx //r1o = cols * edx = y --> y = product
