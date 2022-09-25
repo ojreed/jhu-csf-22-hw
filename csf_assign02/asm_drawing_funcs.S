@@ -38,7 +38,7 @@
  */
 	.globl draw_pixel
 draw_pixel:
-	pushl %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	push %ebp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movl %esp, %ebp // Taking current stack ptr and using it as frame for current func
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
