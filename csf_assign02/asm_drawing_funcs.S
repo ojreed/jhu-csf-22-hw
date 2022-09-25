@@ -53,7 +53,7 @@ draw_pixel:
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	call blur_colors //background = blur_colors(color,background)
-	movl %rbp, %r12d //rbp will be where we store the return val of blu_colors
+	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
 	ret
 .not_in_bounds:
