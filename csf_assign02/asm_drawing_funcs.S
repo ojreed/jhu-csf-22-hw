@@ -217,7 +217,8 @@ returns blurring of those two colors
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
 	movl $0, %edx
 	movl %r12d, %eax //store r12 in eax for division
-	divl $255 //%eax = (a*f + (255 - a)*b)/255)
+	movl $255, %r9d
+	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
 	movb %dl, %cl
 	sal %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
