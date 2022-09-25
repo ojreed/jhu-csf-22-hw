@@ -107,7 +107,7 @@ is given an x,y and returns the correct color value at that location
 Theoretically we need to pass in the image, x, y
 
 */
-.get_pix
+.get_pix:
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
 	// onto the stack in reverse order 
