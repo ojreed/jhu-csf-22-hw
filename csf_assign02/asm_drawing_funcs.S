@@ -205,17 +205,22 @@ returns blurring of those two colors
 	and %ecx, %r15d // value in ecx is 255 << (8*i)
 	movl %esi, %r14d // %r14 now stores temp background
 	and %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
-	shr %edx, %r14d
-	shr %edx, %r15d // >> (8*i), %r14 = b, %r15 = f
+	shrl %edx, %r14d
+	shrl %edx, %r15d // >> (8*i), %r14 = b, %r15 = f
 	imul %r13d, %r15d // %r15 = a*f
 	movl $255, %r12d
-	subl %r13, %r12d // 255 - a
+	subl %r13d, %r12d // 255 - a
 	imul %r14d, %r12d // %r12 = (255 - a)*b
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
+<<<<<<< HEAD
 	movl %r12d, %eax //store r12 in eax for division
 	divq $255 // %eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
 	sal %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+=======
+	divl $255, %r12d // %r12 = (a*f + (255 - a)*b)/255)
+	sall %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+>>>>>>> 487380dda0a13b565452aaf213d1097f609167ae
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
