@@ -200,7 +200,8 @@ returns blurring of those two colors
 	// loop starts here
 	.top_loop:
 	imul %r11d, %edx // %edx = (8*i)
-	sal %edx, %ecx //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
+	movb %edx, %cl
+	sal %ecx, %cl //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
 	movl %edi, %r15d
 	and %ecx, %r15d // value in ecx is 255 << (8*i)
 	movl %esi, %r14d // %r14 now stores temp background
