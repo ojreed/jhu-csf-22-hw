@@ -216,8 +216,8 @@ returns blurring of those two colors
 	sal %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
-	cmpl %r11d, $4
-	jle .top_loop 
+	cmpl $4, %r11d
+	jg .top_loop 
   	//return final_color; value is already in %eax lol
 	ret
 
