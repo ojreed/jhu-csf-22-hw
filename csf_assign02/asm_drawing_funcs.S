@@ -111,7 +111,7 @@ is given an x,y and returns the correct color value at that location
 Theoretically we need to pass in the image, x, y
 
 */
-	.global get_pix
+	.globl get_pix
 .get_pix:
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
@@ -143,7 +143,7 @@ returns true if that point is in the bounds of the function
 	// x --> esi
 	// y --> edx
 */
-	.global is_in_bounds
+	.globl is_in_bounds
 .is_in_bounds:
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
@@ -185,7 +185,7 @@ returns true if that point is in the bounds of the function
 passed forground and background color and 
 returns blurring of those two colors
 */
-	.global blu_colors
+	.globl blur_colors
 .blur_colors:
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
