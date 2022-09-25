@@ -92,13 +92,13 @@ passed image, x,y, color
 	movl IMAGE_WIDTH_OFFSET, %r10 // set r10 to proper offset to access 
 	leal %rdi, %r11 //store address of rdi in r11
 	addl %r11, %r10 // add address of image to r10 --> address of columns 
-	imull (%r10), %rxc //r1o = cols * rxc = y --> y = product
-	addl %rsi, %rxc // add rsi = x to rxc = y*cols --> x+y*cols == locataion (from data offset)
+	imull (%r10), %rdx //r1o = cols * rdx = y --> y = product
+	addl %rsi, %rdx // add rsi = x to rdx = y*cols --> x+y*cols == locataion (from data offset)
 
 	movl IMAGE_DATA_OFFSET, %r10 // set r10 to proper offset to access data
 	addl %r11, %r10 // add address of image to r10 --> address of data
-	addl %r10, %rxc //image offset to data + location == pixel address
-  	movl %rcx, (%rxc)// set img->data[location] equal to color
+	addl %r10, %rdx //image offset to data + location == pixel address
+  	movl %rcx, (%rdx)// set img->data[location] equal to color
 	ret
 
 /*
@@ -113,7 +113,7 @@ Theoretically we need to pass in the image, x, y
 	// onto the stack in reverse order 
 	// img --> rdi
 	// x --> rsi
-	// y --> rxc
+	// y --> rdx
 	//rax is return register 
 
 	//part 1: compute location offset (y*img->cols + x)
@@ -121,14 +121,14 @@ Theoretically we need to pass in the image, x, y
 	leal %rdi, %r11 //store address of rdi in r11
 	addl %r11, %r10 // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
-	imull (%r10), %rxc //r1o = cols * rxc = y --> y = product
-	addl %rsi, %rxc // add rsi = x to rxc = y*cols --> x+y*cols == locataion (from data offset)
+	imull (%r10), %rdx //r1o = cols * rdx = y --> y = product
+	addl %rsi, %rdx // add rsi = x to rdx = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
 	movl IMAGE_DATA_OFFSET, %r10 // set r10 to proper offset to access data
 	addl %r11, %r10 // add address of image to r10 --> address of data
-	addl %r10, %rxc //image offset to data + location == pixel address
-  	movl (%rxc), %rax//return img->data[location]; 
+	addl %r10, %rdx //image offset to data + location == pixel address
+  	movl (%rdx), %rax//return img->data[location]; 
 	ret
 
 /*
@@ -136,7 +136,7 @@ helper function passed an image, x, y
 returns true if that point is in the bounds of the function
 	// img --> rdi
 	// x --> rsi
-	// y --> rxc
+	// y --> rdx
 */
 .is_in_bounds:
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
@@ -146,7 +146,7 @@ returns true if that point is in the bounds of the function
 	jge .out_o_bounds // jump if 0>=x
 
 	//check y>0
-	cmp $0, %rxc // is 0<y
+	cmp $0, %rdx // is 0<y
 	jge .out_o_bounds // jump if 0>=y
 
 	//TODO:: AGAIN
@@ -164,7 +164,7 @@ returns true if that point is in the bounds of the function
 	movl IMAGE_HEIGHT_OFFSET, %r10 // set r10 to proper offset to access 
 	leal %rdi, %r11 //store address of rdi in r11
 	addl %r11, %r10 // add address of image to r10 --> address of rows
-	cmp %rxc, (%r10) // is y < cols
+	cmp %rdx, (%r10) // is y < cols
 	jge .out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
