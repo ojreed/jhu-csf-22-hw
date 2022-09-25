@@ -209,7 +209,7 @@ returns blurring of those two colors
 	shr %edx, %r15d // >> (8*i), %r14 = b, %r15 = f
 	imul %r13d, %r15d // %r15 = a*f
 	movl $255, %r12d
-	subl %13, %r12d // 255 - a
+	subl %r13, %r12d // 255 - a
 	imul %r14d, %r12d // %r12 = (255 - a)*b
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
 	divq $255, %r12d // %r12 = (a*f + (255 - a)*b)/255)
