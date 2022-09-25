@@ -45,7 +45,7 @@ draw_pixel:
 	cmp $1, %rax // is_in_bounds returns 1 or 0 
 	jne .not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 	//TODO: ADD func params to registers 
-	//NEED: img, x, y --> rdi rsi rdx rcx r8 r9
+	//NEED: img, x, y --> rdi rsi edx ecx r8 r9
 	// img --> rdi
 	// x --> rsi
 	// y --> rxc
@@ -86,19 +86,19 @@ passed image, x,y, color
 .set_pix:
 	// img --> rdi
 	// x --> rsi
-	// TODO: probably change y to be stored in rdx...
+	// TODO: probably change y to be stored in edx...
 	// y --> rxc
-	// color --> rcx
+	// color --> ecx
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
 	leal %rdi, %r11d //store address of rdi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	imull (%r10), %rdx //r1o = cols * rdx = y --> y = product
-	addl %rsi, %rdx // add rsi = x to rdx = y*cols --> x+y*cols == locataion (from data offset)
+	imull (%r10), %edx //r1o = cols * edx = y --> y = product
+	addl %rsi, %edx // add rsi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	movl IMAGE_DATA_OFFSET, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
-	addl %r10d, %rdx //image offset to data + location == pixel address
-  	movl %rcx, (%rdx)// set img->data[location] equal to color
+	addl %r10d, %edx //image offset to data + location == pixel address
+  	movl %ecx, (%edx)// set img->data[location] equal to color
 	ret
 
 /*
@@ -113,7 +113,7 @@ Theoretically we need to pass in the image, x, y
 	// onto the stack in reverse order 
 	// img --> rdi
 	// x --> rsi
-	// y --> rdx
+	// y --> edx
 	//rax is return register 
 
 	//part 1: compute location offset (y*img->cols + x)
@@ -121,14 +121,14 @@ Theoretically we need to pass in the image, x, y
 	leal %rdi, %r11d //store address of rdi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
-	imull (%r10d), %rdx //r1o = cols * rdx = y --> y = product
-	addl %rsi, %rdx // add rsi = x to rdx = y*cols --> x+y*cols == locataion (from data offset)
+	imull (%r10d), %edx //r1o = cols * edx = y --> y = product
+	addl %rsi, %edx // add rsi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
 	movl IMAGE_DATA_OFFSET, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
-	addl %r10d, %rdx //image offset to data + location == pixel address
-  	movl (%rdx), %rax//return img->data[location]; 
+	addl %r10d, %edx //image offset to data + location == pixel address
+  	movl (%edx), %rax//return img->data[location]; 
 	ret
 
 /*
@@ -136,7 +136,7 @@ helper function passed an image, x, y
 returns true if that point is in the bounds of the function
 	// img --> rdi
 	// x --> rsi
-	// y --> rdx
+	// y --> edx
 */
 .is_in_bounds:
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
@@ -146,7 +146,7 @@ returns true if that point is in the bounds of the function
 	jge .out_o_bounds // jump if 0>=x
 
 	//check y>0
-	cmp $0, %rdx // is 0<y
+	cmp $0, %edx // is 0<y
 	jge .out_o_bounds // jump if 0>=y
 
 	//TODO:: AGAIN
@@ -164,7 +164,7 @@ returns true if that point is in the bounds of the function
 	movl IMAGE_HEIGHT_OFFSET, %r10d // set r10 to proper offset to access 
 	leal %rdi, %r11d //store address of rdi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of rows
-	cmp %rdx, (%r10d) // is y < cols
+	cmp %edx, (%r10d) // is y < cols
 	jge .out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
@@ -191,29 +191,29 @@ returns blurring of those two colors
 	movl $255, %rax // final_color = 255;
 
 	// %r11 is the index counter
-	movl $255, %rcx // %rcx = 255
+	movl $255, %ecx // %ecx = 255
 	movl $1, %r11d // for(int i = 1; i < 4; i++) --> counter
-	movl $8, %rdx // %rdx = 8
+	movl $8, %edx // %edx = 8
 	movl %rdi, %r13d // %r13 is a
-	and %rcx, %r13d // gets first 8 bits of r13 which is the alpha value!
+	and %ecx, %r13d // gets first 8 bits of r13 which is the alpha value!
 
 	// loop starts here
 	.top_loop:
-	imul %r11d, %rdx // %rdx = (8*i)
-	sal %rdx, %rcx //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
+	imul %r11d, %edx // %edx = (8*i)
+	sal %edx, %ecx //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
 	movl %rdi, %r15d
-	and %rcx, %r15d // value in rcx is 255 << (8*i)
+	and %ecx, %r15d // value in ecx is 255 << (8*i)
 	movl %rsi, %r14d // %r14 now stores temp background
-	and %rcx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
-	shr %rdx, %r14d
-	shr %rdx, %r15d // >> (8*i), %r14 = b, %r15 = f
+	and %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
+	shr %edx, %r14d
+	shr %edx, %r15d // >> (8*i), %r14 = b, %r15 = f
 	imul %r13d, %r15d // %r15 = a*f
 	movl $255, %r12d
 	subl %13, %r12d // 255 - a
 	imul %r14d, %r12d // %r12 = (255 - a)*b
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
 	divq $255, %r12d // %r12 = (a*f + (255 - a)*b)/255)
-	sal %rdx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+	sal %edx, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
 	addl %r12d, %rax // store the color channel in %rax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmp %r11d, $4
@@ -264,7 +264,7 @@ draw_circle:
  *   %rdi - pointer to Image (dest image)
  *   %esi - x coordinate of location where tile should be copied
  *   %edx - y coordinate of location where tile should be copied
- *   %rcx - pointer to Image (the tilemap)
+ *   %ecx - pointer to Image (the tilemap)
  *   %r8  - pointer to Rect (the tile)
  */
 	.globl draw_tile
@@ -284,7 +284,7 @@ draw_tile:
  *   %rdi - pointer to Image (dest image)
  *   %esi - x coordinate of location where sprite should be copied
  *   %edx - y coordinate of location where sprite should be copied
- *   %rcx - pointer to Image (the spritemap)
+ *   %ecx - pointer to Image (the spritemap)
  *   %r8  - pointer to Rect (the sprite)
  */
 	.globl draw_sprite
