@@ -90,7 +90,7 @@ passed image, x,y, color
 	// y --> rxc
 	// color --> ecx
 	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
-	leaq %edi, %r11d //store address of edi in r11
+	leaq %edi, %r11 //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	imull (%r10), %edx //r1o = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
