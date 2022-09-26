@@ -45,7 +45,7 @@ draw_pixel:
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
 	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 	//TODO: ADD func params to registers 
-	//NEED: img, x, y --> edi esi edx ecx r8 r9
+	//NEED: img, x, y --> edi esi edx ecx r8d r9d
 	// img --> edi
 	// x --> esi
 	// y --> rxc
@@ -204,7 +204,7 @@ blur_colors:
 	and %ecx, %r13d // gets first 8 bits of r13 which is the alpha value!
 
 	// loop starts here
-	.top_loop:
+top_loop:
 	imul %r11d, %edx // %edx = (8*i)
 	movl %ecx, %r15d //move out of cx register into r15 for shift
 	movb %dl, %cl// move value to shift by into cl
