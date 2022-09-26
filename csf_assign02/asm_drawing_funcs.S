@@ -122,7 +122,7 @@ get_pix:
 	//eax is return register 
 
 	//part 1: compute location offset (y*img->cols + x)
-	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
+	movl $IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
@@ -130,7 +130,7 @@ get_pix:
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
-	movl IMAGE_DATA_OFFSET, %r10d // set r10 to proper offset to access data
+	movl $IMAGE_DATA_OFFSET, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl (%edx), %eax//return img->data[location]; 
