@@ -159,7 +159,7 @@ is_in_bounds:
 	//currently r10 = address of col value --> how to access val
 
 	//get cols
-	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
+	movl %IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns
 	cmp %esi, (%r10d) // is x < cols
@@ -167,7 +167,7 @@ is_in_bounds:
 
 
 	//get rows
-	movl IMAGE_HEIGHT_OFFSET, %r10d // set r10 to proper offset to access 
+	movl %IMAGE_HEIGHT_OFFSET, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of rows
 	cmp %edx, (%r10d) // is y < cols
