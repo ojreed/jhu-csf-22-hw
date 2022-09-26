@@ -193,7 +193,7 @@ blur_colors:
 	// uint32_t f; use register %r8
 	// uint32_t b; use register %r9
 	movl $255, %r10d
-	and (%edi), %r10d // uint8_t a = (foreground & 255); 
+	andl %edi, %r10d // uint8_t a = (foreground & 255); 
 	movl $255, %eax // final_color = 255;
 
 	// %r11 is the index counter
@@ -201,7 +201,7 @@ blur_colors:
 	movl $1, %r11d // for(int i = 1; i < 4; i++) --> counter
 	movl $8, %edx // %edx = 8
 	movl %edi, %r13d // %r13 is a
-	and %ecx, %r13d // gets first 8 bits of r13 which is the alpha value!
+	andl %ecx, %r13d // gets first 8 bits of r13 which is the alpha value!
 
 	// loop starts here
 top_loop:
