@@ -176,7 +176,7 @@ is_in_bounds:
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
 	ret
-.out_o_bounds
+out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
 	ret
