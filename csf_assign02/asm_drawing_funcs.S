@@ -77,7 +77,7 @@ passed image, x,y, color
 confirms that x,y are valid 
 */
 	.globl put_pixel
-.put_pixel:
+put_pixel:
 	ret
 
 
