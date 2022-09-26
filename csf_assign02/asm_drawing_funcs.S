@@ -93,13 +93,13 @@ set_pix:
 	// TODO: probably change y to be stored in edx...
 	// y --> rxc
 	// color --> ecx
-	movl IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
+	movl $IMAGE_WIDTH_OFFSET, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	imull (%r10), %edx //r1o = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
-	movl IMAGE_DATA_OFFSET, %r10d // set r10 to proper offset to access data
+	movl $IMAGE_DATA_OFFSET, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl %ecx, (%edx)// set img->data[location] equal to color
