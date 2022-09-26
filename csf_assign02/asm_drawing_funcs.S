@@ -43,7 +43,7 @@ draw_pixel:
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
-	jne .not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
+	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 	//TODO: ADD func params to registers 
 	//NEED: img, x, y --> edi esi edx ecx r8 r9
 	// img --> edi
