@@ -149,11 +149,11 @@ is_in_bounds:
 	
 	//check x > 0
 	cmp $0, %esi // is 0<x
-	jge out_o_bounds // jump if 0>=x
+	jle out_o_bounds // jump if 0>=x
 
 	//check y>0
 	cmp $0, %edx // is 0<y
-	jge out_o_bounds // jump if 0>=y
+	jle out_o_bounds // jump if 0>=y
 
 	//TODO:: AGAIN
 	//currently r10 = address of col value --> how to access val
@@ -163,7 +163,7 @@ is_in_bounds:
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns
 	cmp %esi, (%r10d) // is x < cols
-	jge out_o_bounds // jump if x>=cols
+	jle out_o_bounds // jump if x>=cols
 
 
 	//get rows
@@ -171,7 +171,7 @@ is_in_bounds:
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of rows
 	cmp %edx, (%r10d) // is y < cols
-	jge out_o_bounds // jump if y>=cols
+	jle out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
