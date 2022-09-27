@@ -128,9 +128,9 @@ get_pix:
 	//part 1: compute location offset (y*img->cols + x)
 	movq $0, %r10 // set r10 to proper offset to access 
 	leaq (%edi), %r11 //store address of edi in r11
-	addl %r11, %r10 // add address of image to r10 --> address of columns 
+	addq %r11, %r10 // add address of image to r10 --> address of columns 
 	movl %edx, %eax
-	mull (%r10d //r10d = cols * edx = y --> y = product
+	mull (%r10d) //r10d = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
