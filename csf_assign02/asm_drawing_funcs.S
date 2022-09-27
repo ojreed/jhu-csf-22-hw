@@ -38,9 +38,9 @@
  */
 	.globl draw_pixel
 draw_pixel:
-	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	subq $8, %rsp
+	; pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	; movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	; subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -56,12 +56,12 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
-	addq $8, %rsp // restore ptr
-	popq %rbp
+	; addq $8, %rsp // restore ptr
+	; popq %rbp
 	ret
 not_in_bounds:
-	addq $8, %rsp // restore ptr
-	popq %rbp
+	; addq $8, %rsp // restore ptr
+	; popq %rbp
 	ret //stores the return address to jump back to on the stack
 
 
@@ -93,7 +93,7 @@ passed image, x,y, color
 
 	.globl set_pix
 set_pix:
-	subq $8, %rsp // re-align stack
+	; subq $8, %rsp // re-align stack
 	// img --> edi
 	// x --> esi
 	// TODO: probably change y to be stored in edx...
@@ -109,7 +109,7 @@ set_pix:
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl %ecx, (%edx)// set img->data[location] equal to color
-	addq $8, %rsp 
+	; addq $8, %rsp 
 	ret
 
 /*
@@ -120,7 +120,7 @@ Theoretically we need to pass in the image, x, y
 */
 	.globl get_pix
 get_pix:
-	subq $8, %rsp
+	; subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
 	// onto the stack in reverse order 
@@ -142,7 +142,7 @@ get_pix:
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl (%edx), %eax//return img->data[location]; 
-	addq $8, %rsp 
+	; addq $8, %rsp 
 	ret
 
 /*
@@ -154,7 +154,7 @@ returns true if that point is in the bounds of the function
 */
 	.globl is_in_bounds
 is_in_bounds:
-	subq $8, %rsp
+	; subq $8, %rsp
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
 	//check x > 0
@@ -185,7 +185,7 @@ is_in_bounds:
 
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
-	addq $8, %rsp 
+	; addq $8, %rsp 
 	ret
 out_o_bounds:
 	//return 0 False
@@ -247,7 +247,7 @@ top_loop:
 	cmpl $4, %r11d
 	jg top_loop 
   	//return final_color; value is already in %eax lol
-	addq $8, %rsp 
+	; addq $8, %rsp 
 	ret
 
 
