@@ -38,8 +38,8 @@
  */
 	.globl draw_pixel
 draw_pixel:
-	; pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	; movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	subq $8, %rsp
 	; subq $16, rsp
 	// Note: esp is the lower 32-bits of the stack ptr
@@ -57,11 +57,12 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
-	; pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	addq $8, %rsp // restore ptr
+	popq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	; addq $8, %rsp // restore ptr
 	ret
 not_in_bounds:
-	addq $8, %rsp // restore ptr
+	; addq $8, %rsp // restore ptr
+	popq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	ret //stores the return address to jump back to on the stack
 
 
