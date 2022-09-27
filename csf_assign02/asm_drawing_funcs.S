@@ -177,9 +177,9 @@ is_in_bounds:
 
 
 	//get rows
-	movq $4, %r10d // set r10 to proper offset to access 
-	; leal %edi, %r11d //store address of edi in r11
-	; addl %r11d, %r10d // add address of image to r10 --> address of rows
+	movq $4, %r10 // set r10 to proper offset to access 
+	// leal %edi, %r11d //store address of edi in r11
+	// addl %r11d, %r10d // add address of image to r10 --> address of rows
 	leaq (%rdi,%r10),%r10
 	cmp %edx, (%r10d) // is y < cols
 	jle out_o_bounds // jump if y>=cols
