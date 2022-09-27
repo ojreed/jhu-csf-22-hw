@@ -244,17 +244,24 @@ top_loop:
 
 	pushq %rax
 	movl $8, %edx // %edx = 8
-	movl %edx, %eax
+	//multiply 8 by i (8 on first iteration, 16 on 2nd)
+	movl %edx, %eax 
 	mull %r11d // %edx = (8*i)
 	movl %eax, %edx
-	movl %ecx, %r15d //move out of cx register into r15 for shift
+	//shift 8 ones into correct position
+	movl %ecx, %r15d //move 8, ones out of cx register into r15 for shift
+	//dl is 1 byte version of edx = total shift --> moved to cl to be used in shift
 	movb %dl, %cl// move value to shift by into cl
 	sall %cl, %r15d //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
-	movl %r15d, %ecx //move result back into cx
-	movl %edi, %r15d 
+	movl %r15d, %ecx //move result 8 ones shifted back into cx
+	//and 8 ones with f - edi
+	movl %edi, %r15d //move forground r15d for anding
 	andl %ecx, %r15d // value in ecx is 255 << (8*i)
+	//r15d stores anded f
+	//and 8 ones with b - esi
 	movl %esi, %r14d // %r14 now stores temp background
 	andl %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
+	//r14d stores anded b
 	movb %dl, %cl
 	shrl %cl, %r14d
 	shrl %cl, %r15d // >> (8*i), %r14 = b, %r15 = f
@@ -267,7 +274,7 @@ top_loop:
 	mull %r14d // %r12 = (255 - a)*b
 	movl %eax, %r12d
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
-	movl $0, %edx
+	//movl $0, %edx
 	movl %r12d, %eax //store r12 in eax for division
 	movl $255, %r9d
 	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
