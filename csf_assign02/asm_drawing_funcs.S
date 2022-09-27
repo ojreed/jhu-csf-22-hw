@@ -88,6 +88,7 @@ passed image, x,y, color
 
 	.globl set_pix
 set_pix:
+	subq $8, %rsp // re-align stack
 	// img --> edi
 	// x --> esi
 	// TODO: probably change y to be stored in edx...
