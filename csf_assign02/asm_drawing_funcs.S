@@ -64,7 +64,7 @@ draw_pixel:
 	pushq %rsi
 	pushq %rdx
 	pushq %rcx
-	movl %r12, %esi
+	movl %r12d, %esi
 	call blur_colors //background = blur_colors(color,background)
 	popq %rcx
 	popq %rdx
