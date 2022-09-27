@@ -132,7 +132,7 @@ Theoretically we need to pass in the image, x, y
 */
 	.globl get_pix
 get_pix:
-	/*pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	//subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
@@ -159,36 +159,6 @@ get_pix:
   	movl (%edx), %eax//return img->data[location]; 
 	//addq $8, %rsp // restore ptr
 	leave
-	*/
-	pushq   %rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq    %rsp, %rbp
-	.cfi_def_cfa_register 6
-	movq    %rdi, -24(%rbp)
-	movl    %esi, -28(%rbp)
-	movl    %edx, -32(%rbp)
-	movq    -24(%rbp), %rax
-	movl    (%rax), %eax
-	movl    %eax, -4(%rbp)
-	movl    -32(%rbp), %eax
-	imull   -4(%rbp), %eax
-	movl    %eax, %edx
-	movl    -28(%rbp), %eax
-	addl    %edx, %eax
-	movl    %eax, -8(%rbp)
-	movq    -24(%rbp), %rax
-	movq    8(%rax), %rax
-	movl    -8(%rbp), %edx
-	movslq  %edx, %rdx
-	salq    $2, %rdx
-	addq    %rdx, %rax
-	movl    (%rax), %eax
-	popq    %rbp
-	.cfi_def_cfa 7, 8
-	ret
-	.cfi_endproc
-
 
 /*
 helper function passed an image, x, y 
