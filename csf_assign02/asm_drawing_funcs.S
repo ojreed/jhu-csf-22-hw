@@ -71,15 +71,7 @@ draw_pixel:
 	popq %rdi
 	movq $0, %rcx
 	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
-	pushq %rdi
-	pushq %rsi
-	pushq %rdx
-	pushq %rcx
 	call set_pix //set_pix(img,x,y,background);
-	popq %rcx
-	popq %rdx
-	popq %rsi
-	popq %rdi
 	leave
 not_in_bounds:
 	leave
