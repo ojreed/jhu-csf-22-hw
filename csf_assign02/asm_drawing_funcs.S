@@ -40,6 +40,10 @@
 draw_pixel:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	pushl %edi
+	pushl %esi
+	pushl %edx
+	pushl %ecx
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -55,6 +59,10 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
+	popl %ecx
+	popl %edx
+	popl %esi
+	popl %edi
 	leave
 not_in_bounds:
 	leave
@@ -206,11 +214,21 @@ blur_colors:
 	andl %edi, %r10d // uint8_t a = (foreground & 255); 
 	movl $255, %eax // final_color = 255;
 
+
+	/*
+		setup vars
+		edi - forground
+		esi - background
+		ecx - 8 consecutive 1 bits
+		r11d - for loop counter
+		edx - ecx shifter
+		r13d - alpha
+	*/
 	// %r11 is the index counter
 	movl $255, %ecx // %ecx = 255
-	movl $1, %r11d // for(int i = 1; i < 4; i++) --> counter
+	movl $1, %r11d // for(int i = 1; i < 4; i++) --> counter 
 	movl $8, %edx // %edx = 8
-	movl %edi, %r13d // %r13 is a
+	movl %edi, %r13d // %r13 is alpha
 	andl %ecx, %r13d // gets first 8 bits of r13 which is the alpha value!
 
 	// loop starts here

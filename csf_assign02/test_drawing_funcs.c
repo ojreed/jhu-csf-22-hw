@@ -280,12 +280,12 @@ void test_blur_colors(TestObjs *objs) {
   uint32_t background;
   uint32_t foreground;
 
-  background = 0x000000FFU;
+  background = 0x000000FF;
   foreground = 0xFF0000FF;
   computed_color = blur_colors(foreground, background);
   ASSERT(computed_color==0xFF0000FF);
 
-  background = 0x000000FFU;
+  background = 0x000000FF;
   foreground = 0xFF0000A5;
   computed_color = blur_colors(foreground, background);
   ASSERT(computed_color==0xA50000FF);
