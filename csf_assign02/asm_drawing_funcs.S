@@ -142,7 +142,7 @@ get_pix:
 	// x --> esi
 	// y --> edx
 	//eax is return register 
-
+	/*
 	//part 1: compute location offset (y*img->cols + x)
 	movq $0, %r10 // set r10 to proper offset to access 
 	leaq (%rdi), %r11 //store address of edi in r11
@@ -156,6 +156,23 @@ get_pix:
 	movl $8, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
+	*/
+	//subq $8, %rsp // re-align stack
+	// img --> rdi
+	// x --> esi
+	// TODO: probably change y to be stored in edx...
+	// y --> rxc
+	// color --> ecx
+	movl $0, %r10d // set r10 to proper offset to access 
+	leal (%rdi), %r11d //store address of edi in r11
+	addl %r11d, %r10d // add address of image to r10 --> address of columns 
+	movl %edx, %eax
+	mull (%r10d) //r1o = cols * edx = y --> y = product
+	movl %eax, %edx
+	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
+	movl $8, %r10d // set r10 to proper offset to access data
+	addl %r11d, %r10d // add address of image to r10 --> address of data
+	addl %r10d, %edx //image offset to data + location == pixe
   	movl (%edx), %eax//return img->data[location]; 
 	//addq $8, %rsp // restore ptr
 	leave
