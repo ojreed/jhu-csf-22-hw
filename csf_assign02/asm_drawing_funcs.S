@@ -59,6 +59,7 @@ draw_pixel:
 	addq $8, %rsp // restore ptr
 	ret
 not_in_bounds:
+	addq $8, %rsp // restore ptr
 	ret //stores the return address to jump back to on the stack
 
 
