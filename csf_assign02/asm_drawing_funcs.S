@@ -97,7 +97,7 @@ set_pix:
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	imull (%r10), %edx //r1o = cols * edx = y --> y = product
+	mull (%r10d), %edx //r1o = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	movl $8, %r10d // set r10 to proper offset to access data
@@ -128,8 +128,7 @@ get_pix:
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
-	imull (%r10d), %edx //r10d = cols * edx = y --> y = product
+	mull (%r10d), %edx //r10d = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
@@ -213,22 +212,22 @@ blur_colors:
 
 	// loop starts here
 top_loop:
-	imul %r11d, %edx // %edx = (8*i)
+	mull %r11d, %edx // %edx = (8*i)
 	movl %ecx, %r15d //move out of cx register into r15 for shift
 	movb %dl, %cl// move value to shift by into cl
-	sal %cl, %r15d //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
+	sall %cl, %r15d //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
 	movl %r15d, %ecx //move result back into cx
 	movl %edi, %r15d 
-	and %ecx, %r15d // value in ecx is 255 << (8*i)
+	andl %ecx, %r15d // value in ecx is 255 << (8*i)
 	movl %esi, %r14d // %r14 now stores temp background
-	and %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
+	andl %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
 	movb %dl, %cl
 	shrl %cl, %r14d
 	shrl %cl, %r15d // >> (8*i), %r14 = b, %r15 = f
-	imul %r13d, %r15d // %r15 = a*f
+	mull %r13d, %r15d // %r15 = a*f
 	movl $255, %r12d
 	subl %r13d, %r12d // 255 - a
-	imul %r14d, %r12d // %r12 = (255 - a)*b
+	mull %r14d, %r12d // %r12 = (255 - a)*b
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
 	movl $0, %edx
 	movl %r12d, %eax //store r12 in eax for division
@@ -236,7 +235,7 @@ top_loop:
 	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
 	movb %dl, %cl
-	sal %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+	sall %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
