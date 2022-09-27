@@ -278,7 +278,7 @@ top_loop:
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
-	jg top_loop 
+	jle top_loop 
   	//return final_color; value is already in %eax lol
 	addq $8, %rsp // restore ptr
 	ret
