@@ -114,7 +114,7 @@ Theoretically we need to pass in the image, x, y
 */
 	.globl get_pix
 get_pix:
-	subq $8, %rsp
+	//subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
 	// onto the stack in reverse order 
@@ -147,7 +147,7 @@ returns true if that point is in the bounds of the function
 */
 	.globl is_in_bounds
 is_in_bounds:
-	subq $8, %rsp
+	//subq $8, %rsp
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
 	//check x > 0
@@ -190,7 +190,7 @@ returns blurring of those two colors
 */
 	.globl blur_colors
 blur_colors:
-	subq $8, %rsp
+	//subq $8, %rsp
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
 	// esi --> background
