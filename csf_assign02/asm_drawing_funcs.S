@@ -40,7 +40,6 @@
 draw_pixel:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	//subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -56,17 +55,9 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
-	// mov %rsp, %rbp
-  	//pop %rbp
-	//addq $8, %rsp // restore ptr
 	leave
 not_in_bounds:
-	//addq $8, %rsp // restore ptr
 	leave
-	// addq $8, %rsp // restore ptr
-	// mov %rsp,%rbp
-  	// pop %rbp
-	// ret //stores the return address to jump back to on the stack
 
 
 
@@ -138,7 +129,7 @@ get_pix:
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	//TODO ISSUE: r10 is an addres and below we want the value stored at addres
-	imull (%r10d), %edx //r1o = cols * edx = y --> y = product
+	imull (%r10d), %edx //r10d = cols * edx = y --> y = product
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
