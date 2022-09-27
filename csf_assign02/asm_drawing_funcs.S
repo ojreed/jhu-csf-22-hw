@@ -56,6 +56,14 @@ draw_pixel:
 	// %eax is for return values (from funcs)
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
+	popq %rcx
+	popq %rdx
+	popq %rsi
+	popq %rdi
+	pushq %rdi
+	pushq %rsi
+	pushq %rdx
+	pushq %rcx
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
