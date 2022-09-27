@@ -38,6 +38,7 @@
  */
 	.globl draw_pixel
 draw_pixel:
+	subq $8, %rsp
 	; pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	; movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	// Note: esp is the lower 32-bits of the stack ptr
