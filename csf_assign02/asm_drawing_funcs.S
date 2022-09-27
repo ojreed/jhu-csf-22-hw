@@ -132,7 +132,7 @@ get_pix:
 	// addl %r11d, %r10d // add address of image to r10 --> address of columns
 	leaq (%rdi,%r10),%r10 
 	movl %edx, %eax
-	mull (%r10d) //r10d = cols * edx = y --> y = product
+	mull (%r10) //r10d = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
@@ -172,7 +172,7 @@ is_in_bounds:
 	//leal %edi, %r11d //store address of edi in r11
 	//addl %r11d, %r10d // add address of image to r10 --> address of columns
 	leaq (%rdi,%r10),%r10
-	cmp %esi, (%r10d) // is x < cols
+	cmp %esi, (%r10) // is x < cols
 	jle out_o_bounds // jump if x>=cols
 
 
@@ -181,7 +181,7 @@ is_in_bounds:
 	// leal %edi, %r11d //store address of edi in r11
 	// addl %r11d, %r10d // add address of image to r10 --> address of rows
 	leaq (%rdi,%r10),%r10
-	cmp %edx, (%r10d) // is y < cols
+	cmp %edx, (%r10) // is y < cols
 	jle out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
