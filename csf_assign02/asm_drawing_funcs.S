@@ -234,7 +234,7 @@ blur_colors:
 	// loop starts here
 top_loop:
 
-	pushl %eax
+	pushq %rax
 	movl %edx, %eax
 	mull %r11d // %edx = (8*i)
 	movl %eax, %edx
@@ -265,7 +265,7 @@ top_loop:
 	movl %eax, %r12d //move eax back to r12
 	movb %dl, %cl
 	sall %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
-	popl %eax
+	popq %rax
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
