@@ -41,7 +41,7 @@ draw_pixel:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	; subq $8, %rsp
-	subq $128, rsp
+	subq $16, rsp
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -58,7 +58,7 @@ draw_pixel:
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
 	; pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	addq $8, %rsp // restore ptr
+	addq $16, %rsp // restore ptr
 	ret
 not_in_bounds:
 	addq $8, %rsp // restore ptr
