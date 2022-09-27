@@ -65,7 +65,7 @@ draw_pixel:
 	pushq %rdx
 	pushq %rcx
 	call blur_colors //background = blur_colors(color,background)
-	movl %ecx, %rax //rbp will be where we store the return val of blur_colors
+	movl %ecx, %eax //rbp will be where we store the return val of blur_colors
 	call set_pix //set_pix(img,x,y,background);
 	popq %rcx
 	popq %rdx
