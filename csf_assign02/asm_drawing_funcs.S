@@ -242,7 +242,7 @@ blur_colors:
 	// loop starts here
 top_loop:
 
-	pushq %rax
+	pushq %rax//store final in stack
 	movl $8, %edx // %edx = 8
 	//multiply 8 by i (8 on first iteration, 16 on 2nd)
 	movl %edx, %eax 
@@ -262,26 +262,32 @@ top_loop:
 	movl %esi, %r14d // %r14 now stores temp background
 	andl %ecx, %r14d //b = ((background & (255U << (8*i))) >> (8*i));
 	//r14d stores anded b
-	movb %dl, %cl
-	shrl %cl, %r14d
-	shrl %cl, %r15d // >> (8*i), %r14 = b, %r15 = f
-	movl %r15d, %eax
+	movb %dl, %cl //dl is 1 byte version of edx = total shift --> moved to cl to be used in shift
+	shrl %cl, %r14d // >> (8*i), %r14 = b
+	shrl %cl, %r15d // >> (8*i), %r15 = f
+	//multiply f * alpha
+	movl %r15d, %eax //setup mult
 	mull %r13d // %r15 = a*f
-	movl %eax, %r15d
-	movl $255, %r12d
-	subl %r13d, %r12d // 255 - a
-	movl %r12d, %eax
-	mull %r14d // %r12 = (255 - a)*b
-	movl %eax, %r12d
+	movl %eax, %r15d //finish mult
+	//subtract 255 - alpha
+	movl $255, %r12d //setup add
+	subl %r13d, %r12d // 255 - a = r12d
+	//multiply 255 - a by b
+	movl %r12d, %eax //setup mult
+	mull %r14d // %eax = (255 - a)*b
+	movl %eax, %r12d //r12 = eax = result of  (255 - a)*b
+	// add two halfs of equation  %r15 = a*f r12 = (255 - a)*b
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
 	//movl $0, %edx
+	//divide (a*f + (255 - a)*b)) by 255
 	movl %r12d, %eax //store r12 in eax for division
 	movl $255, %r9d
 	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
-	movb %dl, %cl
-	sall %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
-	popq %rax
+	//shift left resulting color chanel back in place with 8*i
+	movb %dl, %cl //put 8*i into shifter
+	sall %cl, %r12d // %r12 = ((a*f + (255 - a)*b)/255) << (8*i)
+	popq %rax // remove stored final sum from stack
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
