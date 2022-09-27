@@ -105,13 +105,13 @@ passed image, x,y, color
 	.globl set_pix
 set_pix:
 	subq $8, %rsp // re-align stack
-	// img --> edi
+	// img --> rdi
 	// x --> esi
 	// TODO: probably change y to be stored in edx...
 	// y --> rxc
 	// color --> ecx
 	movl $0, %r10d // set r10 to proper offset to access 
-	leal (%edi), %r11d //store address of edi in r11
+	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
 	movl %edx, %eax
 	mull (%r10d) //r1o = cols * edx = y --> y = product
@@ -143,7 +143,7 @@ get_pix:
 
 	//part 1: compute location offset (y*img->cols + x)
 	movq $0, %r10 // set r10 to proper offset to access 
-	leaq (%edi), %r11 //store address of edi in r11
+	leaq (%rdi), %r11 //store address of edi in r11
 	addq %r11, %r10 // add address of image to r10 --> address of columns 
 	movl %edx, %eax
 	mull (%r10d) //r10d = cols * edx = y --> y = product
@@ -183,7 +183,7 @@ is_in_bounds:
 
 	//get cols
 	movl $0, %r10d // set r10 to proper offset to access 
-	leal (%edi), %r11d //store address of edi in r11
+	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns
 	cmp %esi, (%r10d) // is x < cols
 	jle out_o_bounds // jump if x>=cols
@@ -191,7 +191,7 @@ is_in_bounds:
 
 	//get rows
 	movl $4, %r10d // set r10 to proper offset to access 
-	leal (%edi), %r11d //store address of edi in r11
+	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of rows
 	cmp %edx, (%r10d) // is y < cols
 	jle out_o_bounds // jump if y>=cols
