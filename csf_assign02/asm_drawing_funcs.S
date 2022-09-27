@@ -127,9 +127,10 @@ get_pix:
 	//eax is return register 
 
 	//part 1: compute location offset (y*img->cols + x)
-	movl $0, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of columns 
+	movq $0, %r10 // set r10 to proper offset to access 
+	//leal %edi, %r11d //store address of edi in r11
+	// addl %r11d, %r10d // add address of image to r10 --> address of columns
+	leaq (%rdi,%r10),%r10 
 	movl %edx, %eax
 	mull (%r10d) //r10d = cols * edx = y --> y = product
 	movl %eax, %edx
@@ -167,17 +168,19 @@ is_in_bounds:
 	//currently r10 = address of col value --> how to access val
 
 	//get cols
-	movl $0, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of columns
+	movq $0, %r10 // set r10 to proper offset to access 
+	//leal %edi, %r11d //store address of edi in r11
+	//addl %r11d, %r10d // add address of image to r10 --> address of columns
+	leaq (%rdi,%r10),%r10
 	cmp %esi, (%r10d) // is x < cols
 	jle out_o_bounds // jump if x>=cols
 
 
 	//get rows
-	movl $4, %r10d // set r10 to proper offset to access 
-	leal %edi, %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of rows
+	movq $4, %r10d // set r10 to proper offset to access 
+	; leal %edi, %r11d //store address of edi in r11
+	; addl %r11d, %r10d // add address of image to r10 --> address of rows
+	leaq (%rdi,%r10),%r10
 	cmp %edx, (%r10d) // is y < cols
 	jle out_o_bounds // jump if y>=cols
 
