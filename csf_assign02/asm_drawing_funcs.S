@@ -132,7 +132,7 @@ Theoretically we need to pass in the image, x, y
 */
 	.globl get_pix
 get_pix:
-	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	/*pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	//subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
@@ -142,7 +142,7 @@ get_pix:
 	// x --> esi
 	// y --> edx
 	//eax is return register 
-	/*
+
 	//part 1: compute location offset (y*img->cols + x)
 	movq $0, %r10 // set r10 to proper offset to access 
 	leaq (%rdi), %r11 //store address of edi in r11
@@ -156,26 +156,39 @@ get_pix:
 	movl $8, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
-	*/
-	//subq $8, %rsp // re-align stack
-	// img --> rdi
-	// x --> esi
-	// TODO: probably change y to be stored in edx...
-	// y --> rxc
-	// color --> ecx
-	movl $0, %r10d // set r10 to proper offset to access 
-	leal (%rdi), %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	movl %edx, %eax
-	mull (%r10d) //r1o = cols * edx = y --> y = product
-	movl %eax, %edx
-	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl $8, %r10d // set r10 to proper offset to access data
-	addl %r11d, %r10d // add address of image to r10 --> address of data
-	addl %r10d, %edx //image offset to data + location == pixe
   	movl (%edx), %eax//return img->data[location]; 
 	//addq $8, %rsp // restore ptr
 	leave
+	*/
+	pushq   %rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq    %rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq    %rdi, -24(%rbp)
+	movl    %esi, -28(%rbp)
+	movl    %edx, -32(%rbp)
+	movq    -24(%rbp), %rax
+	movl    (%rax), %eax
+	movl    %eax, -4(%rbp)
+	movl    -32(%rbp), %eax
+	imull   -4(%rbp), %eax
+	movl    %eax, %edx
+	movl    -28(%rbp), %eax
+	addl    %edx, %eax
+	movl    %eax, -8(%rbp)
+	movq    -24(%rbp), %rax
+	movq    8(%rax), %rax
+	movl    -8(%rbp), %edx
+	movslq  %edx, %rdx
+	salq    $2, %rdx
+	addq    %rdx, %rax
+	movl    (%rax), %eax
+	popq    %rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
 
 /*
 helper function passed an image, x, y 
