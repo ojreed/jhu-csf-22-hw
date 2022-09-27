@@ -293,8 +293,8 @@ top_loop:
 	popq %rax // remove stored final sum from stack
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
-	cmpl $4, %r11d
-	jl top_loop 
+	cmpl $3, %r11d
+	jle top_loop 
   	//return final_color; value is already in %eax lol
 	addq $8, %rsp // restore ptr
 	leave
