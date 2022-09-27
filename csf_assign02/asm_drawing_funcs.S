@@ -57,11 +57,9 @@ draw_pixel:
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
 	addq $8, %rsp // restore ptr
-	popq %rbp
 	ret
 not_in_bounds:
 	addq $8, %rsp // restore ptr
-	popq %rbp
 	ret //stores the return address to jump back to on the stack
 
 
@@ -112,7 +110,6 @@ set_pix:
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl %ecx, (%edx)// set img->data[location] equal to color
 	addq $8, %rsp 
-	popq %rbp
 	ret
 
 /*
@@ -148,7 +145,6 @@ get_pix:
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl (%edx), %eax//return img->data[location]; 
 	addq $8, %rsp
-	popq %rbp 
 	ret
 
 /*
@@ -194,13 +190,11 @@ is_in_bounds:
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
 	addq $8, %rsp 
-	popq %rbp
 	ret
 out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
 	addq $8, %rsp
-	popq %rbp 
 	ret
 
 /*
@@ -260,7 +254,6 @@ top_loop:
 	jg top_loop 
   	//return final_color; value is already in %eax lol
 	addq $8, %rsp 
-	popq %rbp
 	ret
 
 
