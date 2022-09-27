@@ -66,14 +66,6 @@ draw_pixel:
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
-	popq %rcx
-	popq %rdx
-	popq %rsi
-	popq %rdi
-	pushq %rdi
-	pushq %rsi
-	pushq %rdx
-	pushq %rcx
 	call set_pix //set_pix(img,x,y,background);
 	popq %rcx
 	popq %rdx
