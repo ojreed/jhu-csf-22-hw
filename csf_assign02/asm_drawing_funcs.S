@@ -56,11 +56,12 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
-	popq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	addq $8, %rsp // restore ptr
+	popq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	ret
 not_in_bounds:
 	addq $8, %rsp // restore ptr
+	popq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	ret //stores the return address to jump back to on the stack
 
 
