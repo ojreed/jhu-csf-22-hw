@@ -89,16 +89,17 @@ passed image, x,y, color
 	.globl set_pix
 set_pix:
 	subq $8, %rsp // re-align stack
-	// img --> rdi
+	// img --> edi
 	// x --> esi
 	// TODO: probably change y to be stored in edx...
-	// y --> rxc
+	// y --> edx
 	// color --> ecx
-	movl $0, %r10d // set r10 to proper offset to access 
-	leaq %rdi, %r11 //store address of edi in r11
-	addq %r11, %r10 // add address of image to r10 --> address of columns 
+	movq $0, %r10 // set r10 to proper offset to access 
+	//leaq %rdi, %r11 //store address of edi in r11
+	//addq %r11, %r10 // add address of image to r10 --> address of columns 
+	leaq (%rdi,%r10),%r10
 	movl %edx, %eax
-	mull (%r10d) //r1o = cols * edx = y --> y = product
+	mull (%r10) //r1o = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl $8, %r10d // set r10 to proper offset to access data
