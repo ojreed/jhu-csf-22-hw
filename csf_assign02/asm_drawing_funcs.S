@@ -54,14 +54,6 @@ draw_pixel:
 	// x --> esi
 	// y --> rxc
 	// %eax is for return values (from funcs)
-	popq %rcx
-	popq %rdx
-	popq %rsi
-	popq %rdi
-	pushq %rdi
-	pushq %rsi
-	pushq %rdx
-	pushq %rcx
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	call blur_colors //background = blur_colors(color,background)
@@ -242,7 +234,7 @@ blur_colors:
 	// loop starts here
 top_loop:
 
-
+	pushl %eax
 	movl %edx, %eax
 	mull %r11d // %edx = (8*i)
 	movl %eax, %edx
@@ -273,6 +265,7 @@ top_loop:
 	movl %eax, %r12d //move eax back to r12
 	movb %dl, %cl
 	sall %cl, %r12d // %r12 ((a*f + (255 - a)*b)/255) << (8*i)
+	popl %eax
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
