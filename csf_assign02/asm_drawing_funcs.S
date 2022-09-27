@@ -66,6 +66,10 @@ draw_pixel:
 	pushq %rdx
 	pushq %rcx
 	movl %r12d, %esi
+	/*
+	need to fix/find a good way to input function inputs --> MR CA PLEASE HELP --> 
+		I realize this part is def messed up in a bad way
+	*/
 	call blur_colors //background = blur_colors(color,background)
 	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
 	call set_pix //set_pix(img,x,y,background);
