@@ -245,6 +245,7 @@ blur_colors:
 top_loop:
 
 	pushq %rax//store final in stack
+	movl $255, %ecx // %ecx = 255
 	movl $8, %edx // %edx = 8
 	//multiply 8 by i (8 on first iteration, 16 on 2nd)
 	movl %edx, %eax 
@@ -287,7 +288,7 @@ top_loop:
 	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
 	//shift left resulting color chanel back in place with 8*i
-	movb %dl, %cl //put 8*i into shifter
+	//movb %dl, %cl //put 8*i into shifter
 	sall %cl, %r12d // %r12 = ((a*f + (255 - a)*b)/255) << (8*i)
 	popq %rax // remove stored final sum from stack
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
