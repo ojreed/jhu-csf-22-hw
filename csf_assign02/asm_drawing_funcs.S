@@ -212,6 +212,8 @@ returns blurring of those two colors
 */
 	.globl blur_colors
 blur_colors:
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	subq $8, %rsp
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
@@ -291,10 +293,10 @@ top_loop:
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $4, %r11d
-	jle top_loop 
+	jl top_loop 
   	//return final_color; value is already in %eax lol
 	addq $8, %rsp // restore ptr
-	ret
+	leave
 
 
 /*
