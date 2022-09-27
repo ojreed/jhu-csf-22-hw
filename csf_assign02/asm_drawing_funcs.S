@@ -97,9 +97,10 @@ set_pix:
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	mull (%r10d), %edx //r1o = cols * edx = y --> y = product
+	movl %edx, %rax
+	mull (%r10d) //r1o = cols * edx = y --> y = product
+	movl %rax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-
 	movl $8, %r10d // set r10 to proper offset to access data
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
@@ -128,7 +129,9 @@ get_pix:
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%edi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	mull (%r10d), %edx //r10d = cols * edx = y --> y = product
+	movl %edx, %rax
+	mull (%r10d) //r10d = cols * edx = y --> y = product
+	movl %rax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 
 	//part 2: access ofset location of img (img + offset)
@@ -212,7 +215,11 @@ blur_colors:
 
 	// loop starts here
 top_loop:
-	mull %r11d, %edx // %edx = (8*i)
+
+
+	movl %edx, %rax
+	mull %r11d // %edx = (8*i)
+	movl %rax, %edx
 	movl %ecx, %r15d //move out of cx register into r15 for shift
 	movb %dl, %cl// move value to shift by into cl
 	sall %cl, %r15d //f = ((foreground & (255U << (8*i))) >> (8*i)); shift!
@@ -224,10 +231,14 @@ top_loop:
 	movb %dl, %cl
 	shrl %cl, %r14d
 	shrl %cl, %r15d // >> (8*i), %r14 = b, %r15 = f
-	mull %r13d, %r15d // %r15 = a*f
+	movl %r15d, %rax
+	mull %r13d // %r15 = a*f
+	movl %rax, %r15d
 	movl $255, %r12d
 	subl %r13d, %r12d // 255 - a
-	mull %r14d, %r12d // %r12 = (255 - a)*b
+	movl %r12d, %rax
+	mull %r14d // %r12 = (255 - a)*b
+	movl %rax, %r12d
 	addl %r15d, %r12d // %r12 = (a*f + (255 - a)*b))
 	movl $0, %edx
 	movl %r12d, %eax //store r12 in eax for division
