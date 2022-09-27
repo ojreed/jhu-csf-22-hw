@@ -99,16 +99,16 @@ int main(int argc, char **argv) {
   TEST_INIT();
 
   // TODO: add TEST() directives for your helper functions
-  // TEST(test_draw_pixel);
+  TEST(test_draw_pixel);
   //TEST(test_draw_rect);
   //TEST(test_draw_circle);
   //TEST(test_draw_circle_clip);
   //TEST(test_draw_tile);
   //TEST(test_draw_sprite);
   TEST(test_blur_colors);
-  // TEST(test_get_pix);
-  // TEST(test_set_pix);
-  // TEST(test_is_in_bounds);
+  TEST(test_get_pix);
+  TEST(test_set_pix);
+  TEST(test_is_in_bounds);
   //TEST(test_rec_in_bounds);
   //TEST(test_put_pixel);
 

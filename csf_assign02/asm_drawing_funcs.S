@@ -298,6 +298,7 @@ top_loop:
   	//return final_color; value is already in %eax lol
 	addq $8, %rsp // restore ptr
 	leave
+	ret
 
 
 /*
