@@ -70,7 +70,7 @@ draw_pixel:
 	popq %rsi
 	popq %rdi
 	movq $0, %rcx
-	movl %rax, %ecx //rbp will be where we store the return val of blur_colors
+	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
 	pushq %rdi
 	pushq %rsi
 	pushq %rdx
