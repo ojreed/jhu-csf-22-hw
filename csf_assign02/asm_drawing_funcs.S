@@ -58,7 +58,7 @@ draw_pixel:
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
 	; pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	addq $16, %rsp // restore ptr
+	addq $8, %rsp // restore ptr
 	ret
 not_in_bounds:
 	addq $8, %rsp // restore ptr
