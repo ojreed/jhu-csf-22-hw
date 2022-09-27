@@ -132,7 +132,9 @@ Theoretically we need to pass in the image, x, y
 */
 	.globl get_pix
 get_pix:
-	subq $8, %rsp
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	//subq $8, %rsp
 	// Note: esp is the lower 32-bits of the stack ptr
 	// Note: let's use the stack method for params, the calling program will push stuff
 	// onto the stack in reverse order 
@@ -155,8 +157,8 @@ get_pix:
 	addl %r11d, %r10d // add address of image to r10 --> address of data
 	addl %r10d, %edx //image offset to data + location == pixel address
   	movl (%edx), %eax//return img->data[location]; 
-	addq $8, %rsp // restore ptr
-	ret
+	//addq $8, %rsp // restore ptr
+	leave
 
 /*
 helper function passed an image, x, y 
@@ -214,7 +216,7 @@ returns blurring of those two colors
 blur_colors:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	subq $8, %rsp
+	//subq $8, %rsp
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
 	// esi --> background
@@ -296,9 +298,9 @@ top_loop:
 	cmpl $3, %r11d
 	jle top_loop 
   	//return final_color; value is already in %eax lol
-	addq $8, %rsp // restore ptr
+	//addq $8, %rsp // restore ptr
 	leave
-	ret
+	//ret
 
 
 /*
