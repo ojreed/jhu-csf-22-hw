@@ -56,6 +56,7 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %r12d, %eax //rbp will be where we store the return val of blu_colors
 	call set_pix //set_pix(img,x,y,background);
+	addq $8, %rsp // restore ptr
 	ret
 not_in_bounds:
 	ret //stores the return address to jump back to on the stack
