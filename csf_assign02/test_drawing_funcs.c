@@ -355,6 +355,9 @@ void test_bounds_edge(TestObjs *objs) {
   ASSERT(0 == result);
   result = is_in_bounds(&objs->small, -6.55555555555555, 4);
   ASSERT(0 == result);
+
+  draw_pixel(&objs->small, -5, -4.7777777777777, 0xFF0000FF); // maybe this will segfault
+  draw_pixel(&objs->small, 100000000000, -2, 0xFF0000FF);
 }
 
 void test_rec_in_bounds(TestObjs *objs) {
