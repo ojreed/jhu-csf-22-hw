@@ -189,7 +189,7 @@ get_pix:
 	mull (%r10d) //r1o = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl $3, %r10d // set r10 to proper offset to access data
+	movl $4, %r10d // set r10 to proper offset to access data
 	movl (%r11d,%r10d,4), %eax 
 	addq $8, %rsp // restore ptr
 	ret
