@@ -187,7 +187,9 @@ returns true if that point is in the bounds of the function
 */
 	.globl is_in_bounds
 is_in_bounds:
-	subq $8, %rsp
+	//subq $8, %rsp
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	
 	//check x > 0
@@ -208,12 +210,14 @@ is_in_bounds:
 
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
-	addq $8, %rsp // restore ptr
+	//addq $8, %rsp // restore ptr
+	popq %rsp
 	ret
 out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
-	addq $8, %rsp // restore ptr
+	//addq $8, %rsp // restore ptr
+	popq %rsp
 	ret
 
 /*
