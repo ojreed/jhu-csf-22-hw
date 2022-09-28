@@ -157,7 +157,7 @@ set_pix:
 	mull (%r10d) //r1o = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl $8, %r10d // set r10 to proper offset to access data
+	movl $3, %r10d // set r10 to proper offset to access data
 	movl (%r11d,%r10d,4), %eax 
 	movl %ecx, %eax
 	addq $8, %rsp // restore ptr
@@ -181,7 +181,6 @@ get_pix:
 	// x --> esi
 	// y --> edx
 	//eax is return register 
-
 	//part 1: compute location offset (y*img->cols + x)
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
@@ -190,7 +189,7 @@ get_pix:
 	mull (%r10d) //r1o = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl $8, %r10d // set r10 to proper offset to access data
+	movl $3, %r10d // set r10 to proper offset to access data
 	movl (%r11d,%r10d,4), %eax 
 	addq $8, %rsp // restore ptr
 	ret
