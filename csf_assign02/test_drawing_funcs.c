@@ -87,7 +87,6 @@ void test_blur_colors(TestObjs *objs);
 void test_get_pix(TestObjs *objs);
 void test_set_pix(TestObjs *objs);
 void test_is_in_bounds(TestObjs *objs);
-void test_draw_pixel_2(TestObjs *objs);
 //void test_rec_in_bounds(TestObjs *objs);
 //void test_put_pixel(TestObjs *objs);
 
@@ -110,7 +109,6 @@ int main(int argc, char **argv) {
   TEST(test_get_pix);
   TEST(test_set_pix);
   TEST(test_is_in_bounds);
-  TEST(test_draw_pixel_2);
   //TEST(test_rec_in_bounds);
   //TEST(test_put_pixel);
 
@@ -133,16 +131,6 @@ void test_draw_pixel(TestObjs *objs) {
   ASSERT(objs->small.data[SMALL_IDX(3, 2)] == 0x7F8000FF);
   draw_pixel(&objs->small, 4, 2, 0x0000FF40); // 1/4-opaque full-intensity blue
   ASSERT(objs->small.data[SMALL_IDX(4, 2)] == 0x000040FF);
-}
-
-void test_draw_pixel_2(TestObjs *objs) {
-  // initially objs->small pixels are opaque black
-  draw_pixel(&objs->small, -1, 0, 0xFF0000FF); // should not work
-  draw_pixel(&objs->small, 8, 6, 0xFF0000FF); // opaque red
-  draw_pixel(&objs->small, 8, 6, 0xFF4400FF); 
-  draw_pixel(&objs->small, 8, 6, 0xFC0300FF); 
-  draw_pixel(&objs->small, 8, 6, 0xFF07C0FF); 
-  ASSERT(objs->small.data[SMALL_IDX(8, 6)] == 0xFF07C0FF);
 }
 
 void test_draw_rect(TestObjs *objs) {
