@@ -45,9 +45,9 @@ draw_pixel:
 	pushq %rdx //store y
 	pushq %rcx //store color
 	// Note: esp is the lower 32-bits of the stack ptr
-	movq -32(%rbp), %rdi //set img
-	movq -24(%rbp), %rsi //set x
-	movq -16(%rbp), %rdx //set y
+	movq -4(%rbp), %rdi //set img
+	movq -3(%rbp), %rsi //set x
+	movq -2(%rbp), %rdx //set y
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
 	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
