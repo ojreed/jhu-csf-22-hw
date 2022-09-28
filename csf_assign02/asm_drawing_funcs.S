@@ -209,11 +209,11 @@ is_in_bounds:
 	
 	//check x > 0
 	cmp $0, %esi // is 0<x
-	jle out_o_bounds // jump if 0>=x
+	jl out_o_bounds // jump if 0>=x
 
 	//check y>0
 	cmp $0, %edx // is 0<y
-	jle out_o_bounds // jump if 0>=y
+	jl out_o_bounds // jump if 0>=y
 
 	//TODO:: AGAIN
 	//currently r10 = address of col value --> how to access val
