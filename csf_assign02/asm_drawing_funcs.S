@@ -79,6 +79,10 @@ draw_pixel:
 	popq %rdi
 	leave
 not_in_bounds:
+	popq %rcx
+	popq %rdx
+	popq %rsi
+	popq %rdi
 	leave
 
 
