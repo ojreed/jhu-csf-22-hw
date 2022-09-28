@@ -133,6 +133,16 @@ void test_draw_pixel(TestObjs *objs) {
   ASSERT(objs->small.data[SMALL_IDX(4, 2)] == 0x000040FF);
 }
 
+void test_draw_pixel_2(TestObjs *objs) {
+  // initially objs->small pixels are opaque black
+  draw_pixel(&objs->small, -1, 0, 0xFF0000FF); // should not work
+  draw_pixel(&objs->small, 8, 6, 0xFF0000FF); // opaque red
+  draw_pixel(&objs->small, 8, 6, 0xFF4400FF); 
+  draw_pixel(&objs->small, 8, 6, 0xFC0300FF); 
+  draw_pixel(&objs->small, 8, 6, 0xFF07C0FF); 
+  ASSERT(objs->small.data[SMALL_IDX(8, 6)] == 0xFF07C0FF);
+}
+
 void test_draw_rect(TestObjs *objs) {
   struct Rect red_rect = { .x = 2, .y = 2, .width=3, .height=3 };
   struct Rect blue_rect = { .x = 3, .y = 3, .width=3, .height=3 };
