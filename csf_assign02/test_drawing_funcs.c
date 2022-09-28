@@ -318,6 +318,8 @@ void test_get_pix(TestObjs *objs) {
   uint32_t expected_color = lookup_color(c, expected.colors);
   uint32_t actual_color = img1->data[0];
   ASSERT(actual_color == expected_color);
+  // printf("%lu",expected_color);
+  // printf("%lu",get_pix(img1, 0, 0));
   ASSERT(expected_color == get_pix(img1, 0, 0));
 }
 

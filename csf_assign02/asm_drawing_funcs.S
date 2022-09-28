@@ -134,6 +134,9 @@ passed image, x,y, color
 
 	.globl set_pix
 set_pix:
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	//subq $8, %rsp // re-align stack
 	// img --> rdi
 	// x --> esi
 	// y --> rxc
@@ -147,9 +150,10 @@ set_pix:
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d
-	movl (%r10d,%edx,4), %eax 
-	movl %ecx, %eax
-	addq $8, %rsp // restore ptr
+	leal (%r10d,%edx,4), %eax 
+	movl %ecx, (%eax)
+	//addq $8, %rsp // restore ptr
+	popq %rbp //fix stack
 	ret
 
 /*
@@ -175,7 +179,8 @@ get_pix:
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d
 	movl (%r10d,%edx,4), %eax 
-	addq $8, %rsp // restore ptr
+	//addq $8, %rsp // restore ptr
+	popq %rbp //fix stack
 	ret
 
 /*
@@ -193,7 +198,7 @@ is_in_bounds:
 	cmp $0, %esi // is 0<x
 	jle out_o_bounds // jump if 0>=x
 	cmp $0, %edx // is 0<y
-	jle out_o_bounds // jump if 0>=y
+	jl out_o_bounds // jump if 0>=y
 
 	cmp %esi, (%rdi) // is x < cols
 	jle out_o_bounds // jump if x>=cols
