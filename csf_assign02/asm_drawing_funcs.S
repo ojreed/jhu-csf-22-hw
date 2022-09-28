@@ -46,7 +46,7 @@ draw_pixel:
 	pushq %rcx //store color
 	// Note: esp is the lower 32-bits of the stack ptr
 	leaq (%rbp), %rdi //set img
-	leaq 192(%rbp), (%rsi) //set x
+	leaq 192(%rbp), %rsi //set x
 	leaq 128(%rbp), %rdx //set y
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
