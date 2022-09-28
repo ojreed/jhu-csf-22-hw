@@ -159,7 +159,7 @@ set_pix:
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl $8, %r10d // set r10 to proper offset to access data
-	movl (base, index,4), %eax 
+	movl (base,index,4), %eax 
 	addq $8, %rsp // restore ptr
 	ret
 
@@ -193,7 +193,7 @@ get_pix:
 
 	//part 2: access ofset location of img (img + offset)
 	movl $8, %r10d // set r10 to proper offset to access data
-	movl (base, index,4), %eax 
+	movl (base,index,4), %eax 
 	//addq $8, %rsp // restore ptr
 	popq %rbp 
 	ret
