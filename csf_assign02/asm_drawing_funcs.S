@@ -183,9 +183,17 @@ get_pix:
 	//eax is return register 
 
 	//part 1: compute location offset (y*img->cols + x)
+	/*
 	movq $0, %r10 // set r10 to proper offset to access 
 	leaq (%rdi), %r11 //store address of edi in r11
 	addq %r11, %r10 // add address of image to r10 --> address of columns 
+	movl %edx, %eax
+	mull (%r10d) //r10d = cols * edx = y --> y = product
+	movl %eax, %edx
+	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
+	*/
+	movl (%rdi), %r10d //stores image with offset zero
+	//cols times y
 	movl %edx, %eax
 	mull (%r10d) //r10d = cols * edx = y --> y = product
 	movl %eax, %edx
