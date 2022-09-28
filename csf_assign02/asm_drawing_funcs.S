@@ -38,19 +38,17 @@
  */
 	.globl draw_pixel
 draw_pixel:
+	// img --> edi
+	// x --> esi
+	// y --> rxc
+	// col --> ecx
+	// %eax is for return values (from funcs)
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	pushq %rdi //store image
 	pushq %rsi //store x
 	pushq %rdx //store y
 	pushq %rcx //store color
-	// Note: esp is the lower 32-bits of the stack ptr
-	/*
-	leaq (%rbp), %r10
-	movq 256(%r10), %rdi //set img
-	movq 192(%r10), %rsi //set x
-	movq 128(%rbp), %rdx //set y
-	*/
 	popq %rcx //remove color
 	popq %rdx //remove y
 	popq %rsi //remove x
@@ -62,13 +60,6 @@ draw_pixel:
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
 	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
-	//TODO: ADD func params to registers 
-	//NEED: img, x, y --> edi esi edx ecx r8d r9d
-	// img --> edi
-	// x --> esi
-	// y --> rxc
-	// col --> ecx
-	// %eax is for return values (from funcs)
 	popq %rcx //remove color
 	popq %rdx //remove y
 	popq %rsi //remove x
@@ -89,8 +80,6 @@ draw_pixel:
 	pushq %rcx //store color
 	movl %r12d, %esi //set b
 	movl %ecx, %edi //set b
-	//esi = b
-	//edi = f
 	call blur_colors //background = blur_colors(color,background)
 	popq %rcx //remove color
 	popq %rdx //remove y
@@ -145,13 +134,12 @@ passed image, x,y, color
 
 	.globl set_pix
 set_pix:
-	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	//subq $8, %rsp // re-align stack
 	// img --> rdi
 	// x --> esi
 	// y --> rxc
 	// color --> ecx
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
@@ -162,7 +150,6 @@ set_pix:
 	movl 8(%edi), %r10d
 	leal (%r10d,%edx,4), %eax 
 	movl %ecx, (%eax)
-	//addq $8, %rsp // restore ptr
 	popq %rbp //fix stack
 	ret
 
@@ -172,18 +159,13 @@ Theoretically we need to pass in the image, x, y
 */
 	.globl get_pix
 get_pix:
-	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	//subq $8, %rsp
-	// Note: esp is the lower 32-bits of the stack ptr
-	// Note: let's use the stack method for params, the calling program will push stuff
-	// onto the stack in reverse order 
 	// img --> edi
 	// x --> esi
 	// y --> edx
 	//eax is return register 
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	//part 1: compute location offset (y*img->cols + x)
-	
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
@@ -193,7 +175,6 @@ get_pix:
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d
 	movl (%r10d,%edx,4), %eax 
-	//addq $8, %rsp // restore ptr
 	popq %rbp //fix stack
 	ret
 
@@ -217,21 +198,11 @@ is_in_bounds:
 	cmp $0, %edx // is 0<y
 	jl out_o_bounds // jump if 0>=y
 
-	//TODO:: AGAIN
-	//currently r10 = address of col value --> how to access val
-
 	//get cols
-	//movl $0, %r10d // set r10 to proper offset to access 
-	//leal (%rdi), %r11d //store address of edi in r11
-	//addl %r11d, %r10d // add address of image to r10 --> address of columns
 	cmp %esi, (%rdi) // is x < cols
 	jle out_o_bounds // jump if x>=cols
 
-
 	//get rows
-	//movl $4, %r10d // set r10 to proper offset to access 
-	//leal (%rdi), %r11d //store address of edi in r11
-	//addl %r11d, %r10d // add address of image to r10 --> address of rows
 	cmp %edx, (%rdi) // is y < cols
 	jle out_o_bounds // jump if y>=cols
 
@@ -253,26 +224,13 @@ returns blurring of those two colors
 blur_colors:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	//subq $8, %rsp
 	// uint32_t final_color; will store final_color in %eax, return register
 	// edi --> foreground
 	// esi --> background
-	// uint32_t f; use register %r8
-	// uint32_t b; use register %r9
 	movl $255, %r10d
 	andl %edi, %r10d // uint8_t a = (foreground & 255); 
 	movl $255, %eax // final_color = 255;
 
-
-	/*
-		setup vars
-		edi - forground
-		esi - background
-		ecx - 8 consecutive 1 bits
-		r11d - for loop counter
-		edx - ecx shifter
-		r13d - alpha
-	*/
 	// %r11 is the index counter
 	movl $255, %ecx // %ecx = 255
 	movl $1, %r11d // for(int i = 1; i < 4; i++) --> counter 
@@ -282,7 +240,6 @@ blur_colors:
 
 	// loop starts here
 top_loop:
-
 	pushq %rax//store final in stack
 	movl $255, %ecx // %ecx = 255
 	movl $8, %edx // %edx = 8
@@ -327,18 +284,14 @@ top_loop:
 	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
 	//shift left resulting color chanel back in place with 8*i
-	//movb %dl, %cl //put 8*i into shifter
 	sall %cl, %r12d // %r12 = ((a*f + (255 - a)*b)/255) << (8*i)
 	popq %rax // remove stored final sum from stack
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
 	cmpl $3, %r11d
 	jle top_loop 
-  	//return final_color; value is already in %eax lol
-	//addq $8, %rsp // restore ptr
 	popq %rbp 
-	ret
-	//ret
+	ret //return final_color; value is already in %eax lol
 
 
 /*
