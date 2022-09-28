@@ -157,7 +157,8 @@ set_pix:
 	mull (%r10d) //r1o = cols * edx = y --> y = product
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl (8(%edi),%edx,4), %eax 
+	movl 8(%edi), %r10d
+	movl (%r10d,%edx,4), %eax 
 	addq $8, %rsp // restore ptr
 	ret
 
