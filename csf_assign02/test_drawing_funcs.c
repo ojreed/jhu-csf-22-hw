@@ -318,7 +318,7 @@ void test_get_pix(TestObjs *objs) {
   uint32_t expected_color = lookup_color(c, expected.colors);
   uint32_t actual_color = img1->data[0];
   ASSERT(actual_color == expected_color);
-  ASSERT(actual_color == get_pix(img1, 0, 0));
+  ASSERT(expected_color == get_pix(img1, 0, 0));
 }
 
 void test_set_pix(TestObjs *objs) {
