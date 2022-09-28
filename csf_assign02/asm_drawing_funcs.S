@@ -211,13 +211,13 @@ is_in_bounds:
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
 	//addq $8, %rsp // restore ptr
-	popq %rsp
+	popq %rbp
 	ret
 out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
 	//addq $8, %rsp // restore ptr
-	popq %rsp
+	popq %rbp
 	ret
 
 /*
