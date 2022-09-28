@@ -45,7 +45,7 @@ draw_pixel:
 	pushq %rdx //store y
 	pushq %rcx //store color
 	// Note: esp is the lower 32-bits of the stack ptr
-	movl $4, %r10
+	movq $4, %r10
 	leaq (%rbp,%r10,8), %rdi //set img
 	leaq 3(%rbp), %rsi //set x
 	leaq 2(%rbp) %rdx //set y
