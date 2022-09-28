@@ -87,6 +87,7 @@ void test_blur_colors(TestObjs *objs);
 void test_get_pix(TestObjs *objs);
 void test_set_pix(TestObjs *objs);
 void test_is_in_bounds(TestObjs *objs);
+void test_draw_pixel_2(TestObjs *objs);
 //void test_rec_in_bounds(TestObjs *objs);
 //void test_put_pixel(TestObjs *objs);
 
@@ -109,6 +110,7 @@ int main(int argc, char **argv) {
   TEST(test_get_pix);
   TEST(test_set_pix);
   TEST(test_is_in_bounds);
+  TEST(test_draw_pixel_2);
   //TEST(test_rec_in_bounds);
   //TEST(test_put_pixel);
 
