@@ -81,6 +81,7 @@ draw_pixel:
 	*/
 	movq 4(%rbp), %rdi
 	movq 8(%rbp), %rdi
+	movq 64(%rbp), %rdi
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	popq %rcx //remove color
