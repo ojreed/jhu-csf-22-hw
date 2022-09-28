@@ -158,7 +158,7 @@ set_pix:
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d
-	movl (%r10d,%edx,4), %eax 
+	leal (%r10d,%edx,4), %eax 
 	movl %ecx, (%eax)
 	addq $8, %rsp // restore ptr
 	ret
