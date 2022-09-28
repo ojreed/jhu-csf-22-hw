@@ -159,9 +159,7 @@ set_pix:
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl $8, %r10d // set r10 to proper offset to access data
-	addl %r11d, %r10d // add address of image to r10 --> address of data
-	addl %r10d, %edx //image offset to data + location == pixel address
-  	movl %ecx, (%edx)// set img->data[location] equal to color
+	movl (base, index,4), %eax 
 	addq $8, %rsp // restore ptr
 	ret
 
@@ -195,9 +193,7 @@ get_pix:
 
 	//part 2: access ofset location of img (img + offset)
 	movl $8, %r10d // set r10 to proper offset to access data
-	addl %r11d, %r10d // add address of image to r10 --> address of data
-	addl %r10d, %edx //image offset to data + location == pixel address
-  	movl (%edx), %eax//return img->data[location]; 
+	movl (base, index,4), %eax 
 	//addq $8, %rsp // restore ptr
 	popq %rbp 
 	ret
