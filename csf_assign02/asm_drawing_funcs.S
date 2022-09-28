@@ -45,9 +45,9 @@ draw_pixel:
 	pushq %rdx //store y
 	pushq %rcx //store color
 	// Note: esp is the lower 32-bits of the stack ptr
-	movq [-32]%rbp, %rdi //set img
-	movq [-24]%rbp, %rsi //set x
-	movq [-16]%rbp, %rdx //set y
+	movq -32(%rbp), %rdi //set img
+	movq -24(%rbp), %rsi //set x
+	movq -16(%rbp), %rdx //set y
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
 	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
@@ -58,18 +58,18 @@ draw_pixel:
 	// y --> rxc
 	// col --> ecx
 	// %eax is for return values (from funcs)
-	movq [-32]%rbp, %rdi //set img
-	movq [-24]%rbp, %rsi //set x
-	movq [-16]%rbp, %rdx //set y
+	movq -32(%rbp), %rdi //set img
+	movq -24(%rbp), %rsi //set x
+	movq -16(%rbp), %rdx //set y
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	movl %r12d, %esi //set b
-	movq [-0]%rbp, %rdi //set f
+	movq -8(%rbp), %rdi //set f
 	call blur_colors //background = blur_colors(color,background)
 	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
-	movq [-32]%rbp, %rdi //set img
-	movq [-24]%rbp, %rsi //set x
-	movq [-16]%rbp, %rdx //set y
+	movq -32(%rbp), %rdi //set img
+	movq -24(%rbp), %rsi //set x
+	movq -16(%rbp), %rdx //set y
 	call set_pix //set_pix(img,x,y,background);
 	popq %rcx //remove color
 	popq %rdx //remove y
