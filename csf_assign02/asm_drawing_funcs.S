@@ -193,7 +193,7 @@ get_pix:
 
 	//part 2: access ofset location of img (img + offset)
 	movl $8, %r10d // set r10 to proper offset to access data
-	movl (%r10d,%r11d,4), %eax 
+	movl (%r11d,%r10d,4), %eax 
 	//addq $8, %rsp // restore ptr
 	popq %rbp 
 	ret
