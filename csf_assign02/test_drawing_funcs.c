@@ -87,6 +87,7 @@ void test_blur_colors(TestObjs *objs);
 void test_get_pix(TestObjs *objs);
 void test_set_pix(TestObjs *objs);
 void test_is_in_bounds(TestObjs *objs);
+void test_bounds_edge(TestObjs *objs);
 //void test_rec_in_bounds(TestObjs *objs);
 //void test_put_pixel(TestObjs *objs);
 
@@ -109,6 +110,7 @@ int main(int argc, char **argv) {
   TEST(test_get_pix);
   TEST(test_set_pix);
   TEST(test_is_in_bounds);
+  TEST(test_bounds_edge);
   //TEST(test_rec_in_bounds);
   //TEST(test_put_pixel);
 
@@ -342,6 +344,15 @@ void test_is_in_bounds(TestObjs *objs) {
   ASSERT(0 == result); // Out of bounds
   result = is_in_bounds(&objs->small, 2, 2);
   ASSERT(1 == result);
+}
+
+void test_bounds_edge(TestObjs *objs) {
+  int result;
+  draw_circle(&objs->small, 3, 2, 2, 0x00FF00FF);
+  result = is_in_bounds(&objs->small, 500, 10000000000000);
+  ASSERT(0 == result); // Out of bounds
+  result = is_in_bounds(&objs->small, -6, -4);
+  ASSERT(0 == result);
 }
 
 void test_rec_in_bounds(TestObjs *objs) {
