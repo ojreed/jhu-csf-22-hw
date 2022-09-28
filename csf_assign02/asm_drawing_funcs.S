@@ -75,14 +75,14 @@ draw_pixel:
 	popq %rdx //remove y
 	popq %rsi //remove x
 	popq %rdi //remove image
-	popq %rbp 
+	popq %rbp //fix stack
 	ret
 not_in_bounds:
 	popq %rcx //remove color
 	popq %rdx //remove y
 	popq %rsi //remove x
 	popq %rdi //remove image
-	popq %rbp 
+	popq %rbp //fix stack
 	ret
 
 
@@ -195,18 +195,18 @@ is_in_bounds:
 	//currently r10 = address of col value --> how to access val
 
 	//get cols
-	movl $0, %r10d // set r10 to proper offset to access 
-	leal (%rdi), %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of columns
-	cmp %esi, (%r10d) // is x < cols
+	//movl $0, %r10d // set r10 to proper offset to access 
+	//leal (%rdi), %r11d //store address of edi in r11
+	//addl %r11d, %r10d // add address of image to r10 --> address of columns
+	cmp %esi, (%rdi) // is x < cols
 	jle out_o_bounds // jump if x>=cols
 
 
 	//get rows
-	movl $4, %r10d // set r10 to proper offset to access 
-	leal (%rdi), %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of rows
-	cmp %edx, (%r10d) // is y < cols
+	//movl $4, %r10d // set r10 to proper offset to access 
+	//leal (%rdi), %r11d //store address of edi in r11
+	//addl %r11d, %r10d // add address of image to r10 --> address of rows
+	cmp %edx, (%rdi) // is y < cols
 	jle out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
