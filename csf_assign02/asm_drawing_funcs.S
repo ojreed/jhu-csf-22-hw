@@ -58,18 +58,18 @@ draw_pixel:
 	// y --> rxc
 	// col --> ecx
 	// %eax is for return values (from funcs)
-	movq -256(%rbp), %rdi //set img
-	movq -192(%rbp), %rsi //set x
-	movq -128(%rbp), %rdx //set y
+	leaq -256(%rbp), %rdi //set img
+	leaq -192(%rbp), %rsi //set x
+	leaq -128(%rbp), %rdx //set y
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	movl %r12d, %esi //set b
-	movq -64(%rbp), %rdi //set f
+	leaq -64(%rbp), %rdi //set f
 	call blur_colors //background = blur_colors(color,background)
 	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
-	movq -256(%rbp), %rdi //set img
-	movq -192(%rbp), %rsi //set x
-	movq -128(%rbp), %rdx //set y
+	leaq -256(%rbp), %rdi //set img
+	leaq -192(%rbp), %rsi //set x
+	leaq -128(%rbp), %rdx //set y
 	call set_pix //set_pix(img,x,y,background);
 	popq %rcx //remove color
 	popq %rdx //remove y
