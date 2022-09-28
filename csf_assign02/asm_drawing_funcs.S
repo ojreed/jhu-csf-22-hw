@@ -141,7 +141,7 @@ set_pix:
 	// x --> esi
 	// y --> rxc
 	// color --> ecx
-	subq $8, %rsp // re-align stack
+	//subq $8, %rsp // re-align stack
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
@@ -150,10 +150,13 @@ set_pix:
 	movl %eax, %edx
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d
-	leal (%r10d,%edx,4), %eax 
-	movl %ecx, (%eax)
+	movl (%r10d,%edx,4), %eax 
+	movl %ecx, %eax
+	addq $8, %rsp // restore ptr
+	//leal (%r10d,%edx,4), %eax 
+	//movl %ecx, (%eax)
 	//addq $8, %rsp // restore ptr
-	popq %rbp //fix stack
+	//popq %rbp //fix stack
 	ret
 
 /*
@@ -179,8 +182,8 @@ get_pix:
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d
 	movl (%r10d,%edx,4), %eax 
-	//addq $8, %rsp // restore ptr
-	popq %rbp //fix stack
+	addq $8, %rsp // restore ptr
+	//popq %rbp //fix stack
 	ret
 
 /*
@@ -198,7 +201,7 @@ is_in_bounds:
 	cmp $0, %esi // is 0<x
 	jle out_o_bounds // jump if 0>=x
 	cmp $0, %edx // is 0<y
-	jl out_o_bounds // jump if 0>=y
+	jle out_o_bounds // jump if 0>=y
 
 	cmp %esi, (%rdi) // is x < cols
 	jle out_o_bounds // jump if x>=cols
