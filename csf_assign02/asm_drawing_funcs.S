@@ -69,7 +69,6 @@ draw_pixel:
 	// y --> rxc
 	// col --> ecx
 	// %eax is for return values (from funcs)
-	/*
 	popq %rcx //remove color
 	popq %rdx //remove y
 	popq %rsi //remove x
@@ -78,10 +77,6 @@ draw_pixel:
 	pushq %rsi //store x
 	pushq %rdx //store y
 	pushq %rcx //store color
-	*/
-	movq 4(%rbp), %rdi
-	movq 8(%rbp), %rdi
-	movq 64(%rbp), %rdi
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
 	popq %rcx //remove color
