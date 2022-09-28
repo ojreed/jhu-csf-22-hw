@@ -40,10 +40,6 @@
 draw_pixel:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	pushq %rdi
-	pushq %rsi
-	pushq %rdx
-	pushq %rcx
 	// Note: esp is the lower 32-bits of the stack ptr
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -57,14 +53,6 @@ draw_pixel:
 	// %eax is for return values (from funcs)
 	call get_pix //uint32 background = get_pix(img,x,y)
 	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
-	popq %rcx
-	popq %rdx
-	popq %rsi
-	popq %rdi
-	pushq %rdi
-	pushq %rsi
-	pushq %rdx
-	pushq %rcx
 	movl %r12d, %esi
 	/*
 	need to fix/find a good way to input function inputs --> MR CA PLEASE HELP --> 
@@ -73,18 +61,8 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
 	call set_pix //set_pix(img,x,y,background);
-	popq %rcx
-	popq %rdx
-	popq %rsi
-	popq %rdi
-	popq %rbp 
 	ret
 not_in_bounds:
-	popq %rcx
-	popq %rdx
-	popq %rsi
-	popq %rdi
-	popq %rbp 
 	ret
 
 
