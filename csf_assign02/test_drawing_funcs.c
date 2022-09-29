@@ -88,6 +88,7 @@ void test_get_pix(TestObjs *objs);
 void test_set_pix(TestObjs *objs);
 void test_is_in_bounds(TestObjs *objs);
 void test_bounds_edge(TestObjs *objs);
+void test_blur_colors_math(TestObjs *objs);
 //void test_rec_in_bounds(TestObjs *objs);
 //void test_put_pixel(TestObjs *objs);
 
@@ -111,6 +112,7 @@ int main(int argc, char **argv) {
   TEST(test_set_pix);
   TEST(test_is_in_bounds);
   TEST(test_bounds_edge);
+  TEST(test_blur_colors_math);
   //TEST(test_rec_in_bounds);
   //TEST(test_put_pixel);
 
@@ -295,15 +297,21 @@ void test_blur_colors(TestObjs *objs) {
   background = 0x00000000;
   foreground = 0x00000000;
   computed_color = blur_colors(foreground, background);
-  printf("%lu",(unsigned long)computed_color);
+  printf("%lu",(unsigned long)computed_color); // prints 255
   ASSERT(computed_color==0x00000000);
+}
 
-  background = 0x0000000C;
-  foreground = 0x00FF0000;
+void test_blur_colors_math(TestObjs *objs) {
+  uint32_t computed_color;
+  uint32_t background;
+  uint32_t foreground;
+
   uint32_t f;
   uint32_t b;
   uint8_t a = (foreground & 255);
   uint32_t final_color = 255;
+  background = 0x0000000C;
+  foreground = 0x00FF0000;
   for(int i = 1; i < 4; i++) {
     f = ((foreground & (255U << (8*i))) >> (8*i)); 
     b = ((background & (255U << (8*i))) >> (8*i));
@@ -311,6 +319,12 @@ void test_blur_colors(TestObjs *objs) {
   }
   computed_color = blur_colors(foreground, background);
   ASSERT(computed_color==final_color);
+
+  a = 10; // alpha
+  background  = 255;
+  foreground = 255;
+  uint32_t blended = (a*foreground + (255 - a)*background)/255;
+  ASSERT(blur_colors(foreground, background) == blended);
 }
 
 void test_get_pix(TestObjs *objs) {
