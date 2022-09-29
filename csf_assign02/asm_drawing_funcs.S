@@ -205,7 +205,7 @@ is_in_bounds:
 	jle out_o_bounds // jump if x>=cols
 
 	//get rows
-	cmp %edx, (%rdi) // is y < cols
+	cmp %edx, 4(%rdi) // is y < cols
 	jle out_o_bounds // jump if y>=cols
 
 	//return 1 True --> in bounds
