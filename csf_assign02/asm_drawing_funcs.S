@@ -38,62 +38,70 @@
  */
 	.globl draw_pixel
 draw_pixel:
-	
 	// img --> edi
 	// x --> esi
-	// y --> rdx
+	// y --> rxc
 	// col --> ecx
 	// %eax is for return values (from funcs)
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	/*
-	store callee
-	 %rbx,%rbp, and %r12-r15
-	*/
-	pushq %r12
-	pushq %r13
-	pushq %r14
-	pushq %r15
-	//store inputs in callee
-	movq %rdi, %r12 //store img
-	movq %rsi, %r13 //store x
-	movq %rdx, %r14	//store y
-	movq %rcx, %r15 //store color
-
-	//setup is in bound
+	pushq %rdi //store image
+	pushq %rsi //store x
+	pushq %rdx //store y
+	pushq %rcx //store color
+	popq %rcx //remove color
+	popq %rdx //remove y
+	popq %rsi //remove x
+	popq %rdi //remove image
+	pushq %rdi //store image
+	pushq %rsi //store x
+	pushq %rdx //store y
+	pushq %rcx //store color
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
 	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
-
-	//setup get pix
-	movq %r12, %rdi //pull img
-	movq %r13, %rsi //pull x
-	movq %r14, %rdx //pull y
+	popq %rcx //remove color
+	popq %rdx //remove y
+	popq %rsi //remove x
+	popq %rdi //remove image
+	pushq %rdi //store image
+	pushq %rsi //store x
+	pushq %rdx //store y
+	pushq %rcx //store color
 	call get_pix //uint32 background = get_pix(img,x,y)
-
-	//setup blur colors
-	movl %eax, %esi //set b
-	movl %ecx, %edi //set f
+	movl %eax, %r12d // r12 is a calle-saved register, we need this value to peesist
+	popq %rcx //remove color
+	popq %rdx //remove y
+	popq %rsi //remove x
+	popq %rdi //remove image
+	pushq %rdi //store image
+	pushq %rsi //store x
+	pushq %rdx //store y
+	pushq %rcx //store color
+	movl %r12d, %esi //set b
+	movl %ecx, %edi //set b
 	call blur_colors //background = blur_colors(color,background)
-
-	//setup set pix
-	movq %r12, %rdi //pull img
-	movq %r13, %rsi //pull x
-	movq %r14, %rdx //pull y
-	movl %eax, %ecx //pull blurred color
+	popq %rcx //remove color
+	popq %rdx //remove y
+	popq %rsi //remove x
+	popq %rdi //remove image
+	pushq %rdi //store image
+	pushq %rsi //store x
+	pushq %rdx //store y
+	pushq %rcx //store color
+	movl %eax, %ecx //rbp will be where we store the return val of blur_colors
 	call set_pix //set_pix(img,x,y,background);
-	
-	popq %r15 //pop used callees
-	popq %r14
-	popq %r13
-	popq %r12
+	popq %rcx //remove color
+	popq %rdx //remove y
+	popq %rsi //remove x
+	popq %rdi //remove image
 	popq %rbp //fix stack
 	ret
 not_in_bounds:
-	popq %r15 //pop used callees
-	popq %r14
-	popq %r13
-	popq %r12
+	popq %rcx //remove color
+	popq %rdx //remove y
+	popq %rsi //remove x
+	popq %rdi //remove image
 	popq %rbp //fix stack
 	ret
 
@@ -128,7 +136,7 @@ passed image, x,y, color
 set_pix:
 	// img --> rdi
 	// x --> esi
-	// y --> rdx
+	// y --> rxc
 	// color --> ecx
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
