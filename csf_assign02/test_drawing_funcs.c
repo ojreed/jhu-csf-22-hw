@@ -393,8 +393,6 @@ void test_bounds_edge(TestObjs *objs) {
 
   draw_pixel(&objs->small, -5, -4.7777777777777, 0xFF0000FF); // maybe this will segfault
   draw_pixel(&objs->small, 10000, -2, 0xFF0000FF);
-  draw_pixel(&objs->small, (char*)"heyy", -2, 0xFF0000FF);
-
 }
 
 void test_rec_in_bounds(TestObjs *objs) {
