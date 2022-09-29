@@ -306,12 +306,13 @@ void test_blur_colors_math(TestObjs *objs) {
   uint32_t background;
   uint32_t foreground;
 
+  background = 0x0000000C;
+  foreground = 0x00FF0000; 
   uint32_t f;
   uint32_t b;
   uint8_t a = (foreground & 255);
   uint32_t final_color = 255;
-  background = 0x0000000C;
-  foreground = 0x00FF0000;
+
   for(int i = 1; i < 4; i++) {
     f = ((foreground & (255U << (8*i))) >> (8*i)); 
     b = ((background & (255U << (8*i))) >> (8*i));
@@ -383,7 +384,7 @@ void test_is_in_bounds(TestObjs *objs) {
 void test_bounds_edge(TestObjs *objs) {
   int result;
   draw_circle(&objs->small, 3, 2, 2, 0x00FF00FF);
-  result = is_in_bounds(&objs->small, 500, 10000000000000);
+  result = is_in_bounds(&objs->small, 500, 10000);
   ASSERT(0 == result); // Out of bounds
   result = is_in_bounds(&objs->small, -6, -4);
   ASSERT(0 == result);
@@ -391,8 +392,8 @@ void test_bounds_edge(TestObjs *objs) {
   ASSERT(0 == result);
 
   draw_pixel(&objs->small, -5, -4.7777777777777, 0xFF0000FF); // maybe this will segfault
-  draw_pixel(&objs->small, 100000000000, -2, 0xFF0000FF);
-  draw_pixel(&objs->small, "heyy", -2, 0xFF0000FF);
+  draw_pixel(&objs->small, 10000, -2, 0xFF0000FF);
+  draw_pixel(&objs->small, (char*)"heyy", -2, 0xFF0000FF);
 
 }
 
