@@ -297,8 +297,7 @@ void test_blur_colors(TestObjs *objs) {
   background = 0x00000000;
   foreground = 0x00000000;
   computed_color = blur_colors(foreground, background);
-  printf("%lu",(unsigned long)computed_color); // prints 255
-  ASSERT(computed_color==0x00000000);
+  ASSERT(computed_color==0x000000FF);
 }
 
 void test_blur_colors_math(TestObjs *objs) {
@@ -350,13 +349,10 @@ void test_get_pix(TestObjs *objs) {
   };
 
   struct Image *img1 = &objs->small;
-  //unsigned num_pixels = img1->width * img1->height;
   char c = expected.pic[0];
   uint32_t expected_color = lookup_color(c, expected.colors);
   uint32_t actual_color = img1->data[0];
   ASSERT(actual_color == expected_color);
-  // printf("%lu",expected_color);
-  // printf("%lu",get_pix(img1, 0, 0));
   ASSERT(expected_color == get_pix(img1, 0, 0));
 }
 
