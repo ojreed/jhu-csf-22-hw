@@ -291,6 +291,25 @@ void test_blur_colors(TestObjs *objs) {
   foreground = 0xFF0000A5;
   computed_color = blur_colors(foreground, background);
   ASSERT(computed_color==0xA50000FF);
+
+  background = 0x00000000;
+  foreground = 0x00000000;
+  computed_color = blur_colors(foreground, background);
+  ASSERT(computed_color==0x00000000);
+
+  background = 0x0000000C;
+  foreground = 0x00FF0000;
+  uint32_t f;
+  uint32_t b;
+  uint8_t a = (foreground & 255);
+  uint32_t final_color = 255;
+  for(int i = 1; i < 4; i++) {
+    f = ((foreground & (255U << (8*i))) >> (8*i)); 
+    b = ((background & (255U << (8*i))) >> (8*i));
+    final_color += (((a*f + (255 - a)*b)/255) << (8*i));
+  }
+  computed_color = blur_colors(foreground, background);
+  ASSERT(computed_color==final_color);
 }
 
 void test_get_pix(TestObjs *objs) {
@@ -375,4 +394,6 @@ void test_rec_in_bounds(TestObjs *objs) {
   result = rec_in_bounds(&objs->tilemap, &grass2);
   ASSERT(result == 0);
 }
+
+
 
