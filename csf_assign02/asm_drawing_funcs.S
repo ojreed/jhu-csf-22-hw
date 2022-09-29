@@ -41,7 +41,7 @@ draw_pixel:
 	
 	// img --> edi
 	// x --> esi
-	// y --> rxc
+	// y --> rdx
 	// col --> ecx
 	// %eax is for return values (from funcs)
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
@@ -57,7 +57,7 @@ draw_pixel:
 	//store inputs in callee
 	movq %rdi, %r12 //store img
 	movq %rsi, %r13 //store x
-	movq %rxc, %r14	//store y
+	movq %rdx, %r14	//store y
 	movq %rcx, %r15 //store color
 
 	//setup is in bound
@@ -68,7 +68,7 @@ draw_pixel:
 	//setup get pix
 	movq  %r12, %rdi //pull img
 	movq  %r13, %rsi //pull x
-	movq  %r14, %rxc //pull y
+	movq  %r14, %rdx //pull y
 	call get_pix //uint32 background = get_pix(img,x,y)
 
 	//setup blur colors
@@ -79,7 +79,7 @@ draw_pixel:
 	//setup set pix
 	movq  %r12, %rdi //pull img
 	movq  %r13, %rsi //pull x
-	movq  %r14, %rxc //pull y
+	movq  %r14, %rdx //pull y
 	movl %eax, %ecx //pull blurred color
 	call set_pix //set_pix(img,x,y,background);
 	
@@ -128,7 +128,7 @@ passed image, x,y, color
 set_pix:
 	// img --> rdi
 	// x --> esi
-	// y --> rxc
+	// y --> rdx
 	// color --> ecx
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
