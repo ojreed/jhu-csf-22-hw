@@ -5,7 +5,7 @@
 #include "image.h"
 #include "drawing_funcs.h"
 #include "tctest.h"
-// TODO: add prototypes for your helper functions
+#include <inttypes.h>
 
 // an expected color identified by a (non-zero) character code
 typedef struct {
@@ -295,6 +295,7 @@ void test_blur_colors(TestObjs *objs) {
   background = 0x00000000;
   foreground = 0x00000000;
   computed_color = blur_colors(foreground, background);
+  printf("%" PRIu32 "\n",computed_color);
   ASSERT(computed_color==0x00000000);
 
   background = 0x0000000C;
