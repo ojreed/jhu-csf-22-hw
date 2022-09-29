@@ -45,10 +45,7 @@ draw_pixel:
 	// %eax is for return values (from funcs)
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	/*
-	store callee
-	 %rbx,%rbp, and %r12-r15
-	*/
+	//store callee %r12-r15
 	pushq %r12
 	pushq %r13
 	pushq %r14
@@ -133,26 +130,23 @@ set_pix:
 	// color --> ecx
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	/*
-	store callee
-	 %rbx,%rbp, and %r12-r15
-	*/
+	//store callee %r12-r15
 	pushq %r12
 	pushq %r13
 	pushq %r14
 	pushq %r15
 
-	//start blur
+	//start setting pix
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	movl %edx, %eax
+	movl %edx, %eax //setup multiplication of edx
 	mull (%r10d) //r1o = cols * edx = y --> y = product
-	movl %eax, %edx
+	movl %eax, %edx //finish multiplication of exc
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl 8(%edi), %r10d
-	leal (%r10d,%edx,4), %eax 
-	movl %ecx, (%eax)
+	movl 8(%edi), %r10d //set r10d as the address of the data section of the image
+	leal (%r10d,%edx,4), %eax //store the address of the correct index (edx) in eax
+	movl %ecx, (%eax) //set the dereferenced pix pointer to the correct color
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
@@ -172,24 +166,21 @@ get_pix:
 	//eax is return register 
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current 
-	/*
-	store callee
-	 %rbx,%rbp, and %r12-r15
-	*/
+	//store callee %r12-r15
 	pushq %r12
 	pushq %r13
 	pushq %r14
 	pushq %r15
-	//part 1: compute location offset (y*img->cols + x)
+	//start getting pix
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
 	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	movl %edx, %eax
+	movl %edx, %eax //setup multiplication by edx
 	mull (%r10d) //r1o = cols * edx = y --> y = product
-	movl %eax, %edx
+	movl %eax, %edx //finish multiplication 
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl 8(%edi), %r10d
-	movl (%r10d,%edx,4), %eax 
+	movl 8(%edi), %r10d //set r10d as the address of the data section of the image
+	movl (%r10d,%edx,4), %eax //store the value of the correct index (edx) in eax to return
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
@@ -209,10 +200,7 @@ is_in_bounds:
 	//subq $8, %rsp
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	/*
-	store callee
-	 %rbx,%rbp, and %r12-r15
-	*/
+	//store callee %r12-r15
 	pushq %r12
 	pushq %r13
 	pushq %r14
@@ -233,11 +221,10 @@ is_in_bounds:
 
 	//get rows
 	cmp %edx, 4(%rdi) // is y < cols
-	jle out_o_bounds // jump if y>=cols
+	jle out_o_bounds // jump if y>=rows
 
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
-	//addq $8, %rsp // restore ptr
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
@@ -247,7 +234,6 @@ is_in_bounds:
 out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
-	//addq $8, %rsp // restore ptr
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
@@ -263,10 +249,7 @@ returns blurring of those two colors
 blur_colors:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	/*
-	store callee
-	 %rbx,%rbp, and %r12-r15
-	*/
+	//store callee %r12-r15
 	pushq %r12
 	pushq %r13
 	pushq %r14
@@ -291,9 +274,9 @@ top_loop:
 	movl $255, %ecx // %ecx = 255
 	movl $8, %edx // %edx = 8
 	//multiply 8 by i (8 on first iteration, 16 on 2nd)
-	movl %edx, %eax 
+	movl %edx, %eax //setup multiplication
 	mull %r11d // %edx = (8*i)
-	movl %eax, %edx
+	movl %eax, %edx //finish multiplication
 	//shift 8 ones into correct position
 	movl %ecx, %r15d //move 8, ones out of cx register into r15 for shift
 	//dl is 1 byte version of edx = total shift --> moved to cl to be used in shift
@@ -327,7 +310,7 @@ top_loop:
 	//movl $0, %edx
 	//divide (a*f + (255 - a)*b)) by 255
 	movl %r12d, %eax //store r12 in eax for division
-	movl $255, %r9d
+	movl $255, %r9d //store 255 in a register to allow 
 	divl %r9d //%eax = (a*f + (255 - a)*b)/255)
 	movl %eax, %r12d //move eax back to r12
 	//shift left resulting color chanel back in place with 8*i
@@ -335,7 +318,7 @@ top_loop:
 	popq %rax // remove stored final sum from stack
 	addl %r12d, %eax // store the color channel in %eax, final_color += (((a*f + (255 - a)*b)/255) << (8*i));
 	addl $1, %r11d // increment counter
-	cmpl $3, %r11d
+	cmpl $3, %r11d //end loop if counter reaches 3 iterations (for r g and b)
 	jle top_loop 
 	popq %r15 //pop used callees
 	popq %r14
