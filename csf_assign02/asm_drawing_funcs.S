@@ -66,9 +66,9 @@ draw_pixel:
 	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 
 	//setup get pix
-	movq  %r12, %rdi //pull img
-	movq  %r13, %rsi //pull x
-	movq  %r14, %rdx //pull y
+	movq %r12, %rdi //pull img
+	movq %r13, %rsi //pull x
+	movq %r14, %rdx //pull y
 	call get_pix //uint32 background = get_pix(img,x,y)
 
 	//setup blur colors
@@ -77,9 +77,9 @@ draw_pixel:
 	call blur_colors //background = blur_colors(color,background)
 
 	//setup set pix
-	movq  %r12, %rdi //pull img
-	movq  %r13, %rsi //pull x
-	movq  %r14, %rdx //pull y
+	movq %r12, %rdi //pull img
+	movq %r13, %rsi //pull x
+	movq %r14, %rdx //pull y
 	movl %eax, %ecx //pull blurred color
 	call set_pix //set_pix(img,x,y,background);
 	
