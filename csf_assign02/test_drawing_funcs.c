@@ -78,7 +78,7 @@ void check_picture(struct Image *img, Picture *p) {
 
 // prototypes of test functions
 void test_draw_pixel(TestObjs *objs);
-//void test_draw_rect(TestObjs *objs);
+void test_draw_rect(TestObjs *objs);
 //void test_draw_circle(TestObjs *objs);
 //void test_draw_circle_clip(TestObjs *objs);
 //void test_draw_tile(TestObjs *objs);
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 
   // TODO: add TEST() directives for your helper functions
   TEST(test_draw_pixel);
-  //TEST(test_draw_rect);
+  TEST(test_draw_rect);
   //TEST(test_draw_circle);
   //TEST(test_draw_circle_clip);
   //TEST(test_draw_tile);
