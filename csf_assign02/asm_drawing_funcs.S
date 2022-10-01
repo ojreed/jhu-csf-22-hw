@@ -136,7 +136,7 @@ put_pixel:
 	//Process Bounds Checking
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
-	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
+	jne not_in_bounds_put //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 
 	//Process set pix
 	movq %r12, %rdi //store im in first inpit
@@ -151,7 +151,7 @@ put_pixel:
 	popq %r12
 	popq %rbp //fix stack
 	ret
-not_in_bounds:
+not_in_bounds_put:
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
