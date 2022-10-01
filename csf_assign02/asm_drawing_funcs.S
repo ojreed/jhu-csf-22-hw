@@ -384,7 +384,52 @@ top_loop:
  */
 	.globl draw_rect
 draw_rect:
-	/* TODO: implement */
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	//store callee %r12-r15
+	pushq %r12 
+	pushq %r13
+	pushq %r14
+	pushq %r15
+	pushq %rbx
+
+	//store inputs in callee
+	movq %rdi, %r12 //store img
+	movq %rsi, %r13 //store rect
+	movq %rdx, %r14	//store color
+	//movq %rcx, %r15 //i
+	//store j in rbx
+
+	//%r13 also stores x,y,width,weight
+	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
+	movl 0(%r13), %r15d // i = x for the iterator
+	movl 4(%r13), %ebx // j = y
+
+	rect_loop:
+	// Moving all parameters into correct locations for draw_pixel call
+	movq %r12, %rdi // r12 = img ptr
+	movl %r15d, %esi // r15d = i
+	movl %ebx, %edx // ebx = j
+	movl %r14, %ecx // r14 = color
+	call draw_pixel
+	addl $1, %ebx // increment j 
+	movl 4(%r13), %r9d // moving x into r9d
+	addl 12(%r13), %r9d // adding height to y
+	cmp %ebx, %r9d
+	jl rect_loop
+	addl $1, %r15d // increment i
+	movl 0(%r13), %r9d // moving x into r9d
+	addl 8(%r13), %r9d // adding width to x
+	cmp %ebx, %r9d
+	jl rect_loop
+
+	//Pop used callees
+	popq %rbx
+	popq %r15 
+	popq %r14
+	popq %r13
+	popq %r12
+	popq %rbp 
 	ret
 
 /*
