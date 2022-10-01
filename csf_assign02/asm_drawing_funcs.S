@@ -416,12 +416,12 @@ draw_rect:
 	movl 4(%r13), %r9d // moving 7 into r9d
 	addl 12(%r13), %r9d // adding height to y
 	cmp %ebx, %r9d
-	jge rect_loop
+	jg rect_loop
 	addl $1, %r15d // increment i
 	movl 0(%r13), %r9d // moving x into r9d
 	addl 8(%r13), %r9d // adding width to x
 	cmp %ebx, %r9d
-	jge rect_loop
+	jg rect_loop
 
 	//Pop used callees
 	popq %rbx
