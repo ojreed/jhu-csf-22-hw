@@ -397,26 +397,25 @@ draw_rect:
 	movq %rdi, %r12 //store img
 	movq %rsi, %r13 //store rect
 	movq %rdx, %r14	//store color
-	//movq %rcx, %r15 //i
-	//store j in rbx
 
 	//%r13 also stores x,y,width,weight
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
-	movl 0(%r13), %r15d // i = x for the iterator
-	movl 4(%r13), %ebx // j = y
+	movl 0(%r13), %r15d // store i = x for the iterator
+	movl 4(%r13), %ebx // store j = y
 
 	rect_loop:
 	// Moving all parameters into correct locations for draw_pixel call
-	movq %r12, %rdi // r12 = img ptr
-	movl %r15d, %esi // r15d = i
-	movl %ebx, %edx // ebx = j
-	movl %r14d, %ecx // r14 = color
+	movq %r12, %rdi // r12 = img ptr --> rdi
+	movl %r15d, %esi // r15d = i --> esi
+	movl %ebx, %edx // ebx = j --> edx
+	movl %r14d, %ecx // r14 = color --> ecx
 	call draw_pixel
 	addl $1, %ebx // increment j 
-	movl 4(%r13), %r9d // moving 7 into r9d
+	movl 4(%r13), %r9d // moving y into r9d
 	addl 12(%r13), %r9d // adding height to y
 	cmp %r9d, %ebx
 	jl rect_loop
+	movl 0(%r13), %r15d // reset i = x for the iterator
 	addl $1, %r15d // increment i
 	movl 0(%r13), %r9d // moving x into r9d
 	addl 8(%r13), %r9d // adding width to x
