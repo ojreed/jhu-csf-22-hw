@@ -114,7 +114,51 @@ confirms that x,y are valid
 */
 	.globl put_pixel
 put_pixel:
+	// img --> edi
+	// x --> esi
+	// y --> rdx
+	// col --> ecx
+	// %eax is for return values (from funcs)
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	//store callee %r12-r15
+	pushq %r12
+	pushq %r13
+	pushq %r14
+	pushq %r15
+
+	//store inputs in callee
+	movq %rdi, %r12 //store img
+	movq %rsi, %r13 //store x
+	movq %rdx, %r14	//store y
+	movq %rcx, %r15 //store color
+
+	//Process Bounds Checking
+	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
+	cmp $1, %eax // is_in_bounds returns 1 or 0 
+	jne not_in_bounds //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
+
+	//Process set pix
+	movq %r12, %rdi //store im in first inpit
+	movl %r13d, %esi //store x in second
+	movl %r14d, %edx //store y in third
+	movl %r15d, %ecx //taked blured color from output of blur and store in 4th
+	call set_pix //set_pix(img,x,y,background);
+
+	popq %r15 //pop used callees
+	popq %r14
+	popq %r13
+	popq %r12
+	popq %rbp //fix stack
 	ret
+not_in_bounds:
+	popq %r15 //pop used callees
+	popq %r14
+	popq %r13
+	popq %r12
+	popq %rbp //fix stack
+	ret
+
 
 
 /*

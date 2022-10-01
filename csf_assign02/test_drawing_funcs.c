@@ -90,7 +90,7 @@ void test_is_in_bounds(TestObjs *objs);
 void test_bounds_edge(TestObjs *objs);
 void test_blur_colors_math(TestObjs *objs);
 //void test_rec_in_bounds(TestObjs *objs);
-//void test_put_pixel(TestObjs *objs);
+void test_put_pixel(TestObjs *objs);
 
 int main(int argc, char **argv) {
   if (argc > 1) {
