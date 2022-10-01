@@ -415,7 +415,7 @@ draw_rect:
 	addl 12(%r13), %r9d // adding height to y
 	cmp %r9d, %ebx
 	jl rect_loop
-	movl 0(%r13), %r15d // reset i = x for the iterator
+	movl 4(%r13), %ebx // reset j = y for inner loop
 	addl $1, %r15d // increment i
 	movl 0(%r13), %r9d // moving x into r9d
 	addl 8(%r13), %r9d // adding width to x
