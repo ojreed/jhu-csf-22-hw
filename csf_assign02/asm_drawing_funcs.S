@@ -410,7 +410,7 @@ draw_rect:
 	movq %r12, %rdi // r12 = img ptr
 	movl %r15d, %esi // r15d = i
 	movl %ebx, %edx // ebx = j
-	movl %r14, %ecx // r14 = color
+	movl %r14d, %ecx // r14 = color
 	call draw_pixel
 	addl $1, %ebx // increment j 
 	movl 4(%r13), %r9d // moving x into r9d
