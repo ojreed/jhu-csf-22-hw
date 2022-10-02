@@ -454,7 +454,7 @@ draw_rect:
 draw_circle:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
-	subq $40, %rsp //init stack pointer for alloced data
+	subq $32, %rsp //init stack pointer for alloced data
 	//store callee %r12-r15
 	pushq %r12 
 	pushq %r13
@@ -531,12 +531,15 @@ draw_circle:
 	cmp %r10d, %r9d //cmp r^2 and distance
 	jg skip_circle_pt //if distance is greater than r^2 then skip adding pix
 
+	circ_draw_pix:
 	// Moving all parameters into correct locations for draw_pixel call
 	movq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
 	movl %r12d, %ecx // r12 = color --> ecx
+	subq $8, %rsp
 	call draw_pixel
+	addq $8, %rsp
 
 	skip_circle_pt:
 	//correct limit of loop < y + r
@@ -562,7 +565,7 @@ draw_circle:
 	popq %r14
 	popq %r13
 	popq %r12
-	addq $40, %rsp //restore stack ptr
+	addq $32, %rsp //restore stack ptr
 	popq %rbp 
 	ret
 
