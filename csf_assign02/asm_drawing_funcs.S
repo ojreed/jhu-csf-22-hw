@@ -453,8 +453,8 @@ draw_rect:
 	.globl draw_circle
 draw_circle:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
-	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	subq $32, %rsp //init stack pointer for alloced data
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	//store callee %r12-r15
 	pushq %r12 
 	pushq %r13
