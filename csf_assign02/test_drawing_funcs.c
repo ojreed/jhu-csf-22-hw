@@ -76,7 +76,7 @@ void check_picture(struct Image *img, Picture *p) {
   }
 }
 
-prototypes of test functions
+// prototypes of test functions
 void test_draw_pixel(TestObjs *objs);
 void test_draw_rect(TestObjs *objs);
 void test_draw_circle(TestObjs *objs);
