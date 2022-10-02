@@ -488,7 +488,7 @@ draw_circle:
 	movl -12(%rbp), %r15d // store i = x-r for the iterator
 	subl -20(%rbp),%r15d //-r step
 	movl -16(%rbp), %ebx // store j = y-r
-	subl -20(%rbp),%ebx //-r step-1
+	subl -20(%rbp),%ebx //-r step
 
 	circ_loop:
 	
@@ -547,7 +547,7 @@ draw_circle:
 	jle circ_loop
 	//reset inner loop iter
 	movl -16(%rbp), %ebx // store j = y-r
-	subl -20(%rbp),%ebx //-r step
+	subl -20(%rbp), %ebx //-r step
 	addl $1, %r15d // increment i
 	movl -12(%rbp), %r9d // moving x into r9d
 	addl -20(%rbp), %r9d // adding r to x --> limit = x + r or corner x + 2r
