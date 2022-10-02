@@ -536,7 +536,9 @@ draw_circle:
 	addl -20(%rbp), %r9d // adding r to y --> limit = center_y + r or corner y + 2r
 	cmp %r9d, %ebx
 	jle circ_loop
-	movl 4(%r13), %ebx // reset j = y for inner loop
+	//reset inner loop iter
+	movl -16(%rbp), %ebx // store j = y-r
+	subl -20(%rbp),%ebx //-r step
 	addl $1, %r15d // increment i
 	movl -12(%rbp), %r9d // moving x into r9d
 	addl -20(%rbp), %r9d // adding r to x --> limit = x + r or corner x + 2r
