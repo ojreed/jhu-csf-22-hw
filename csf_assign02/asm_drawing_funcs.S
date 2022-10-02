@@ -532,16 +532,16 @@ draw_circle:
 	movl -16(%rbp), %r9d // moving y center into r9d
 	addl -20(%rbp), %r9d // adding r to y --> limit = center_y + r or corner y + 2r
 	cmp %r9d, %ebx
-	jl circ_loop
+	jle circ_loop
 	movl 4(%r13), %ebx // reset j = y for inner loop
 	addl $1, %r15d // increment i
 	movl -12(%rbp), %r9d // moving x into r9d
 	addl -20(%rbp), %r9d // adding r to x --> limit = x + r or corner x + 2r
 	cmp %r9d, %r15d
-	jl circ_loop
+	jle circ_loop
 
 
-	addq $32, %rsp //restor stack ptr
+	addq $32, %rsp //restore stack ptr
 	//Pop used callees
 	popq %rbx
 	popq %r15 
