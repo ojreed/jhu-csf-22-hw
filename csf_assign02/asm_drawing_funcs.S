@@ -50,6 +50,7 @@ draw_pixel:
 	pushq %r13
 	pushq %r14
 	pushq %r15
+	pushq %rbx
 
 	//store inputs in callee
 	movq %rdi, %r12 //store img
@@ -80,15 +81,16 @@ draw_pixel:
 	movl %eax, %ecx //taked blured color from output of blur and store in 4th
 	call set_pix //set_pix(img,x,y,background);
 
-
-	popq %r15 //pop used callees
+	popq %rbx //pop used callees
+	popq %r15 
 	popq %r14
 	popq %r13
 	popq %r12
 	popq %rbp //fix stack
 	ret
 not_in_bounds:
-	popq %r15 //pop used callees
+	popq %rbx //pop used callees
+	popq %r15 
 	popq %r14
 	popq %r13
 	popq %r12
@@ -126,6 +128,7 @@ put_pixel:
 	pushq %r13
 	pushq %r14
 	pushq %r15
+	pushq %rbx
 
 	//store inputs in callee
 	movq %rdi, %r12 //store img
@@ -145,14 +148,16 @@ put_pixel:
 	movl %r15d, %ecx //taked blured color from output of blur and store in 4th
 	call set_pix //set_pix(img,x,y,background);
 
-	popq %r15 //pop used callees
+	popq %rbx //pop used callees
+	popq %r15 
 	popq %r14
 	popq %r13
 	popq %r12
 	popq %rbp //fix stack
 	ret
 not_in_bounds_put:
-	popq %r15 //pop used callees
+	popq %rbx //pop used callees
+	popq %r15 
 	popq %r14
 	popq %r13
 	popq %r12
