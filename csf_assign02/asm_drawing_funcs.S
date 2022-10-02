@@ -485,7 +485,7 @@ draw_circle:
 	//%r13 also stores x,y,width,weight
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = 
 	//set iterator ctrs to top left corner (center - r)
-	movl -8(%rbp), %r15d // store i = x-r for the iterator
+	movl -12(%rbp), %r15d // store i = x-r for the iterator
 	subl -20(%rbp),%r15d //-r step
 	movl -16(%rbp), %ebx // store j = y-r
 	subl -20(%rbp),%ebx //-r step-1
