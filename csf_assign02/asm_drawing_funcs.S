@@ -475,7 +475,7 @@ draw_circle:
 	movl %edx, -16(%rbp) //store center y
 	movl %ecx, -20(%rbp) //store r
 
-	subq $8, %rsp
+	subq $16, %rsp
 
 
 	//store inputs in callee
@@ -557,7 +557,7 @@ draw_circle:
 	jle circ_loop
 
 
-	addq $8, %rsp
+	addq $16, %rsp
 	//Pop used callees
 	popq %rbx
 	popq %r15 
