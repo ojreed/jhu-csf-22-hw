@@ -444,7 +444,111 @@ draw_rect:
  */
 	.globl draw_circle
 draw_circle:
-	/* TODO: implement */
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	//store callee %r12-r15
+	pushq %r12 
+	pushq %r13
+	pushq %r14
+	pushq %r15
+	pushq %rbx
+
+	subq $32, %rsp //init stack pointer for alloced data
+  	/*stack frame:
+   * -8(%rbp) Image *img
+   * -12(%rbp) uint32_t x
+   * -16(%rbp) uint32_t y
+   * -20(%rbp) uint32_t r
+   * -32(%rbp) <-> -20(%rbp) alignment padding
+   */
+	movq %rdi, -8(%rbp)  //store image
+	movl %esi, -12(%rbp) //store center x 
+	movl %edx, -16(%rbp) //store center y
+	movl %ecx, -20(%rbp) //store r
+
+
+	//store inputs in callee
+	movq %rdx, %r12 //store color
+	//r15 stores i = x for iterator
+	//ebx stores j = y for iterator 
+
+	
+	//%r13 also stores x,y,width,weight
+	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = 
+	//set iterator ctrs to top left corner (center - r)
+	movl 0(%r13), %r15d // store i = x-r for the iterator
+	subl -20(%rbp),%r15d //-r step
+	movl 4(%r13), %ebx // store j = y-r
+	subl -20(%rbp),%ebx //-r step
+
+	rect_loop:
+	//validate in_bounds
+	//setup bounds checking parameters
+	movq -8(%rbp), %rdi // -8(%rbp) = img ptr --> rdi
+	movl %r15d, %esi // r15d = i --> esi
+	movl %ebx, %edx // ebx = j --> edx
+	//Process Bounds Checking
+	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
+	cmp $1, %eax // is_in_bounds returns 1 or 0 
+	jne skip_circle_pt //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
+
+	//circle distance
+	//int32_t dist = (x-i)*(x-i) + (y-j)*(y-j);
+	//r9 stores x segment 
+	//r10 stores y segment
+	movl -12(%rbp), %r9d //store center_x
+	movl -16(%rbp), %r10d //store center_y
+	subl %r15d, %r9d // = x-i
+	subl %ebx, %r10d // = y-j
+	//x part square
+	movl %r9d, %eax //setup r9 as multiplied
+	mull %r9d //multiply r9*r9
+	movl %eax, %r9d //finish mult
+	//y part square
+	movl %r10d, %eax //setup r10 as multiplied
+	mull %r10d //multiply r10*r10
+	movl %eax, %r10d //finish mult
+	//dist = sum of two parts
+	addl %r10d, %r9d // dist = r9d = (x-i)*(x-i) + (y-j)*(y-j) = r9^2+r10^2
+	movl -20(%rbp), %r10d // r10d = r 
+	//square radius
+	movl %r10d, %eax //setup r10 as multiplied
+	mull %r10d //multiply r10*r10
+	movl %eax, %r10d //finish mult
+	//compare distance and r^2
+	cmp %r10d, %r9d //cmp r^2 and distance
+	jg skip_circle_pt //if distance is greater than r^2 then skip adding pix
+
+	// Moving all parameters into correct locations for draw_pixel call
+	movq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
+	movl %r15d, %esi // r15d = i --> esi
+	movl %ebx, %edx // ebx = j --> edx
+	movl %r12d, %ecx // r12 = color --> ecx
+	call draw_pixel
+
+	skip_circle_pt:
+	//correct limit of loop < y + r
+	addl $1, %ebx // increment j 
+	movl-16(%rbp), %r9d // moving y center into r9d
+	addl -20(%rbp), %r9d // adding r to y --> limit = center_y + r or corner y + 2r
+	cmp %r9d, %ebx
+	jl rect_loop
+	movl 4(%r13), %ebx // reset j = y for inner loop
+	addl $1, %r15d // increment i
+	movl -12(%rbp), %r9d // moving x into r9d
+	addl -20(%rbp), %r9d // adding r to x --> limit = x + r or corner x + 2r
+	cmp %r9d, %r15d
+	jl rect_loop
+
+
+	addq $32, %rsp //restor stack ptr
+	//Pop used callees
+	popq %rbx
+	popq %r15 
+	popq %r14
+	popq %r13
+	popq %r12
+	popq %rbp 
 	ret
 
 /*
