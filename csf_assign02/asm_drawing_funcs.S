@@ -562,8 +562,8 @@ draw_circle:
 	popq %r14
 	popq %r13
 	popq %r12
-	popq %rbp
-	addq $32, %rsp //restore stack ptr 
+	addq $32, %rsp //restore stack ptr
+	popq %rbp 
 	ret
 
 /*
