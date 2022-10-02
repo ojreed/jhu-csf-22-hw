@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
   TEST(test_get_pix);
   TEST(test_set_pix);
   TEST(test_is_in_bounds);
-  TEST(test_bounds_edge);
+  // TEST(test_bounds_edge);
   TEST(test_blur_colors_math);
   //TEST(test_rec_in_bounds);
   //TEST(test_put_pixel);
