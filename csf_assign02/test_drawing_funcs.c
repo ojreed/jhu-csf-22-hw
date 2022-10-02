@@ -76,20 +76,20 @@ void check_picture(struct Image *img, Picture *p) {
   }
 }
 
-// prototypes of test functions
+prototypes of test functions
 void test_draw_pixel(TestObjs *objs);
 void test_draw_rect(TestObjs *objs);
 void test_draw_circle(TestObjs *objs);
 void test_draw_circle_clip(TestObjs *objs);
-//void test_draw_tile(TestObjs *objs);
-//void test_draw_sprite(TestObjs *objs);
+void test_draw_tile(TestObjs *objs);
+void test_draw_sprite(TestObjs *objs);
 void test_blur_colors(TestObjs *objs);
 void test_get_pix(TestObjs *objs);
 void test_set_pix(TestObjs *objs);
 void test_is_in_bounds(TestObjs *objs);
 void test_bounds_edge(TestObjs *objs);
 void test_blur_colors_math(TestObjs *objs);
-//void test_rec_in_bounds(TestObjs *objs);
+void test_rec_in_bounds(TestObjs *objs);
 void test_put_pixel(TestObjs *objs);
 
 int main(int argc, char **argv) {
@@ -103,8 +103,8 @@ int main(int argc, char **argv) {
   // TODO: add TEST() directives for your helper functions
   TEST(test_draw_pixel);
   TEST(test_draw_rect);
-  //TEST(test_draw_circle);
-  //TEST(test_draw_circle_clip);
+  TEST(test_draw_circle);
+  TEST(test_draw_circle_clip);
   //TEST(test_draw_tile);
   //TEST(test_draw_sprite);
   TEST(test_blur_colors);
