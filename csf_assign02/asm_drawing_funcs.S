@@ -477,7 +477,7 @@ draw_circle:
 
 
 	//store inputs in callee
-	movq %rdx, %r12 //store color
+	movq %r8d, %r12 //store color
 	//r15 stores i = x for iterator
 	//ebx stores j = y for iterator 
 

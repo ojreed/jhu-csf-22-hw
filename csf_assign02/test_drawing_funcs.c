@@ -173,7 +173,6 @@ void test_draw_circle(TestObjs *objs) {
   };
 
   draw_circle(&objs->small, 3, 2, 2, 0x00FF00FF);
-  printf(&objs->small.data);
   check_picture(&objs->small, &expected);
 }
 
