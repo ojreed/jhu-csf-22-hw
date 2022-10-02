@@ -531,7 +531,7 @@ draw_circle:
 	jg skip_circle_pt //if distance is greater than r^2 then skip adding pix
 
 	// Moving all parameters into correct locations for draw_pixel call
-	movq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
+	leaq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
 	movl %r12d, %ecx // r12 = color --> ecx
