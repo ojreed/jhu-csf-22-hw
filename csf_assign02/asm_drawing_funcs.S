@@ -529,7 +529,7 @@ draw_circle:
 	skip_circle_pt:
 	//correct limit of loop < y + r
 	addl $1, %ebx // increment j 
-	movl-16(%rbp), %r9d // moving y center into r9d
+	movl -16(%rbp), %r9d // moving y center into r9d
 	addl -20(%rbp), %r9d // adding r to y --> limit = center_y + r or corner y + 2r
 	cmp %r9d, %ebx
 	jl rect_loop
