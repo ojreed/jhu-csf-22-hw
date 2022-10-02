@@ -254,6 +254,7 @@ is_in_bounds:
 	pushq %r13
 	pushq %r14
 	pushq %r15
+	pushq %rbx
 
 	//if (0 <= x && x < cols && 0 <= y && y < rows) 
 	//check x > 0
@@ -274,6 +275,7 @@ is_in_bounds:
 
 	//return 1 True --> in bounds
 	movl $1, %eax //set return value to 1
+	popq %rbx
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
@@ -283,6 +285,7 @@ is_in_bounds:
 out_o_bounds:
 	//return 0 False
 	movl $0, %eax //set return value to 0
+	popq %rbx
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
