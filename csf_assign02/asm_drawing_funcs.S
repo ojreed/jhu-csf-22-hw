@@ -490,13 +490,13 @@ draw_circle:
 	subl -20(%rbp),%ebx //-r step
 
 	circ_loop:
-	//validate in_bounds
+
+	
+	circ_check_bounds: //validate in_bounds
 	//setup bounds checking parameters
 	movq -8(%rbp), %rdi // -8(%rbp) = img ptr --> rdi
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
-
-	circ_check_bounds:
 	//Process Bounds Checking
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -531,11 +531,13 @@ draw_circle:
 	jg skip_circle_pt //if distance is greater than r^2 then skip adding pix
 
 	// Moving all parameters into correct locations for draw_pixel call
-	leaq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
+	movq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
 	movl %r12d, %ecx // r12 = color --> ecx
+	subq $8, %rsp
 	call draw_pixel
+	addq $8, %rsp
 
 	skip_circle_pt:
 	//correct limit of loop < y + r
