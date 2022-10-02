@@ -487,11 +487,14 @@ draw_circle:
 	movq -8(%rbp), %rdi // -8(%rbp) = img ptr --> rdi
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
+
+	circ_check_bounds:
 	//Process Bounds Checking
 	call is_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
 	jne skip_circle_pt //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
 
+	circ_check_dist:
 	//circle distance
 	//int32_t dist = (x-i)*(x-i) + (y-j)*(y-j);
 	//r9 stores x segment 
