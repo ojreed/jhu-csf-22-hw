@@ -535,9 +535,9 @@ draw_circle:
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
 	movl %r12d, %ecx // r12 = color --> ecx
-	subq $8, %rsp
+	subq $16, %rsp
 	call draw_pixel
-	addq $8, %rsp
+	addq $16, %rsp
 
 	skip_circle_pt:
 	//correct limit of loop < y + r
