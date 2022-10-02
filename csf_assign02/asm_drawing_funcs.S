@@ -454,6 +454,7 @@ draw_rect:
 draw_circle:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	subq $32, %rsp //init stack pointer for alloced data
 	//store callee %r12-r15
 	pushq %r12 
 	pushq %r13
@@ -461,7 +462,7 @@ draw_circle:
 	pushq %r15
 	pushq %rbx
 
-	subq $32, %rsp //init stack pointer for alloced data
+	
   	/*stack frame:
    * -8(%rbp) Image *img
    * -12(%rbp) uint32_t x
@@ -554,13 +555,14 @@ draw_circle:
 	jle circ_loop
 
 
-	addq $32, %rsp //restore stack ptr
+	
 	//Pop used callees
 	popq %rbx
 	popq %r15 
 	popq %r14
 	popq %r13
 	popq %r12
+	addq $32, %rsp //restore stack ptr
 	popq %rbp 
 	ret
 
