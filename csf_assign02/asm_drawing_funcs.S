@@ -485,13 +485,12 @@ draw_circle:
 	//%r13 also stores x,y,width,weight
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = 
 	//set iterator ctrs to top left corner (center - r)
-	movl -12(%rbp), %r15d // store i = x-r for the iterator
+	movl -8(%rbp), %r15d // store i = x-r for the iterator
 	subl -20(%rbp),%r15d //-r step
 	movl -16(%rbp), %ebx // store j = y-r
-	subl -20(%rbp),%ebx //-r step
+	subl -20(%rbp),%ebx //-r step-1
 
 	circ_loop:
-
 	
 	circ_check_bounds: //validate in_bounds
 	//setup bounds checking parameters
@@ -537,9 +536,7 @@ draw_circle:
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
 	movl %r12d, %ecx // r12 = color --> ecx
-	subq $8, %rsp
 	call draw_pixel
-	addq $8, %rsp
 
 	skip_circle_pt:
 	//correct limit of loop < y + r
@@ -556,8 +553,6 @@ draw_circle:
 	addl -20(%rbp), %r9d // adding r to x --> limit = x + r or corner x + 2r
 	cmp %r9d, %r15d
 	jle circ_loop
-
-
 	
 	//Pop used callees
 	popq %rbx
