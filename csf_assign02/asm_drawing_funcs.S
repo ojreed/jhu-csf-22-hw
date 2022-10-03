@@ -105,7 +105,59 @@ all corners of the rect are inbounds with the image
 */
 	.globl rec_in_bounds
 rec_in_bounds:
-	ret
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	//store callee %r12-r15
+	pushq %r12 
+	pushq %r13
+	pushq %r14
+	pushq %r15
+	pushq %rbx
+
+	// Store inputs in callee
+	movq %rdi, %r12 //store img width,height,data
+	movq %rsi, %r13 //store rect tile
+
+	// Store info about img
+	movl 0(%r12), %r15d // store image height in %r15d
+	movl 4(%r12), %ebx // store image width in %ebx
+
+	// Store info about rect
+	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
+	movl 0(%r13), %r12 // x
+	movl 4(%r13), %rbp // y
+	movl 8(%r13), %r14  // width
+	movl 12(%r13), %r13 // height
+
+	//if (0<=x && t_width+x<=i_width && 0<=y && t_height+y<=i_height) {
+    //return 1;
+    //}
+    //return 0;
+	cmpl $0, %r12
+	jl .LoutOfBounds
+	cmpl $0, %rbp
+	jl .LoutOfBounds
+	movl %rbp, %r9d // moving y into r9d, for tile
+	addl %r13, %r9d // adding height to y
+	cmp %r9d, %r15d // %r15d has img height
+	jl .LoutOfBounds
+	movl %r12, %r9d // moving x into r9d
+	addl %r14, %r9d // adding width to x
+	cmp %r9d, %ebx // %ebx had img width
+	jl .LoutOfBounds
+	movl $1, %rax
+	jmp .Lloopdone
+	.LoutOfBounds:
+		movl $0, %rax
+	.Lloopdone:
+		//Pop used callees
+		popq %rbx
+		popq %r15 
+		popq %r14
+		popq %r13
+		popq %r12
+		popq %rbp 
+		ret
 
 
 /*
