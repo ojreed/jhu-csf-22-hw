@@ -124,10 +124,10 @@ rec_in_bounds:
 
 	// Store info about rect
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
-	movl 0(%r13), %r12 // x
-	movl 4(%r13), %rbp // y
-	movl 8(%r13), %r14  // width
-	movl 12(%r13), %r13 // height
+	movl 0(%r13), %r12d // x
+	movl 4(%r13), %ebd // y
+	movl 8(%r13), %r14d  // width
+	movl 12(%r13), %r13d // height
 
 	//if (0<=x && t_width+x<=i_width && 0<=y && t_height+y<=i_height) {
     //return 1;
@@ -137,12 +137,12 @@ rec_in_bounds:
 	jl .LoutOfBounds
 	cmpl $0, %rbp
 	jl .LoutOfBounds
-	movl %rbp, %r9d // moving y into r9d, for tile
-	addl %r13, %r9d // adding height to y
+	movl %ebp, %r9d // moving y into r9d, for tile
+	addl %r13d, %r9d // adding height to y
 	cmp %r9d, %r15d // %r15d has img height
 	jl .LoutOfBounds
-	movl %r12, %r9d // moving x into r9d
-	addl %r14, %r9d // adding width to x
+	movl %r12d, %r9d // moving x into r9d
+	addl %r14d, %r9d // adding width to x
 	cmp %r9d, %ebx // %ebx had img width
 	jl .LoutOfBounds
 	movl $1, %rax
