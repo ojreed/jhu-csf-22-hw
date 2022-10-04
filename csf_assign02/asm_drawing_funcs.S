@@ -133,9 +133,9 @@ rec_in_bounds:
     //return 1;
     //}
     //return 0;
-	cmpl $0, %r12
+	cmpl $0, %r12d
 	jl .LoutOfBounds
-	cmpl $0, %rbp
+	cmpl $0, %ebp
 	jl .LoutOfBounds
 	movl %ebp, %r9d // moving y into r9d, for tile
 	addl %r13d, %r9d // adding height to y
@@ -145,10 +145,10 @@ rec_in_bounds:
 	addl %r14d, %r9d // adding width to x
 	cmp %r9d, %ebx // %ebx had img width
 	jl .LoutOfBounds
-	movl $1, %rax
+	movl $1, %eax
 	jmp .Lloopdone
 	.LoutOfBounds:
-		movl $0, %rax
+		movl $0, %eax
 	.Lloopdone:
 		//Pop used callees
 		popq %rbx
