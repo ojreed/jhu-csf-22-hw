@@ -633,7 +633,99 @@ draw_circle:
  */
 	.globl draw_tile
 draw_tile:
-	/* TODO: implement */
+	//TODO: change input registers
+	//		add get pix from tile functionality 
+	// 		fix loop	
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	subq $32, %rsp //init stack pointer for alloced data
+	//store callee %r12-r15
+	pushq %r12 
+	pushq %r13
+	pushq %r14
+	pushq %r15
+	pushq %rbx
+
+	
+  	/*stack frame:
+   * -8(%rbp) Image *img
+   * -12(%rbp) uint32_t x
+   * -16(%rbp) uint32_t y
+   * -20(%rbp) uint32_t r
+   * -32(%rbp) <-> -20(%rbp) alignment padding
+   */
+	movq %rdi, -8(%rbp)  //store image
+	movl %esi, -12(%rbp) //store top left x 
+	movl %edx, -16(%rbp) //store top left y
+	movl %ecx, -20(%rbp) //store tilemap
+
+
+	//store inputs in callee
+	movl %r8d, %r12d //store rect
+	//r15 stores i = x for iterator
+	//ebx stores j = y for iterator 
+
+	
+	//%r13 also stores x,y,width,weight
+	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = 
+	//set iterator ctrs to top left corner (center - r)
+	movl -12(%rbp), %r15d // store i = x top left for the iterator
+	movl -16(%rbp), %ebx // store j = y top left
+
+
+	tile_check_bounds: //validate in_bounds
+	//setup bounds checking parameters
+	movq -20(%rbp), %rdi // -8(%rbp) = tilemap ptr --> rdi
+	movl %r12d, %esi // r15d = tilemap from r12d
+	//Process Bounds Checking
+	call rec_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
+	cmp $1, %eax // is_in_bounds returns 1 or 0 
+	jne bad_tile //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
+
+	tile_loop:
+	
+	tile_get_pix:
+	//TODO: Feed in vals
+	//		adjust x and y coord
+	//tilemap --> edi
+	//adjusted x cord -->
+	//adjusted y cord -->
+	call get_pix
+
+	tile_draw_pix:
+	// Moving all parameters into correct locations for draw_pixel call
+	movq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
+	movl %r15d, %esi // r15d = i --> esi
+	movl %ebx, %edx // ebx = j --> edx
+	movl %eax, %ecx // eax = color from tile --> ecx
+	call put_pixel
+
+	
+	//correct limit of loop < y + r
+	addl $1, %ebx // increment j 
+	movl -16(%rbp), %r9d // moving y center into r9d
+	addl -20(%rbp), %r9d // adding r to y --> limit = center_y + r or corner y + 2r
+	cmp %r9d, %ebx
+	jle circ_loop
+	//reset inner loop iter
+	movl -16(%rbp), %ebx // store j = y-r
+	subl -20(%rbp), %ebx //-r step
+	addl $1, %r15d // increment i
+	movl -12(%rbp), %r9d // moving x into r9d
+	addl -20(%rbp), %r9d // adding r to x --> limit = x + r or corner x + 2r
+	cmp %r9d, %r15d
+	jle circ_loop
+	
+
+	bad_tile:
+	//Pop used callees
+	popq %rbx
+	popq %r15 
+	popq %r14
+	popq %r13
+	popq %r12
+	addq $32, %rsp //restore stack ptr
+	popq %rbp 
 	ret
 
 /*
