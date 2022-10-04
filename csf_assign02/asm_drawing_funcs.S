@@ -125,7 +125,7 @@ rec_in_bounds:
 	// Store info about rect
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
 	movl 0(%r13), %r12d // x
-	movl 4(%r13), %ebd // y
+	movl 4(%r13), %ebp // y
 	movl 8(%r13), %r14d  // width
 	movl 12(%r13), %r13d // height
 
