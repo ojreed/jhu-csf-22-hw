@@ -711,14 +711,14 @@ draw_tile:
 	movl -16(%rbp), %r9d // moving y into r9d
 	addl 12(%r12d), %r9d // adding height to y --> limit = y + rect-->height 
 	cmp %r9d, %ebx
-	jle circ_loop
+	jle tile_loop
 	//reset inner loop iter
 	movl -16(%rbp), %ebx // store j = y for loop reset
 	addl $1, %r15d // increment i
 	movl -12(%rbp), %r9d // moving x into r9d
 	addl 8(%r12d), %r9d // adding height to y --> limit = y + rect-->height 
 	cmp %r9d, %r15d
-	jle circ_loop
+	jle tile_loop
 	
 
 	bad_tile:
