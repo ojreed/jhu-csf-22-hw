@@ -124,7 +124,7 @@ rec_in_bounds:
 
 	// Store info about rect
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
-	movl 0(%r13), %r12d // x
+	mov1 0(%r13), %r12d // x
 	movl 4(%r13), %ebp // y
 	movl 8(%r13), %r14d  // width
 	movl 12(%r13), %r13d // height
@@ -660,7 +660,7 @@ draw_tile:
 
 
 	//store inputs in callee
-	movl %r8d, %r12d //store rect
+	movq %r8, %r12 //store rect
 	//r15 stores i = x for iterator
 	//ebx stores j = y for iterator 
 
@@ -675,7 +675,7 @@ draw_tile:
 	tile_check_bounds: //validate in_bounds
 	//setup bounds checking parameters
 	movq -24(%rbp), %rdi // -8(%rbp) = tilemap ptr --> rdi
-	movl %r12d, %esi // r15d = tilemap from r12d
+	movq %r12, %esi // r15d = tilemap from r12d
 	//Process Bounds Checking
 	call rec_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
@@ -689,12 +689,12 @@ draw_tile:
 	//adjusted x cord --> esi
 	movl %r15d, %esi //esi = i
 	subl -12(%rbp), %esi //esi = i - x
-	addl 0(%r12d), %esi //esi = i - x + tile-->x
+	addl 0(%r12), %esi //esi = i - x + tile-->x
 
 	//adjusted y cord --> edx
 	movl %ebx, %edx //edx = j
 	subl -16(%rbp), %edx //edx = j - y
-	addl 4(%r12d), %edx //edx = j - y + tile-->y
+	addl 4(%r12), %edx //edx = j - y + tile-->y
 	call get_pix
 
 	tile_draw_pix:
@@ -709,14 +709,14 @@ draw_tile:
 	//correct limit of loop < y + r
 	addl $1, %ebx // increment j 
 	movl -16(%rbp), %r9d // moving y into r9d
-	addl 12(%r12d), %r9d // adding height to y --> limit = y + rect-->height 
+	addl 12(%r12), %r9d // adding height to y --> limit = y + rect-->height 
 	cmp %r9d, %ebx
 	jle tile_loop
 	//reset inner loop iter
 	movl -16(%rbp), %ebx // store j = y for loop reset
 	addl $1, %r15d // increment i
 	movl -12(%rbp), %r9d // moving x into r9d
-	addl 8(%r12d), %r9d // adding height to y --> limit = y + rect-->height 
+	addl 8(%r12), %r9d // adding height to y --> limit = y + rect-->height 
 	cmp %r9d, %r15d
 	jle tile_loop
 	
