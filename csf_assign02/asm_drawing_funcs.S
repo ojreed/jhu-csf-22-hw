@@ -675,7 +675,7 @@ draw_tile:
 	tile_check_bounds: //validate in_bounds
 	//setup bounds checking parameters
 	movq -24(%rbp), %rdi // -8(%rbp) = tilemap ptr --> rdi
-	movq %r12, %esi // r15d = tilemap from r12d
+	movq %r12, %rsi // r15d = tilemap from r12d
 	//Process Bounds Checking
 	call rec_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
 	cmp $1, %eax // is_in_bounds returns 1 or 0 
