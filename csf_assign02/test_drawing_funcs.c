@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
   TEST(test_draw_rect);
   TEST(test_draw_circle);
   TEST(test_draw_circle_clip);
-  //TEST(test_draw_tile);
+  TEST(test_draw_tile);
   //TEST(test_draw_sprite);
   TEST(test_blur_colors);
   TEST(test_get_pix);
@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
   TEST(test_bounds_edge);
   TEST(test_blur_colors_math);
   TEST(test_rec_in_bounds);
-  //TEST(test_put_pixel);
+  TEST(test_put_pixel);
 
   TEST_FINI();
 }
