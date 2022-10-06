@@ -281,10 +281,10 @@ get_pix:
 	movq $0, %r10 // set r10 to proper offset to access 
 	leaq (%rdi), %r11 //store address of edi in r11
 	add %r11, %r10 // add address of image to r10 --> address of columns 
-	movq %edx, %rax //setup multiplication by edx
+	movq %rdx, %rax //setup multiplication by edx
 	mulq (%r10) //r1o = cols * edx = y --> y = product
-	movq %rax, %edx //finish multiplication 
-	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
+	movq %rax, %rdx //finish multiplication 
+	addq %rsi, %rdx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movq 8(%rdi), %r10 //set r10d as the address of the data section of the image
 	movl (%r10,%rdx,4), %eax //store the value of the correct index (edx) in eax to return
 	
