@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
   TEST(test_draw_circle);
   TEST(test_draw_circle_clip);
   TEST(test_draw_tile);
-  //TEST(test_draw_sprite);
+  TEST(test_draw_sprite);
   TEST(test_blur_colors);
   TEST(test_get_pix);
   TEST(test_set_pix);
