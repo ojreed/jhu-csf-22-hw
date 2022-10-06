@@ -829,7 +829,7 @@ draw_sprite:
 	movl %r15d, %esi // r15d = i --> esi
 	movl %ebx, %edx // ebx = j --> edx
 	movl %eax, %ecx // eax = color from tile --> ecx
-	call put_pixel
+	call draw_pixel
 
 	
 	//correct limit of loop < y + r
