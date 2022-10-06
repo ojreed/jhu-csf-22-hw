@@ -757,7 +757,105 @@ draw_tile:
  */
 	.globl draw_sprite
 draw_sprite:
-	/* TODO: implement */
+	draw_sprite:
+	//TODO: change input registers
+	// 		fix loop	
+	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
+	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
+	subq $32, %rsp //init stack pointer for alloced data
+	//store callee %r12-r15
+	pushq %r12 
+	pushq %r13
+	pushq %r14
+	pushq %r15
+	pushq %rbx
+
+	
+  	/*stack frame:
+   * -8(%rbp) Image *img
+   * -12(%rbp) uint32_t x
+   * -16(%rbp) uint32_t y
+   * -24(%rbp) uint32_t r
+   * -32(%rbp) <-> -24(%rbp) alignment padding
+   */
+	movq %rdi, -8(%rbp)  //store image
+	movl %esi, -12(%rbp) //store top left x 
+	movl %edx, -16(%rbp) //store top left y
+	movq %rcx, -24(%rbp) //store tilemap
+
+
+	//store inputs in callee
+	movq %r8, %r12 //store rect
+	//r15 stores i = x for iterator
+	//ebx stores j = y for iterator 
+
+	
+	//%r13 also stores x,y,width,weight
+	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = 
+	//set iterator ctrs to top left corner (center - r)
+	movl -12(%rbp), %r15d // store i = x top left for the iterator
+	movl -16(%rbp), %ebx // store j = y top left
+
+
+	sprite_check_bounds: //validate in_bounds
+	//setup bounds checking parameters
+	movq -24(%rbp), %rdi // -24(%rbp) = tilemap ptr --> rdi
+	movq %r12, %rsi // r12 = rect from r12d
+	//Process Bounds Checking
+	call rec_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
+	cmp $1, %eax // is_in_bounds returns 1 or 0 
+	jne bad_sprite //if value is not 1, jump to .not_in_bounds --> jne is ineqaulity
+
+	sprite_loop:
+	
+	sprite_get_pix:
+	//move tile map to rdi
+	movq -24(%rbp), %rdi //tilemap --> edi
+	//adjusted x cord --> esi
+	movl %r15d, %esi //esi = i
+	addl 0(%r12), %esi //esi = i - x + tile-->x
+	subl -12(%rbp), %esi //esi = i - x
+
+
+	//adjusted y cord --> edx
+	movl %ebx, %edx //edx = j
+	addl 4(%r12), %edx //edx = j - y + tile-->y
+	subl -16(%rbp), %edx //edx = j - y
+	call get_pix
+
+	sprite_draw_pix:
+	// Moving all parameters into correct locations for draw_pixel call
+	movq -8(%rbp), %rdi // -8(%rbp), = img ptr --> rdi
+	movl %r15d, %esi // r15d = i --> esi
+	movl %ebx, %edx // ebx = j --> edx
+	movl %eax, %ecx // eax = color from tile --> ecx
+	call put_pixel
+
+	
+	//correct limit of loop < y + r
+	addl $1, %ebx // increment j 
+	movl -16(%rbp), %r9d // moving y into r9d
+	addl 12(%r12), %r9d // adding height to y --> limit = y + rect-->height 
+	cmp %r9d, %ebx
+	jl sprite_loop
+	//reset inner loop iter
+	movl -16(%rbp), %ebx // store j = y for loop reset
+	addl $1, %r15d // increment i
+	movl -12(%rbp), %r9d // moving x into r9d
+	addl 8(%r12), %r9d // adding height to y --> limit = y + rect-->height 
+	cmp %r9d, %r15d
+	jl sprite_loop
+	
+
+	bad_sprite:
+	//Pop used callees
+	popq %rbx
+	popq %r15 
+	popq %r14
+	popq %r13
+	popq %r12
+	addq $32, %rsp //restore stack ptr
+	popq %rbp 
 	ret
 
 /*
