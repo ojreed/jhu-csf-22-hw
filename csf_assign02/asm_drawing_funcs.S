@@ -250,7 +250,7 @@ set_pix:
 	leal (%r10d,%edx,4), %eax //store the address of the correct index (edx) in eax
 	movl %ecx, (%eax) //set the dereferenced pix pointer to the correct color
 	
-	pushq %rbx
+	popq %rbx
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
