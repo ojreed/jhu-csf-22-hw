@@ -248,17 +248,6 @@ set_pix:
 	addq %rsi, %rdx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movq 8(%rdi), %r10 //set r10d as the address of the data section of the image
 	leaq (%r10,%rdx,4), %rax 
-	/*
-	movl $0, %r10d // set r10 to proper offset to access 
-	leal (%rdi), %r11d //store address of edi in r11
-	addl %r11d, %r10d // add address of image to r10 --> address of columns 
-	movl %edx, %eax //setup multiplication of edx
-	mull (%r10d) //r1o = cols * edx = y --> y = product
-	movl %eax, %edx //finish multiplication of exc
-	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
-	movl 8(%edi), %r10d //set r10d as the address of the data section of the image
-	leal (%r10d,%edx,4), %eax //store the address of the correct index (edx) in eax
-	*/
 	movl %ecx, (%rax) //set the dereferenced pix pointer to the correct color
 	
 	popq %rbx
@@ -297,7 +286,7 @@ get_pix:
 	movq %rax, %rdx //finish multiplication 
 	addq %rsi, %rdx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movq 8(%rdi), %r10 //set r10d as the address of the data section of the image
-	movq (%r10,%rdx,4), %rax //store the value of the correct index (edx) in eax to return
+	movl (%r10,%rdx,4), %rax //store the value of the correct index (edx) in eax to return
 	
 	popq %rbx
 	popq %r15 //pop used callees
