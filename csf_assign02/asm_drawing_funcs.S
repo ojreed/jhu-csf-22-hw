@@ -103,6 +103,20 @@ not_in_bounds:
 Takes input of an image and a Rect and checks that 
 all corners of the rect are inbounds with the image
 */
+/*
+int rec_in_bounds(struct Image *img,const struct Rect *tile ) {
+  int32_t t_width = tile->width;
+  int32_t t_height = tile->height;
+  int32_t i_width = img->width;
+  int32_t i_height = img->height;
+  int32_t x = tile->x;
+  int32_t y = tile->y;
+  if (0<=x && t_width+x<=i_width && 0<=y && t_height+y<=i_height) {
+    return 1;
+  }
+  return 0;
+}
+*/
 	.globl rec_in_bounds
 rec_in_bounds:
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
@@ -140,11 +154,11 @@ rec_in_bounds:
 	movl %ebp, %r9d // moving y into r9d, for tile
 	addl %r13d, %r9d // adding height to y
 	cmp %r9d, %r15d // %r15d has img height
-	jl .LoutOfBounds
+	jle .LoutOfBounds
 	movl %r12d, %r9d // moving x into r9d
 	addl %r14d, %r9d // adding width to x
 	cmp %r9d, %ebx // %ebx had img width
-	jl .LoutOfBounds
+	jle .LoutOfBounds
 	movl $1, %eax
 	jmp .Lloopdone
 	.LoutOfBounds:
