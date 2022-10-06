@@ -272,6 +272,8 @@ get_pix:
 	pushq %r13
 	pushq %r14
 	pushq %r15
+	pushq %rbx
+
 	//start getting pix
 	movl $0, %r10d // set r10 to proper offset to access 
 	leal (%rdi), %r11d //store address of edi in r11
@@ -282,6 +284,7 @@ get_pix:
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d //set r10d as the address of the data section of the image
 	movl (%r10d,%edx,4), %eax //store the value of the correct index (edx) in eax to return
+	pushq %rbx
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
@@ -674,7 +677,7 @@ draw_tile:
 
 	tile_check_bounds: //validate in_bounds
 	//setup bounds checking parameters
-	movq -24(%rbp), %rdi // -8(%rbp) = tilemap ptr --> rdi
+	movq -24(%rbp), %rdi // -24(%rbp) = tilemap ptr --> rdi
 	movq %r12, %rsi // r12 = rect from r12d
 	//Process Bounds Checking
 	call rec_in_bounds //if is_in_bounds(img,x,y), will access stack in this helper method
