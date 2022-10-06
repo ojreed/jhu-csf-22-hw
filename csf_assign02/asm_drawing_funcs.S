@@ -284,7 +284,8 @@ get_pix:
 	addl %esi, %edx // add esi = x to edx = y*cols --> x+y*cols == locataion (from data offset)
 	movl 8(%edi), %r10d //set r10d as the address of the data section of the image
 	movl (%r10d,%edx,4), %eax //store the value of the correct index (edx) in eax to return
-	pushq %rbx
+	
+	popq %rbx
 	popq %r15 //pop used callees
 	popq %r14
 	popq %r13
