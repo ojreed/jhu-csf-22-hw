@@ -717,16 +717,16 @@ draw_tile:
 	//correct limit of loop < y + r
 	addl $1, %ebx // increment j 
 	movl -16(%rbp), %r9d // moving y into r9d
-	addl 8(%r12), %r9d // adding height to y --> limit = y + rect-->height 
+	addl 12(%r12), %r9d // adding height to y --> limit = y + rect-->height 
 	cmp %r9d, %ebx
-	jle tile_loop
+	jl tile_loop
 	//reset inner loop iter
 	movl -16(%rbp), %ebx // store j = y for loop reset
 	addl $1, %r15d // increment i
 	movl -12(%rbp), %r9d // moving x into r9d
-	addl 12(%r12), %r9d // adding height to y --> limit = y + rect-->height 
+	addl 8(%r12), %r9d // adding height to y --> limit = y + rect-->height 
 	cmp %r9d, %r15d
-	jle tile_loop
+	jl tile_loop
 	
 
 	bad_tile:
