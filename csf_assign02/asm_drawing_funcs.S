@@ -133,8 +133,8 @@ rec_in_bounds:
 	movq %rsi, %r13 //store rect tile
 
 	// Store info about img
-	movl 0(%r12), %r15d // store image height in %r15d
-	movl 4(%r12), %ebx // store image width in %ebx
+	movl 4(%r12), %r15d // store image height in %r15d
+	movl 0(%r12), %ebx // store image width in %ebx
 
 	// Store info about rect
 	//0(r13) = x, 4(r13) = y, 8(r13) = width, 12(r13) = height
@@ -154,11 +154,11 @@ rec_in_bounds:
 	movl %ebp, %r9d // moving y into r9d, for tile
 	addl %r13d, %r9d // adding height to y
 	cmp %r9d, %r15d // %r15d has img height
-	jle .LoutOfBounds
+	jl .LoutOfBounds
 	movl %r12d, %r9d // moving x into r9d
 	addl %r14d, %r9d // adding width to x
 	cmp %r9d, %ebx // %ebx had img width
-	jle .LoutOfBounds
+	jl .LoutOfBounds
 	movl $1, %eax
 	jmp .Lloopdone
 	.LoutOfBounds:
