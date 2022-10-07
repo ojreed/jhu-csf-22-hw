@@ -653,9 +653,7 @@ draw_circle:
  *   %r8  - pointer to Rect (the tile)
  */
 	.globl draw_tile
-draw_tile:
-	//TODO: change input registers
-	// 		fix loop	
+draw_tile:	
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	subq $32, %rsp //init stack pointer for alloced data
@@ -772,8 +770,6 @@ draw_tile:
 	.globl draw_sprite
 draw_sprite:
 	draw_sprite:
-	//TODO: change input registers
-	// 		fix loop	
 	pushq %rbp // Stores stack frame of calling func, location of ebp is a reference pt for our stack Parameters
 	movq %rsp, %rbp // Taking current stack ptr and using it as frame for current func
 	subq $32, %rsp //init stack pointer for alloced data
