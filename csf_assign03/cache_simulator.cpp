@@ -4,6 +4,12 @@
 #include <vector>
 #include <sstream>
 
+/*
+TODO:
+    Makefile
+*/
+
+
 void printResult(int loads, int stores, int ldr_hits, int ldr_misses, int str_hits, int str_misses, int total) {
     //edit later to take an array or vector... parse structure and then
     //have the lines below
