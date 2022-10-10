@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 void printResult(int loads, int stores, int ldr_hits, int ldr_misses, int str_hits, int str_misses, int total) {
     //edit later to take an array or vector... parse structure and then
@@ -17,6 +18,9 @@ void printResult(int loads, int stores, int ldr_hits, int ldr_misses, int str_hi
 
 int * parseTraces(std::string trace_name) {
     int counts[7]; //store information in array
+    int loads;
+    int stores; //add more vars later of course
+
     std::ifstream trace;
     trace.open(trace_name);
     //parse to find number of loads and stores first... get that working
@@ -25,10 +29,13 @@ int * parseTraces(std::string trace_name) {
     while(std::getline(trace, line)) {
         //something like this below, finish later
         std::stringstream ss(line);
-        getline(ss, lOrS, ' ');
-        if(lOrS.compare("l") == 0) ? loads++ : stores++; 
-
-        int a, b;
+        //std::getline(ss, lOrS, ' ');
+        ss >> lOrS; //maybe will store first char
+        if(lOrS.compare("l") == 0){
+            loads = loads + 1;
+        } else {
+            stores = stores + 1; 
+        }
 
     }
 
