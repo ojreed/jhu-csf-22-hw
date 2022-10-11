@@ -26,6 +26,7 @@ void printResult(std::vector<int> values) {
 std::vector<int> parseTraces(std::string trace_name) {
     std::vector<int> vec; //store info in vector
     int loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total; 
+    loads = stores = ldr_hits = ldr_misses = str_hits = str_misses = total = 0;
 
     std::ifstream trace;
     trace.open(trace_name);
@@ -69,9 +70,33 @@ Main function of program --> will manage input of command line arguments as well
         lru (least-recently-used) or fifo evictions
 */
 int main(int argc, char *argv[]){ 
-    //convert entier input to more easily usable strings
-    std::vector<std::string> params(argv, argv+argc);
+    if (argc != 6) { //invalid number of arguments
+        return 0; //process cant run
+    }
+    std::string trace_name;
+    std::cin >> trace_name; //reading file name
+    try
+    {
+        std::ifstream trace;
+        trace.open(trace_name);
+        trace.close();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << 'Bad Trace File\n';
+        return 0;
+    }
+    
+    std::string current_exec_name = argv[0]; // Name of the current exec program
+    std::vector<std::string> params;
+    if (argc > 1) {
+        params.assign(argv, argv + argc);
+    }
     //convert first three inputs to ints
+    std::cout << "TEST" << std::endl;
+    std::cout << params[1] << std::endl;
+    std::cout << params[2] << std::endl;
+    std::cout << params[3] << std::endl;
     int sets = std::stoi(params[1]);
     int blocks = std::stoi(params[2]);
     int bytes = std::stoi(params[3]);
@@ -79,8 +104,6 @@ int main(int argc, char *argv[]){
     bool write_alloc = (params[4].compare("write-allocate") == 0) ? true : false; 
     bool write_thr = (params[5].compare("write-through") == 0) ? true : false; 
     bool lru = (params[6].compare("lru")) ? true : false;
-    std::string trace_name;
-    std::cin >> trace_name; //reading file name
     //std::ifstream trace;
     //trace.open(trace_name);
     //test code
