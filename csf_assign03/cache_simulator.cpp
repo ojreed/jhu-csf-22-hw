@@ -76,33 +76,64 @@ Main function of program --> will manage input of command line arguments as well
         lru (least-recently-used) or fifo evictions
 */
 int main(int argc, char *argv[]){ 
+    //validate correct number of inputs
     if (argc != 7) { //invalid number of arguments
         return 0; //process cant run
     }
+
     //TODO:: validate trace tookover CIN
+
+    //convert input to strings for easy use
     std::string current_exec_name = argv[0]; // Name of the current exec program
     std::vector<std::string> params;
     if (argc > 1) {
         params.assign(argv, argv + argc);
     }
+
+    //parse input for set block and byte size
     int sets, blocks, bytes;
     try
     {
+        //pull inputs and convert string to ints
         sets = std::stoi(params[1]);
         blocks = std::stoi(params[2]);
         bytes = std::stoi(params[3]);
     }
-    catch(const std::exception& e)
+    catch(const std::exception& e) //catch invalid input errors for sets, blocks, and bytes
     {
-        std::cerr << e.what() << " Cache Size Parameter Not and Int" << '\n';
+        std::cerr << e.what() << " Cache Size Parameter Not an Int" << '\n';
         return 0;
     }
-    //convert first three inputs to ints
     
-    //use the next three inputs as bools 
-    bool write_alloc = (params[4].compare("write-allocate") == 0) ? true : false; 
-    bool write_thr = (params[5].compare("write-through") == 0) ? true : false; 
-    bool lru = (params[6].compare("lru") == 0) ? true : false;
+    //parse input for cache usage modes
+    bool write_alloc, write_thr, lru;
+    //write alloc
+    if (params[4].compare("write-allocate") == 0) {
+        write_alloc = 1;
+    } else if (params[4].compare("no-write-allocate") == 0) {
+        write_alloc = 0;
+    } else {
+        std::cout << "Invalid Input Param for Write_Alloc" << std::endl;
+        return 0;
+    }
+    //write through
+    if (params[4].compare("write-through") == 0) {
+        write_thr = 1;
+    } else if (params[4].compare("write-back") == 0) {
+        write_thr = 0;
+    } else {
+        std::cout << "Invalid Input Param for Write_Thr" << std::endl;
+        return 0;
+    }
+    //lru
+    if (params[4].compare("lru") == 0) {
+        lru = 1;
+    } else if (params[4].compare("fifo") == 0) {
+        lru = 0;
+    } else {
+        std::cout << "Invalid Input Param for LRU" << std::endl;
+        return 0;
+    }
 
     //test inputs
     std::cout << "Validate Inputs: " << "\n";
