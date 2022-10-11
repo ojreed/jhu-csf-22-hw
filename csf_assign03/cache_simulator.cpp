@@ -23,7 +23,7 @@ void printResult(std::vector<int> values) {
     std::cout << "Total cycles: " << values[6];
 }
 
-std::vector<int> parseTraces(std::string trace_name) {
+std::vector<int> parseTraces() {
     std::vector<int> vec; //store info in vector
     int loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total; 
     loads = 0;
@@ -34,14 +34,10 @@ std::vector<int> parseTraces(std::string trace_name) {
     str_misses = 0;
     total = 0;
 
-    std::ifstream trace;
-    std::cout << trace_name << std::endl;
-
-    trace.open(trace_name);
     //parse to find number of loads and stores first... get that working
     std::string line;
     std::string lOrS;
-    while(std::getline(trace, line)) {
+    while(std::getline(std::cin, line)) {
         std::cout << line << std::endl;
         //something like this below, finish later
         std::istringstream ss(line);
@@ -54,8 +50,6 @@ std::vector<int> parseTraces(std::string trace_name) {
         }
 
     }
-
-    trace.close();
     
     vec.push_back(loads);
     vec.push_back(stores);
@@ -82,23 +76,7 @@ int main(int argc, char *argv[]){
     if (argc != 7) { //invalid number of arguments
         return 0; //process cant run
     }
-    std::string trace_name;
-    // std::cin >> trace_name; //reading file name
-    std::getline(std::cin,trace_name);
-    std::cout << trace_name <<std::endl;
-
-    try
-    {
-        std::ifstream trace;
-        trace.open(trace_name);
-        trace.close();
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << 'Bad Trace File\n';
-        return 0;
-    }
-    
+    //TODO:: validate trace tookover CIN
     std::string current_exec_name = argv[0]; // Name of the current exec program
     std::vector<std::string> params;
     if (argc > 1) {
@@ -115,14 +93,6 @@ int main(int argc, char *argv[]){
     bool write_alloc = (params[4].compare("write-allocate") == 0) ? true : false; 
     bool write_thr = (params[5].compare("write-through") == 0) ? true : false; 
     bool lru = (params[6].compare("lru")) ? true : false;
-    //std::ifstream trace;
-    //trace.open(trace_name);
-    //test code
-    //std::cout << trace.rdbuf();
-    //std::cout << sets << blocks << bytes << write_alloc << write_thr << lru << std::endl;
-    //proper result printing format
-    //maybe put this directly into printResult
-    printResult(parseTraces(trace_name));
-    //trace.close();
+    printResult(parseTraces());
     return 1;
 }
