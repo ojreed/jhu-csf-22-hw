@@ -43,7 +43,7 @@ std::vector<int> parseTraces(std::string trace_name) {
     while(std::getline(trace, line)) {
         std::cout << line << std::endl;
         //something like this below, finish later
-        std::stringstream ss(line);
+        std::istringstream ss(line);
         //std::getline(ss, lOrS, ' ');
         ss >> lOrS; //maybe will store first char
         if(lOrS.compare("l") == 0){
