@@ -4,6 +4,8 @@
 #include <vector>
 #include <sstream>
 
+#include "Cache.h"
+
 /*
 TODO:
     Makefile
