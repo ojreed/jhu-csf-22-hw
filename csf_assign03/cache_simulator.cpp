@@ -38,7 +38,6 @@ std::vector<int> parseTraces() {
     std::string line;
     std::string lOrS;
     while(std::getline(std::cin, line)) {
-        std::cout << line << std::endl;
         //something like this below, finish later
         std::istringstream ss(line);
         //std::getline(ss, lOrS, ' ');

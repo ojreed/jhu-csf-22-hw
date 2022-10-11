@@ -9,6 +9,10 @@ csim: cache_simulator.o
 cache_simulator.o: cache_simulator.cpp cache_simulator.h
 	$(CC) -c cache_simulator.cpp $(CFLAGS)
 
+
+all: cache_simulator.o
+	$(CC) -o csim cache_simulator.o
+
 .PHONY: clean all
 clean:
 	rm -f *.o csim
