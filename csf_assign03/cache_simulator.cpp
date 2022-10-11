@@ -84,9 +84,6 @@ int main(int argc, char *argv[]){
         params.assign(argv, argv + argc);
     }
     //convert first three inputs to ints
-    std::cout << params[1] << std::endl;
-    std::cout << params[2] << std::endl;
-    std::cout << params[3] << std::endl;
     int sets = std::stoi(params[1]);
     int blocks = std::stoi(params[2]);
     int bytes = std::stoi(params[3]);
