@@ -26,7 +26,13 @@ void printResult(std::vector<int> values) {
 std::vector<int> parseTraces(std::string trace_name) {
     std::vector<int> vec; //store info in vector
     int loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total; 
-    loads = stores = ldr_hits = ldr_misses = str_hits = str_misses = total = 0;
+    loads = 0;
+    stores = 0;
+    ldr_hits = 0;
+    ldr_misses = 0; 
+    str_hits = 0;
+    str_misses = 0;
+    total = 0;
 
     std::ifstream trace;
     trace.open(trace_name);
