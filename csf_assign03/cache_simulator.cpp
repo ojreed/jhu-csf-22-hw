@@ -98,8 +98,8 @@ int main(int argc, char *argv[]){
     std::cout << "sets: " << sets << "\n";
     std::cout << "blocks: " << blocks << "\n";
     std::cout << "bytes: " << bytes << "\n";
-    std::cout << "write_alloc:" << write_alloc << "\n";
-    std::cout << "write_thr" << write_thr << "\n"; 
+    std::cout << "write_alloc: " << write_alloc << "\n";
+    std::cout << "write_thr: " << write_thr << "\n"; 
     std::cout << "lru: " << lru << "\n"; 
 
 
