@@ -1,3 +1,6 @@
+#ifndef CACHE_SIMULATOR_H
+#define CACHE_SIMULATOR_H
+
 class cache_simulator
 {
 private:
@@ -8,9 +11,13 @@ private:
     bool write_alloc;
     bool write_thr;
     bool lru;
+
 public:
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);
     ~cache_simulator();
+    void printResult(std::vector<int> values);
+    std::vector<int> parseTraces();
+
 };
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
@@ -27,3 +34,7 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
 cache_simulator::~cache_simulator()
 {
 }
+
+
+
+#endif // CACHE_SIMULATOR_H
