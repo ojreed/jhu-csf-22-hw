@@ -6,10 +6,19 @@
 #include "cache_simulator.h"
 #include "Cache.h"
 
-/*
-TODO:
-    Makefile
-*/
+cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
+{
+    this->sets = sets;
+    this->blocks = blocks;
+    this->bytes = bytes;
+    this->write_alloc = write_alloc;
+    this->write_thr = write_thr;
+    this->lru = lru;
+}
+
+cache_simulator::~cache_simulator()
+{
+}
 
 
 void cache_simulator::printResult(std::vector<int> values) {
