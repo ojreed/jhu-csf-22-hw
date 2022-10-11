@@ -85,10 +85,19 @@ int main(int argc, char *argv[]){
     if (argc > 1) {
         params.assign(argv, argv + argc);
     }
+    try
+    {
+        int sets = std::stoi(params[1]);
+        int blocks = std::stoi(params[2]);
+        int bytes = std::stoi(params[3]);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << "Cache Size Parameter Not and Int" << '\n';
+        return 0;
+    }
     //convert first three inputs to ints
-    int sets = std::stoi(params[1]);
-    int blocks = std::stoi(params[2]);
-    int bytes = std::stoi(params[3]);
+    
     //use the next three inputs as bools 
     bool write_alloc = (params[4].compare("write-allocate") == 0) ? true : false; 
     bool write_thr = (params[5].compare("write-through") == 0) ? true : false; 
