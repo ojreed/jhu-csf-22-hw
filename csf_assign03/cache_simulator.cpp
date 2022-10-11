@@ -13,6 +13,7 @@ TODO:
 void printResult(std::vector<int> values) {
     //loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
     //have the lines below
+    std::cout << "Simulation Results: " << "\n";
     std::cout << "Total loads: " << values[0] << "\n";
     std::cout << "Total stores: " << values[1] << "\n";
     std::cout << "Load hits: " << values[2] << "\n";
@@ -95,6 +96,7 @@ int main(int argc, char *argv[]){
     bool lru = (params[6].compare("lru") == 0) ? true : false;
 
     //test inputs
+    std::cout << "Validate Inputs: " << "\n";
     std::cout << "sets: " << sets << "\n";
     std::cout << "blocks: " << blocks << "\n";
     std::cout << "bytes: " << bytes << "\n";
