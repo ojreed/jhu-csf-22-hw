@@ -10,22 +10,22 @@ TODO:
 */
 
 
-void printResult(int loads, int stores, int ldr_hits, int ldr_misses, int str_hits, int str_misses, int total) {
+void printResult(std::vector<int> values) {
     //edit later to take an array or vector... parse structure and then
+    //loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
     //have the lines below
-    std::cout << "Total loads: " << loads << "\n";
-    std::cout << "Total stores: " << stores << "\n";
-    std::cout << "Load hits: " << ldr_hits << "\n";
-    std::cout << "Load misses: " << ldr_misses << "\n";
-    std::cout << "Store hits: " << str_hits << "\n"; 
-    std::cout << "Store misses: " << str_misses << "\n"; 
-    std::cout << "Total cycles: " << total;
+    std::cout << "Total loads: " << values[0] << "\n";
+    std::cout << "Total stores: " << values[1] << "\n";
+    std::cout << "Load hits: " << values[2] << "\n";
+    std::cout << "Load misses: " << values[3] << "\n";
+    std::cout << "Store hits: " << values[4] << "\n"; 
+    std::cout << "Store misses: " << values[5] << "\n"; 
+    std::cout << "Total cycles: " << values[6];
 }
 
-int * parseTraces(std::string trace_name) {
-    int counts[7]; //store information in array
-    int loads;
-    int stores; //add more vars later of course
+std::vector<int> parseTraces(std::string trace_name) {
+    std::vector<int> vec; //store info in vector
+    int loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total; 
 
     std::ifstream trace;
     trace.open(trace_name);
@@ -46,6 +46,16 @@ int * parseTraces(std::string trace_name) {
     }
 
     trace.close();
+    
+    vec.push_back(loads);
+    vec.push_back(stores);
+    vec.push_back(ldr_hits);
+    vec.push_back(ldr_misses);
+    vec.push_back(str_hits);
+    vec.push_back(str_misses);
+    vec.push_back(total);
+
+    return vec;
 }
 
 /*
@@ -77,8 +87,8 @@ int main(int argc, char *argv[]){
     //std::cout << trace.rdbuf();
     //std::cout << sets << blocks << bytes << write_alloc << write_thr << lru << std::endl;
     //proper result printing format
-    parseTraces(trace_name); //maybe put this directly into printResult
-    printResult();
+    //maybe put this directly into printResult
+    printResult(parseTraces(trace_name));
     //trace.close();
     return 0;
 }
