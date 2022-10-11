@@ -76,6 +76,7 @@ Main function of program --> will manage input of command line arguments as well
         lru (least-recently-used) or fifo evictions
 */
 int main(int argc, char *argv[]){ 
+    std::cout << "TEST" << std::endl;
     if (argc != 6) { //invalid number of arguments
         return 0; //process cant run
     }
