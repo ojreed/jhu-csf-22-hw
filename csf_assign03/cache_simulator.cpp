@@ -94,7 +94,7 @@ int main(int argc, char *argv[]){
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << "Cache Size Parameter Not and Int" << '\n';
+        std::cerr << e.what() << " Cache Size Parameter Not and Int" << '\n';
         return 0;
     }
     //convert first three inputs to ints
