@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){
     //use the next three inputs as bools 
     bool write_alloc = (params[4].compare("write-allocate") == 0) ? true : false; 
     bool write_thr = (params[5].compare("write-through") == 0) ? true : false; 
-    bool lru = (params[6].compare("lru")) ? true : false;
+    bool lru = (params[6].compare("lru") == 0) ? true : false;
 
     //test inputs
     std::cout << "sets: " << sets << "\n";
