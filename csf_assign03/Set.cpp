@@ -8,7 +8,9 @@
 #include "Slot.h"
 
 // default constructor
-Set::Set()
+Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 {
-   std::vector<Slot> slots; //vector of slots
+   for (int x = 0; x<blocks;x++) {
+      set.push_back(Slot(bytes,write_alloc,write_thr,lru));
+   }
 }
