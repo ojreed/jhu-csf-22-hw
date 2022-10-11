@@ -39,6 +39,7 @@ std::vector<int> parseTraces(std::string trace_name) {
     //parse to find number of loads and stores first... get that working
     std::string line;
     std::string lOrS;
+    std::cout << "HI" << std::endl;
     while(std::getline(trace, line)) {
         std::cout << line << std::endl;
         //something like this below, finish later
@@ -119,5 +120,5 @@ int main(int argc, char *argv[]){
     //maybe put this directly into printResult
     printResult(parseTraces(trace_name));
     //trace.close();
-    return 0;
+    return 1;
 }
