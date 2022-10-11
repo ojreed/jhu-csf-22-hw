@@ -11,7 +11,6 @@ TODO:
 
 
 void printResult(std::vector<int> values) {
-    //edit later to take an array or vector... parse structure and then
     //loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
     //have the lines below
     std::cout << "Total loads: " << values[0] << "\n";
@@ -24,7 +23,8 @@ void printResult(std::vector<int> values) {
 }
 
 std::vector<int> parseTraces() {
-    std::vector<int> vec; //store info in vector
+    std::vector<int> results; //store info in vector
+    //initalizes inputs 
     int loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total; 
     loads = 0;
     stores = 0;
@@ -50,15 +50,16 @@ std::vector<int> parseTraces() {
 
     }
     
-    vec.push_back(loads);
-    vec.push_back(stores);
-    vec.push_back(ldr_hits);
-    vec.push_back(ldr_misses);
-    vec.push_back(str_hits);
-    vec.push_back(str_misses);
-    vec.push_back(total);
+    //stores results to vector
+    results.push_back(loads);
+    results.push_back(stores);
+    results.push_back(ldr_hits);
+    results.push_back(ldr_misses);
+    results.push_back(str_hits);
+    results.push_back(str_misses);
+    results.push_back(total);
 
-    return vec;
+    return results;
 }
 
 /*
@@ -92,6 +93,16 @@ int main(int argc, char *argv[]){
     bool write_alloc = (params[4].compare("write-allocate") == 0) ? true : false; 
     bool write_thr = (params[5].compare("write-through") == 0) ? true : false; 
     bool lru = (params[6].compare("lru")) ? true : false;
+
+    //test inputs
+    std::cout << "sets: " << sets << "\n";
+    std::cout << "blocks: " << blocks << "\n";
+    std::cout << "bytes: " << bytes << "\n";
+    std::cout << "write_alloc:" << write_alloc << "\n";
+    std::cout << "write_thr" << write_thr << "\n"; 
+    std::cout << "lru: " << lru << "\n"; 
+
+
     printResult(parseTraces());
     return 1;
 }
