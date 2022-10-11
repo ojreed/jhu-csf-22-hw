@@ -117,18 +117,18 @@ int main(int argc, char *argv[]){
         return 0;
     }
     //write through
-    if (params[4].compare("write-through") == 0) {
+    if (params[5].compare("write-through") == 0) {
         write_thr = 1;
-    } else if (params[4].compare("write-back") == 0) {
+    } else if (params[5].compare("write-back") == 0) {
         write_thr = 0;
     } else {
         std::cout << "Invalid Input Param for Write_Thr" << std::endl;
         return 0;
     }
     //lru
-    if (params[4].compare("lru") == 0) {
+    if (params[6].compare("lru") == 0) {
         lru = 1;
-    } else if (params[4].compare("fifo") == 0) {
+    } else if (params[6].compare("fifo") == 0) {
         lru = 0;
     } else {
         std::cout << "Invalid Input Param for LRU" << std::endl;
