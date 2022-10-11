@@ -40,6 +40,7 @@ std::vector<int> parseTraces(std::string trace_name) {
     std::string line;
     std::string lOrS;
     while(std::getline(trace, line)) {
+        std::cout << line << std::endl;
         //something like this below, finish later
         std::stringstream ss(line);
         //std::getline(ss, lOrS, ' ');
@@ -76,13 +77,11 @@ Main function of program --> will manage input of command line arguments as well
         lru (least-recently-used) or fifo evictions
 */
 int main(int argc, char *argv[]){ 
-    std::cout << "TEST" << std::endl;
     if (argc != 7) { //invalid number of arguments
         return 0; //process cant run
     }
     std::string trace_name;
     std::cin >> trace_name; //reading file name
-    std::cout << "TEST" << std::endl;
     try
     {
         std::ifstream trace;
@@ -101,7 +100,6 @@ int main(int argc, char *argv[]){
         params.assign(argv, argv + argc);
     }
     //convert first three inputs to ints
-    std::cout << "TEST" << std::endl;
     std::cout << params[1] << std::endl;
     std::cout << params[2] << std::endl;
     std::cout << params[3] << std::endl;
