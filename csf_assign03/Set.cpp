@@ -1,8 +1,14 @@
 // Set.cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
 #include "Set.h"
+#include "Slot.h"
 
 // default constructor
 Set::Set()
 {
-   //stuff
+   std::vector<Slot> slots; //vector of slots
 }
