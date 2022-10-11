@@ -22,12 +22,12 @@ public:
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 {
-    sets = sets;
-    blocks = blocks;
-    bytes = bytes;
-    write_alloc = write_alloc;
-    write_thr = write_thr;
-    lru = lru;
+    this->sets = sets;
+    this->blocks = blocks;
+    this->bytes = bytes;
+    this->write_alloc = write_alloc;
+    this->write_thr = write_thr;
+    this->lru = lru;
 
 }
 
