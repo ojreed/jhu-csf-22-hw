@@ -35,11 +35,12 @@ std::vector<int> parseTraces(std::string trace_name) {
     total = 0;
 
     std::ifstream trace;
+    std::cout << trace_name << std::endl;
+
     trace.open(trace_name);
     //parse to find number of loads and stores first... get that working
     std::string line;
     std::string lOrS;
-    std::cout << "HI" << std::endl;
     while(std::getline(trace, line)) {
         std::cout << line << std::endl;
         //something like this below, finish later
