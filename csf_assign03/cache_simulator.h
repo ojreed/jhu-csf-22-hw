@@ -24,7 +24,9 @@ public:
         this->lru = lru;
         cache = new Cache(sets,blocks,bytes,write_alloc,write_thr,lru);
     }
-    ~cache_simulator();
+    ~cache_simulator(){
+        delete cache;
+    }
     void printResult(std::vector<int> values);
     std::vector<int> parseTraces();
 
