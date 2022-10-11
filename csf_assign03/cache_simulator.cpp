@@ -83,8 +83,10 @@ int main(int argc, char *argv[]){
         return 0; //process cant run
     }
     std::string trace_name;
-    std::cin >> trace_name; //reading file name
+    // std::cin >> trace_name; //reading file name
+    std::getline(std::cin,trace_name);
     std::cout << trace_name <<std::endl;
+
     try
     {
         std::ifstream trace;
