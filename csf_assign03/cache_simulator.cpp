@@ -85,11 +85,12 @@ int main(int argc, char *argv[]){
     if (argc > 1) {
         params.assign(argv, argv + argc);
     }
+    int sets, blocks, bytes;
     try
     {
-        int sets = std::stoi(params[1]);
-        int blocks = std::stoi(params[2]);
-        int bytes = std::stoi(params[3]);
+        sets = std::stoi(params[1]);
+        blocks = std::stoi(params[2]);
+        bytes = std::stoi(params[3]);
     }
     catch(const std::exception& e)
     {
