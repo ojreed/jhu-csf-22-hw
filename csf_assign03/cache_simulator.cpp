@@ -82,6 +82,7 @@ int main(int argc, char *argv[]){
     }
     std::string trace_name;
     std::cin >> trace_name; //reading file name
+    std::cout << "TEST" << std::endl;
     try
     {
         std::ifstream trace;
