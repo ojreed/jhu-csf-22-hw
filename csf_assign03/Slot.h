@@ -6,7 +6,23 @@ class Slot {
 
     public:
         Slot(int bytes, bool write_alloc, bool write_thr, bool lru); //default constructor
-        //more stuff
+
+        // "get" methods
+        uint32_t getTag(){
+            return tag;
+        }
+
+		bool getValid(){
+            return valid;
+        }
+
+		uint32_t getLoadTs(){
+            return load_ts;
+        }
+
+        uint32_t getAccessTs(){
+            return access_ts;
+        }
 
     private:
         uint32_t tag;

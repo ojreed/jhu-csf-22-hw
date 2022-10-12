@@ -7,7 +7,10 @@ class Cache {
 
     public:
         Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru); //default constructor
-        //more stuff
+
+        std::vector<Set> getCache() {
+            return cache;
+        }
 
     private:
         //stuff
