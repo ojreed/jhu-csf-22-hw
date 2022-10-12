@@ -45,6 +45,16 @@ int main(int argc, char *argv[]){
         std::cerr << e.what() << " Cache Size Parameter Not an Int" << '\n';
         return 0;
     }
+    //validate power of 2
+    if ((sets % 2 != 0) || (blocks % 2 != 0) || (bytes % 2 != 0)) {
+        std::cerr << "Input is not a power of two" << std::endl;
+        return 0;
+    }
+    //validate pos
+    if ((sets < 0) || (blocks < 0) || (bytes < 4)) {
+        std::cerr << "Input is not of valid size" << std::endl;
+        return 0;
+    }
     
     //parse input for cache usage modes
     bool write_alloc, write_thr, lru;
