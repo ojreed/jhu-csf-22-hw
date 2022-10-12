@@ -27,6 +27,7 @@ public:
     ~cache_simulator();
     void printResult(std::vector<int> values);
     std::vector<int> parseTraces();
+    
 
 };
 
