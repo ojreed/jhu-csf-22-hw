@@ -27,5 +27,9 @@ int Cache::access(uint32_t adddress,char instruction) {
    }
 }
 
-int Cache::load(uint32_t adddress);
-int Cache::store(uint32_t adddress);
+int Cache::load(uint32_t adddress){
+   return 0;
+}
+int Cache::store(uint32_t adddress){
+   return 0;
+}
