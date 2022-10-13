@@ -14,3 +14,12 @@ Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
       set.push_back(Slot(bytes,write_alloc,write_thr,lru));
    }
 }
+
+bool Set::is_hit(uint32_t tag, uint32_t offset) {
+    for(int i = 0; i < set.size(); i++) {
+        if(set[i].getTag() == tag) {
+            return true;
+        }
+    }
+    return false;
+}

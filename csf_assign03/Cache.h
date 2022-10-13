@@ -19,6 +19,12 @@ class Cache {
     private:
         //stuff
         std::vector<Set> cache; //vector of sets
+        int blocks;
+        int bytes;
+        int tag;
+        bool write_alloc;
+        bool write_thr;
+        bool lru;
 };
 
 #endif // CACHE_H

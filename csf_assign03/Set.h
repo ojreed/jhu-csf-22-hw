@@ -6,6 +6,7 @@
 class Set {
     public:
         Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru); //default constructor
+        bool is_hit(uint32_t tag, uint32_t offset);
         
         // get method
         std::vector<Slot> getSet() {

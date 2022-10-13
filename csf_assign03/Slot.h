@@ -41,6 +41,7 @@ class Slot {
             access_ts = new_access;
         }
 
+
     private:
         uint32_t tag;
 		bool valid;
