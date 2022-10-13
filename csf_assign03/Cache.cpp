@@ -11,14 +11,15 @@
 // default constructor
 Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 {
-    this->blocks = blocks;
-    this->bytes = bytes;
-    this->write_alloc = write_alloc;
-    this->write_thr = write_thr;
-    this->lru = lru;
-    this->tag = tag;
-    for (int x = 0; x<sets;x++) {
-      cache.push_back(Set(blocks,bytes,write_alloc,write_thr,lru));
+   this->sets = sets;
+   this->blocks = blocks;
+   this->bytes = bytes;
+   this->write_alloc = write_alloc;
+   this->write_thr = write_thr;
+   this->lru = lru;
+   this->tag = tag;
+   for (int x = 0; x<sets;x++) {
+     cache.push_back(Set(blocks,bytes,write_alloc,write_thr,lru));
    }
 }
 
@@ -51,7 +52,7 @@ int Cache::load(uint32_t address){
     if (hit) {
         return 1; //valid hit
     } else{
-        target_set.pull_mem(tag,offset);
+        target_set.pull_mem(tag,index,offset);
     }
 
     

@@ -9,6 +9,10 @@
 // default constructor
 Slot::Slot(int bytes, bool write_alloc, bool write_thr, bool lru)
 {
+   this->bytes = bytes;
+   this->write_alloc = write_alloc;
+   this->write_thr = write_thr;
+   this->lru = lru;
    tag = NULL;
 	valid = false;
    if (lru){

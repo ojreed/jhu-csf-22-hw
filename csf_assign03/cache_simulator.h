@@ -1,6 +1,7 @@
 #ifndef CACHE_SIMULATOR_H
 #define CACHE_SIMULATOR_H
 #include "Cache.h"
+#include <vector>
 
 class cache_simulator
 {

@@ -47,6 +47,10 @@ class Slot {
 		bool valid;
 		uint32_t load_ts;
         uint32_t access_ts;
+        int bytes;
+        bool write_alloc;
+        bool write_thr;
+        bool lru;
 };
 
 #endif // SLOT_H

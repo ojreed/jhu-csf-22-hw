@@ -19,6 +19,7 @@ class Cache {
     private:
         //stuff
         std::vector<Set> cache; //vector of sets
+        int sets;
         int blocks;
         int bytes;
         int tag;
