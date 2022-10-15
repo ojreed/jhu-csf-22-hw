@@ -31,6 +31,16 @@ bool Set::is_hit(uint32_t tag, uint32_t offset) {
 }
 
 void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset){
-    //todo: write code to actually pull from dram
+    //pull from mem and put into cache
+    //add a block to the set in the correct slot by the current rule set, find correct slot and replace 
+    //for correct set, update the tag and the time stamp 
+    for(std::vector<Slot>::iterator it = set.begin(); it != set.end(); ++it) {
+        if(this->lru == lru) {
+
+        } else { //fifo
+
+        }
+    }
+
     return;
 }
