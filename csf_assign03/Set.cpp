@@ -34,13 +34,27 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset){
     //pull from mem and put into cache
     //add a block to the set in the correct slot by the current rule set, find correct slot and replace 
     //for correct set, update the tag and the time stamp 
+    Slot replace = set.front(); //get first slot in Set
+
+    //which method to iterate through?
     for(std::vector<Slot>::iterator it = set.begin(); it != set.end(); ++it) {
-        if(this->lru == lru) {
-
-        } else { //fifo
-
+        if(this->lru == lru) { //load_ts
+            if(it. < replace.getLoadTs()) {
+                replace = it;
+            }
         }
     }
 
-    return;
+    for (int i = 0; i < set.size(); i++) {
+        for (int j = 0; j < set[i].size(); j++) {
+            if(set[i][j].getLoadTs() < replace.getLoadTs()) {
+                replace = set[i][j];
+            }
+        }
+            
+    }
+    // Replacing the slot, replace info
+    replace.setLoadTs(1);
+    replace.setAccessTs(1);
+    replace.setTag(tag);
 }
