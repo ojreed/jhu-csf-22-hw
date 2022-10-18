@@ -55,6 +55,7 @@ std::vector<int> cache_simulator::parseTraces() {
             stores = stores + 1; 
         }
         hORm = cache->access(addr,lOrS[0]);
+        std::cout<<hORm<<std::endl;
         if (hORm && lOrS.compare("l") == 0) {
             ldr_hits++;
         }
