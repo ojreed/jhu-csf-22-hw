@@ -53,7 +53,7 @@ int Cache::load(uint32_t address)
    tag = (tag >> offset_size);
    int index_size = std::log2(blocks);
    uint32_t index_and_val = (one << index_size) - 1;
-   uint32_t index = address & index_and_val;
+   uint32_t index = tag & index_and_val;
    tag = (tag >> index_size);
    // TODO: add private settings members to set and slot (like lru and stuff)
    Set target_set = cache[index];
