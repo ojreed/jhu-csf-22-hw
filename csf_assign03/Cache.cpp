@@ -56,9 +56,9 @@ int Cache::load(uint32_t address)
    uint32_t index = tag & index_and_val;
    tag = (tag >> index_size);
    // TODO: add private settings members to set and slot (like lru and stuff)
-   Set target_set = cache[index];
+   Set *target_set = &cache[index];
    current_ts++;
-   bool hit = target_set.is_hit(tag, offset, current_ts);
+   bool hit = (*target_set).is_hit(tag, offset, current_ts);
    if (hit)
    {
       return 1; // valid hit
@@ -66,7 +66,7 @@ int Cache::load(uint32_t address)
    else
    {
       current_ts++;
-      target_set.pull_mem(tag, index, offset, current_ts);
+      (*target_set).pull_mem(tag, index, offset, current_ts);
       return 0;
    }
 }
