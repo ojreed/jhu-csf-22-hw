@@ -75,12 +75,13 @@ int Cache::store(uint32_t address)
 {
    uint32_t tag = address;
    int offset_size = std::log2(bytes);
-   uint32_t offset_and_val = (1 << offset_size) - 1;
+   uint32_t one = 1;
+   uint32_t offset_and_val = (one << offset_size) - 1;
    uint32_t offset = tag & offset_and_val;
    tag = (tag >> offset_size);
    int index_size = std::log2(blocks);
-   uint32_t index_and_val = (1 << index_size) - 1;
-   uint32_t index = address & index_and_val;
+   uint32_t index_and_val = (one << index_size) - 1;
+   uint32_t index = tag & index_and_val;
    tag = (tag >> index_size);
    // TODO: add private settings members to set and slot (like lru and stuff)
    Set target_set = cache[index];
