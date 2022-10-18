@@ -66,6 +66,7 @@ int Cache::load(uint32_t address)
    {
       current_ts++;
       target_set.pull_mem(tag, index, offset, current_ts);
+      return 0;
    }
 }
 
@@ -112,5 +113,6 @@ int Cache::store(uint32_t address)
          // writes straight to memory
          // no cache call
       }
+      return 0;
    }
 }

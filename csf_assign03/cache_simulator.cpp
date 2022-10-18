@@ -38,16 +38,21 @@ std::vector<int> cache_simulator::parseTraces() {
     //parse to find number of loads and stores first... get that working
     std::string line;
     std::string lOrS;
+    bool hORm;
+    std::string add;
     while(std::getline(std::cin, line)) {
         //something like this below, finish later
         std::istringstream ss(line);
         //std::getline(ss, lOrS, ' ');
         ss >> lOrS; //maybe will store first char
+        ss >> add;
+        std::cout<<add<<std::endl;
         if(lOrS.compare("l") == 0){
             loads = loads + 1;
         } else {
             stores = stores + 1; 
         }
+        // hORm = cache->access(address,lOrS[0]);
 
     }
     
