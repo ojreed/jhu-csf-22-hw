@@ -39,6 +39,7 @@ std::vector<int> cache_simulator::parseTraces() {
     std::string line;
     std::string lOrS;
     bool hORm;
+    int addr;
     std::string add;
     while(std::getline(std::cin, line)) {
         //something like this below, finish later
@@ -46,13 +47,14 @@ std::vector<int> cache_simulator::parseTraces() {
         //std::getline(ss, lOrS, ' ');
         ss >> lOrS; //maybe will store first char
         ss >> add;
-        std::cout<<add<<std::endl;
+        //std::cout<<add<<std::endl;
+        addr = std::stoi(add.substr(2,8),nullptr,16);
         if(lOrS.compare("l") == 0){
             loads = loads + 1;
         } else {
             stores = stores + 1; 
         }
-        // hORm = cache->access(address,lOrS[0]);
+        hORm = cache->access(addr,lOrS[0]);
 
     }
     
