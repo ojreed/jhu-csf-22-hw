@@ -21,7 +21,7 @@ Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
     }
 }
 
-bool Set::is_hit(uint32_t tag, uint32_t offset) {
+bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts) {
     for(int i = 0; i < set.size(); i++) {
         if(set[i].getTag() == tag) {
             return true;
@@ -30,31 +30,23 @@ bool Set::is_hit(uint32_t tag, uint32_t offset) {
     return false;
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset){
+void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts){
     //pull from mem and put into cache
     //add a block to the set in the correct slot by the current rule set, find correct slot and replace 
     //for correct set, update the tag and the time stamp 
     Slot replace = set.front(); //get first slot in Set
 
-    //which method to iterate through?
-    for(std::vector<Slot>::iterator it = set.begin(); it != set.end(); ++it) {
-        if(this->lru == lru) { //load_ts
-            if(it. < replace.getLoadTs()) {
-                replace = it;
-            }
+    uint32_t least_recent_ts = set[0].getTS();
+    Slot least_recent_slot = set[0];
+    //find correct slot to replace
+    for (int x = 1; x < blocks; x++) {
+        if (set[x].getTS() <= least_recent_ts) {
+            least_recent_slot = set[x];
+            least_recent_ts = set[x].getTS(); 
         }
     }
+    least_recent_slot.setTag(tag);
+    least_recent_slot.setTS(current_ts);
 
-    for (int i = 0; i < set.size(); i++) {
-        for (int j = 0; j < set[i].size(); j++) {
-            if(set[i][j].getLoadTs() < replace.getLoadTs()) {
-                replace = set[i][j];
-            }
-        }
-            
-    }
-    // Replacing the slot, replace info
-    replace.setLoadTs(1);
-    replace.setAccessTs(1);
-    replace.setTag(tag);
+
 }
