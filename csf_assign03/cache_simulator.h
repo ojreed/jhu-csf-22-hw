@@ -16,7 +16,6 @@ private:
     Cache cache;
 
 public:
-    cache_simulator();
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru) {
         this->sets = sets;
         this->blocks = blocks;
