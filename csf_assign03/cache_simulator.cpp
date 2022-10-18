@@ -39,7 +39,7 @@ std::vector<int> cache_simulator::parseTraces() {
     std::string line;
     std::string lOrS;
     bool hORm;
-    int addr;
+    uint32_t addr;
     std::string add;
     while(std::getline(std::cin, line)) {
         //something like this below, finish later
