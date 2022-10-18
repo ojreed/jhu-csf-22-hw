@@ -6,7 +6,6 @@
 #include "cache_simulator.h"
 #include "Cache.h"
 
-
 void cache_simulator::printResult(std::vector<int> values) {
     //loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
     //have the lines below
