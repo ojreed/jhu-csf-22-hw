@@ -37,26 +37,26 @@ int Cache::access(uint32_t adddress,char instruction) {
 }
 
 int Cache::load(uint32_t address){
-    // break address into components
-    uint32_t tag = address;
-    int offset_size = std::log2(bytes);
-    uint32_t offset_and_val = (1<<offset_size)-1;
-    uint32_t offset = tag & offset_and_val;
-    tag = (tag >> offset_size); 
-    int index_size = std::log2(blocks);
-    uint32_t index_and_val = (1<<index_size)-1;
-    uint32_t index = address & index_and_val;
-    tag = (tag >> index_size); 
-    //TODO: add private settings members to set and slot (like lru and stuff)
-    Set target_set = cache[index];
-    current_ts++;
-    bool hit = target_set.is_hit(tag,offset,current_ts); 
-    if (hit) {
-         return 1; //valid hit
-    } else{
-         current_ts++;
-         target_set.pull_mem(tag,index,offset,current_ts);
-    }
+   // break address into components
+   uint32_t tag = address;
+   int offset_size = std::log2(bytes);
+   uint32_t offset_and_val = (1<<offset_size)-1;
+   uint32_t offset = tag & offset_and_val;
+   tag = (tag >> offset_size); 
+   int index_size = std::log2(blocks);
+   uint32_t index_and_val = (1<<index_size)-1;
+   uint32_t index = address & index_and_val;
+   tag = (tag >> index_size); 
+   //TODO: add private settings members to set and slot (like lru and stuff)
+   Set target_set = cache[index];
+   current_ts++;
+   bool hit = target_set.is_hit(tag,offset,current_ts); 
+   if (hit) {
+     return 1; //valid hit
+   } else{
+     current_ts++;
+     target_set.pull_mem(tag,index,offset,current_ts);
+   }
 
     
 }

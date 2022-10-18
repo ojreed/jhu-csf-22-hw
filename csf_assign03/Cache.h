@@ -17,6 +17,10 @@ class Cache {
             return cache;
         }
 
+        ~Cache(){
+            delete[] cache;
+        }
+
     private:
         //stuff
         std::vector<Set> cache; //vector of sets
