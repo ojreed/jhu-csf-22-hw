@@ -47,7 +47,7 @@ std::vector<int> cache_simulator::parseTraces() {
         //std::getline(ss, lOrS, ' ');
         ss >> lOrS; //maybe will store first char
         ss >> std::hex >> add;
-        //std::cout<<add<<std::endl;
+        std::cout<<add<<std::endl;
         // addr = std::stoi(add.substr(2,8),nullptr,16);
         if(lOrS.compare("l") == 0){
             loads = loads + 1;
