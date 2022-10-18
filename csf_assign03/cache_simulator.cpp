@@ -48,7 +48,7 @@ std::vector<int> cache_simulator::parseTraces() {
         ss >> lOrS; //maybe will store first char
         ss >> add;
         //std::cout<<add<<std::endl;
-        addr = std::stoi(add.substr(2,8),nullptr,16);
+        addr = std::stoi(add.substr(1,8),nullptr,16);
         if(lOrS.compare("l") == 0){
             loads = loads + 1;
         } else {
