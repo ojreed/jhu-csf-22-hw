@@ -18,6 +18,7 @@ Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, 
    this->write_thr = write_thr;
    this->lru = lru;
    this->tag = tag;
+   this->current_ts=0;
    for (int x = 0; x<sets;x++) {
      cache.push_back(Set(blocks,bytes,write_alloc,write_thr,lru));
    }
@@ -48,11 +49,13 @@ int Cache::load(uint32_t address){
     tag = (tag >> index_size); 
     //TODO: add private settings members to set and slot (like lru and stuff)
     Set target_set = cache[index];
-    bool hit = target_set.is_hit(tag,offset); 
+    current_ts++;
+    bool hit = target_set.is_hit(tag,offset,current_ts); 
     if (hit) {
-        return 1; //valid hit
+         return 1; //valid hit
     } else{
-        target_set.pull_mem(tag,index,offset);
+         current_ts++;
+         target_set.pull_mem(tag,index,offset,current_ts);
     }
 
     
