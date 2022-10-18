@@ -7,7 +7,7 @@
 #include "Cache.h"
 
 cache_simulator::~cache_simulator(){
-    delete cache;
+    delete[] cache;
 }
 
 void cache_simulator::printResult(std::vector<int> values) {
