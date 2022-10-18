@@ -26,12 +26,12 @@ public:
     // "set" methods
     void setTag(uint32_t new_tag)
     {
-        tag = new_tag;
+        this->tag = new_tag;
     }
 
     void setValid(bool new_valid)
     {
-        valid = new_valid;
+        this->valid = new_valid;
     }
 
     void setTS(uint32_t new_access)

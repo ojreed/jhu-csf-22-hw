@@ -57,8 +57,8 @@ int Cache::load(uint32_t address)
    // TODO: add private settings members to set and slot (like lru and stuff)
    Set target_set = cache[index];
    current_ts++;
-   int hit = target_set.is_hit(tag, offset, current_ts);
-   if (hit == 1)
+   bool hit = target_set.is_hit(tag, offset, current_ts);
+   if (hit)
    {
       return 1; // valid hit
    }

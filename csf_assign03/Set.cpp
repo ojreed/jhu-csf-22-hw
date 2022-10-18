@@ -26,7 +26,7 @@ bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts)
 {
     for (int i = 0; i < set.size(); i++)
     {
-        if (set[i].getTag() == tag)
+        if (this->set[i].getTag() == tag)
         {
             if (this->lru)
             {
@@ -47,16 +47,16 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
     // fifo- based on load order
 
     uint32_t least_recent_ts = set[0].getTS();
-    Slot least_recent_slot = set[0];
+    Slot *least_recent_slot = &set[0];
     // find correct slot to replace
     for (int x = 1; x < blocks; x++)
     {
         if (set[x].getTS() <= least_recent_ts)
         {
-            least_recent_slot = set[x];
+            least_recent_slot = &set[x];
             least_recent_ts = set[x].getTS();
         }
     }
-    least_recent_slot.setTag(tag);
-    least_recent_slot.setTS(current_ts);
+    (*least_recent_slot).setTag(tag);
+    (*least_recent_slot).setTS(current_ts);
 }
