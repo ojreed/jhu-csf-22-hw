@@ -62,5 +62,38 @@ int Cache::load(uint32_t address){
 }
 
 int Cache::store(uint32_t adddress){
-   return 0;
+   uint32_t tag = address;
+   int offset_size = std::log2(bytes);
+   uint32_t offset_and_val = (1<<offset_size)-1;
+   uint32_t offset = tag & offset_and_val;
+   tag = (tag >> offset_size); 
+   int index_size = std::log2(blocks);
+   uint32_t index_and_val = (1<<index_size)-1;
+   uint32_t index = address & index_and_val;
+   tag = (tag >> index_size); 
+   //TODO: add private settings members to set and slot (like lru and stuff)
+   Set target_set = cache[index];
+   current_ts++;
+   bool hit = target_set.is_hit(tag,offset,current_ts); 
+   if (hit) {
+    //todo: add code to count write to mem upon replacement 
+    if(this->write_thr) { //write to memory immediately
+        //write to cache
+        //write to mem
+    } else {
+        //write to cache
+        //do not write to mem --> defer to replacment 
+     }
+    return 1; //valid hit
+   } else{
+    current_ts++;
+    if (this->write_alloc){
+        //write information from DRAM into cache
+        target_set.pull_mem(tag,index,offset,current_ts);
+    } else {
+        //writes straight to memory
+        //no cache call
+    }
+     
+   }
 }

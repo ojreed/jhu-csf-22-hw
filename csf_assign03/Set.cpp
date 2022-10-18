@@ -24,6 +24,9 @@ Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts) {
     for(int i = 0; i < set.size(); i++) {
         if(set[i].getTag() == tag) {
+            if(this->lru) {
+                set[i].setTs(current_ts);
+            } // if fifo we don't need to modify
             return true;
         }
     }
@@ -34,7 +37,8 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
     //pull from mem and put into cache
     //add a block to the set in the correct slot by the current rule set, find correct slot and replace 
     //for correct set, update the tag and the time stamp 
-    Slot replace = set.front(); //get first slot in Set
+    //lru- based on last used time
+    //fifo- based on load order
 
     uint32_t least_recent_ts = set[0].getTS();
     Slot least_recent_slot = set[0];
@@ -47,6 +51,4 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
     }
     least_recent_slot.setTag(tag);
     least_recent_slot.setTS(current_ts);
-
-
 }
