@@ -38,7 +38,7 @@ int Cache::access(uint32_t adddress, char instruction)
    }
    else
    {
-      return 0;
+      return -1;
    }
 }
 
