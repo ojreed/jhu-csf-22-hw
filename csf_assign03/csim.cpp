@@ -107,8 +107,7 @@ int main(int argc, char *argv[])
     }
 
     // test inputs
-    std::cout << "Validate Inputs: "
-              << "\n";
+    std::cout << "Validate Inputs: " << "\n";
     std::cout << "sets: " << sets << "\n";
     std::cout << "blocks: " << blocks << "\n";
     std::cout << "bytes: " << bytes << "\n";
