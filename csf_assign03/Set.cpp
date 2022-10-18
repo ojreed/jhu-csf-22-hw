@@ -38,6 +38,18 @@ bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts)
     return false;
 }
 
+Slot* Set::get_slot(uint32_t tag, uint32_t offset)
+{
+    for (int i = 0; i < set.size(); i++)
+    {
+        if (this->set[i].getTag() == tag && this->set[i].is_valid())
+        {
+            return &set[i];
+        }
+    }
+    return NULL;
+}
+
 void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts)
 {
     // pull from mem and put into cache
@@ -57,7 +69,12 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
             least_recent_ts = set[x].getTS();
         }
     }
+    if ((*least_recent_slot).is_diff_from_mem()) {
+        //TODO: Modify Memory
+    }
+
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);
     (*least_recent_slot).set_valid(true);
+    (*least_recent_slot).set_diff_from_mem(false);
 }

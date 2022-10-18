@@ -28,6 +28,11 @@ public:
         return this->valid;
     }
 
+    bool is_diff_from_mem()
+    {
+        return this->diff_from_mem;
+    }
+
     // "set" methods
     void setTag(uint32_t new_tag)
     {
@@ -48,6 +53,10 @@ public:
         this->valid = truth;
     }
 
+    void set_diff_from_mem(bool truth) {
+        this->diff_from_mem = truth;
+    }
+
 private:
     uint32_t tag;
     bool valid;
@@ -56,6 +65,7 @@ private:
     bool write_alloc;
     bool write_thr;
     bool lru;
+    bool diff_from_mem;
 };
 
 #endif // SLOT_H

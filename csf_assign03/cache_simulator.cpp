@@ -6,6 +6,21 @@
 #include "cache_simulator.h"
 #include "Cache.h"
 
+/*
+Big Todo:
+    Understand what we store for accesses to the cache/dram
+        WHAT EXACTLY ARE WE COUNTING
+    Figure out write back overwrite code
+    Implement
+        write thr
+        write bk
+        write alloc
+        no write alloc
+
+
+*/
+
+
 cache_simulator::~cache_simulator() {
     delete this->cache;
 }

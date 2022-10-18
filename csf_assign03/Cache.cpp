@@ -91,27 +91,29 @@ int Cache::store(uint32_t address)
    if (hit)
    {
       // todo: add code to count write to mem upon replacement
-      if (this->write_thr)
+      if (this->write_thr) //write through (Update Cache and access memory)
       { // write to memory immediately
         // write to cache
         // write to mem
       }
-      else
+      else //write back (dont modify memory until overwrite)
       {
          // write to cache
          // do not write to mem --> defer to replacment
+        Slot *slot = (*target_set).get_slot(tag, offset);
+        (*slot).set_diff_from_mem(true);
       }
       return 1; // valid hit
    }
    else
    {
       current_ts++;
-      if (this->write_alloc)
+      if (this->write_alloc) //write alloc (pulls from mem)
       {
          // write information from DRAM into cache
          (*target_set).pull_mem(tag, index, offset, current_ts);
       }
-      else
+      else //No Write Alloc (doesnt bother to pull mem)
       {
          // writes straight to memory
          // no cache call
