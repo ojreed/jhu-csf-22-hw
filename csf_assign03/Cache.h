@@ -17,9 +17,6 @@ class Cache {
             return cache;
         }
 
-        ~Cache(){
-            delete[] cache;
-        }
 
     private:
         //stuff
