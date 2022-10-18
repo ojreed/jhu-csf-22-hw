@@ -23,6 +23,11 @@ public:
         return this->ts;
     }
 
+    bool is_valid()
+    {
+        return this->valid;
+    }
+
     // "set" methods
     void setTag(uint32_t new_tag)
     {
@@ -37,6 +42,10 @@ public:
     void setTS(uint32_t new_access)
     {
         this->ts = new_access;
+    }
+
+    void set_valid(bool truth) {
+        this->valid = truth;
     }
 
 private:
