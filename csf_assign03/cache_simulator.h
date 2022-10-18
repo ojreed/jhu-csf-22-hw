@@ -13,7 +13,7 @@ private:
     bool write_alloc;
     bool write_thr;
     bool lru;
-    Cache cache;
+    Cache *cache;
 
 public:
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru) {
@@ -23,9 +23,9 @@ public:
         this->write_alloc = write_alloc;
         this->write_thr = write_thr;
         this->lru = lru;
-        cache = Cache(sets,blocks,bytes,write_alloc,write_thr,lru);
+        cache = new Cache(sets,blocks,bytes,write_alloc,write_thr,lru);
     }
-    ~cache_simulator() {};
+    ~cache_simulator();
     void printResult(std::vector<int> values);
     std::vector<int> parseTraces();
     
