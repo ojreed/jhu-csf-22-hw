@@ -14,6 +14,6 @@ Slot::Slot(int bytes, bool write_alloc, bool write_thr, bool lru)
    this->write_thr = write_thr;
    this->lru = lru;
    tag = NULL;
-	valid = false;
+   valid = false;
    this->ts = 0;
 }

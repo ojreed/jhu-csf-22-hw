@@ -2,26 +2,27 @@
 #define SET_H
 #include "Slot.h"
 
+class Set
+{
+public:
+    Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);            // default constructor
+    bool is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts);                   // checks if block exists in cache
+    void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts); // used to pull memory from DRAM
 
-class Set {
-    public:
-        Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru); //default constructor
-        bool is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts); //checks if block exists in cache
-        void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts);//used to pull memory from DRAM
-        
-        // get method
-        std::vector<Slot> getSet() {
-            return set;
-        }
+    // get method
+    std::vector<Slot> getSet()
+    {
+        return set;
+    }
 
-    private:
-        int blocks;
-        int bytes;
-        int tag;
-        bool write_alloc;
-        bool write_thr;
-        bool lru;
-        std::vector<Slot> set; //vector of slots
+private:
+    int blocks;
+    int bytes;
+    int tag;
+    bool write_alloc;
+    bool write_thr;
+    bool lru;
+    std::vector<Slot> set; // vector of slots
 };
 
 #endif // SET_H
