@@ -13,7 +13,7 @@ Slot::Slot(int bytes, bool write_alloc, bool write_thr, bool lru)
    this->write_alloc = write_alloc;
    this->write_thr = write_thr;
    this->lru = lru;
-   tag = NULL;
+   tag = -1;
    valid = false;
    this->ts = 0;
 }
