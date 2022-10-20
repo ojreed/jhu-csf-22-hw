@@ -19,8 +19,8 @@ Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, 
    this->lru = lru;
    this->tag = tag;
    this->current_ts = 0;
-   this->cache_ctr = cache_ctr;
-   this->mem_ctr = mem_ctr;
+   cache_ctr = cache_ctr;
+   mem_ctr = mem_ctr;
    for (int x = 0; x < sets; x++)
    {
       cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru,cache_ctr,mem_ctr));
