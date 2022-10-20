@@ -7,9 +7,9 @@ class cache_simulator
 {
 private:
     /* data */
-    int sets;
-    int blocks;
-    int bytes;
+    uint32_t sets;
+    uint32_t blocks;
+    uint32_t bytes;
     bool write_alloc;
     bool write_thr;
     bool lru;
