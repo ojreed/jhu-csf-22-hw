@@ -26,6 +26,8 @@ public:
         this->write_alloc = write_alloc;
         this->write_thr = write_thr;
         this->lru = lru;
+        this->cache_ctr = 0;
+        this->mem_ctr = 0;
         cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru,cache_ctr,mem_ctr);
     }
     ~cache_simulator();
