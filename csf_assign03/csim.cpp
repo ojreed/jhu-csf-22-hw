@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         std::cerr << e.what() << " Cache Size Parameter Not an Int" << '\n';
         return 0;
     }
-    // validate power of 2
+    // validate power of 2 TODO: or should it allows 1's? who knows --> certainly not i
     if ((sets % 2 != 0) || (blocks % 2 != 0) || (bytes % 2 != 0))
     {
         std::cerr << "Input is not a power of two" << std::endl;

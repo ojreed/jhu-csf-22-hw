@@ -13,6 +13,8 @@ private:
     bool write_alloc;
     bool write_thr;
     bool lru;
+    uint32_t *mem_ctr;
+    uint32_t *cache_ctr;
     Cache *cache;
 
 public:
@@ -24,7 +26,7 @@ public:
         this->write_alloc = write_alloc;
         this->write_thr = write_thr;
         this->lru = lru;
-        cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru);
+        cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru,cache_ctr,mem_ctr);
     }
     ~cache_simulator();
     void printResult(std::vector<int> values);

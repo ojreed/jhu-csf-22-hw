@@ -8,7 +8,7 @@
 #include "Slot.h"
 
 // default constructor
-Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
+Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr,uint32_t* mem_ctr)
 {
     this->blocks = blocks;
     this->bytes = bytes;
@@ -16,6 +16,8 @@ Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
     this->write_thr = write_thr;
     this->lru = lru;
     this->tag = tag;
+    this->cache_ctr = cache_ctr,
+    this->mem_ctr = mem_ctr;
     for (int x = 0; x < blocks; x++)
     {
         set.push_back(Slot(bytes, write_alloc, write_thr, lru));
@@ -69,10 +71,11 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
             least_recent_ts = set[x].getTS();
         }
     }
-    if ((*least_recent_slot).is_diff_from_mem()) {
+    if ((*least_recent_slot).is_diff_from_mem() && !write_thr) {//if write back we write back on overload
         //TODO: Modify Memory
+        *mem_ctr++; //increment the number of accesses to mem --> for write back
     }
-
+    *mem_ctr++; //increment the number of accesses to mem --> for pull new
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);
     (*least_recent_slot).set_valid(true);
