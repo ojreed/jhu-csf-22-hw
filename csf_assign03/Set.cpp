@@ -8,7 +8,7 @@
 #include "Slot.h"
 
 // default constructor
-Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t& cache_ctr,uint32_t& mem_ctr)
+Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr,uint32_t* mem_ctr)
 {
     this->blocks = blocks;
     this->bytes = bytes;

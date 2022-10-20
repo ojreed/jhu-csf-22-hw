@@ -23,6 +23,8 @@ Big Todo:
 
 cache_simulator::~cache_simulator() {
     delete this->cache;
+    delete this->cache_ctr;
+    delete this->mem_ctr;
 }
 
 void cache_simulator::printResult(std::vector<int> values) {
