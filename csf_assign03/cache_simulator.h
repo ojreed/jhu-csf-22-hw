@@ -13,8 +13,8 @@ private:
     bool write_alloc;
     bool write_thr;
     bool lru;
-    uint32_t *mem_ctr{new uint32_t};
-    uint32_t *cache_ctr{new uint32_t};
+    uint32_t *mem_ctr;
+    uint32_t *cache_ctr;
     Cache *cache;
 
 public:
@@ -26,8 +26,8 @@ public:
         this->write_alloc = write_alloc;
         this->write_thr = write_thr;
         this->lru = lru;
-        *cache_ctr = 0;
-        *mem_ctr = 0;
+        cache_ctr = new uint32_t(0);
+        mem_ctr = new uint32_t(0);
         cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
     }
     ~cache_simulator();
