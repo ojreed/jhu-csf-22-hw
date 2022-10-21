@@ -22,7 +22,7 @@ Big Todo:
 
 cache_simulator::~cache_simulator()
 {
-    delete this->cache;
+    // delete this->cache;
     delete this->cache_ctr;
     delete this->mem_ctr;
 }
@@ -41,7 +41,7 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
     // *mem_ctr = (uint32_t) 0;
     *cache_ctr = 0;
     *mem_ctr = 0;
-    cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
+    cache = Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
 }
 
 void cache_simulator::printResult(std::vector<int> values)
@@ -95,7 +95,7 @@ std::vector<int> cache_simulator::parseTraces()
         {
             stores = stores + 1;
         }
-        hOrM = cache->access(addr, lOrS[0]);
+        hOrM = cache.access(addr, lOrS[0]);
         // std::cout<<hOrM<<std::endl;
         if (hOrM == 1 && lOrS.compare("l") == 0)
         {

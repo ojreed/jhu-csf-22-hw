@@ -16,7 +16,7 @@ private:
     bool lru;
     uint32_t* mem_ctr;
     uint32_t* cache_ctr;
-    Cache *cache;
+    Cache cache;
 
 public:
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);
