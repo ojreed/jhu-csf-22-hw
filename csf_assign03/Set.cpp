@@ -73,9 +73,9 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
     }
     if ((*least_recent_slot).is_diff_from_mem() && !write_thr) {//if write back we write back on overload
         //TODO: Modify Memory
-        *mem_ctr++; //increment the number of accesses to mem --> for write back
+        mem_ctr++; //increment the number of accesses to mem --> for write back
     }
-    *mem_ctr++; //increment the number of accesses to mem --> for pull new
+    mem_ctr++; //increment the number of accesses to mem --> for pull new
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);
     (*least_recent_slot).set_valid(true);

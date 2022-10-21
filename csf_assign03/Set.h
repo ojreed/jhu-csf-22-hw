@@ -23,8 +23,8 @@ private:
     bool write_alloc;
     bool write_thr;
     bool lru;
-    uint32_t* cache_ctr;
-    uint32_t* mem_ctr;
+    uint32_t cache_ctr;
+    uint32_t mem_ctr;
     std::vector<Slot> set; // vector of slots
 };
 
