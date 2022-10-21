@@ -9,13 +9,13 @@ csim: cache_simulator.o Cache.o Set.o Slot.o csim.o
 csim.o: csim.cpp
 	$(CC) -c csim.cpp $(CFLAGS)
 
-cache_simulator.o: cache_simulator.cpp cache_simulator.h
+cache_simulator.o: cache_simulator.cpp cache_simulator.h Cache.h Set.h Slot.h
 	$(CC) -c cache_simulator.cpp $(CFLAGS)
 
-Cache.o: Cache.cpp Cache.h
+Cache.o: Cache.cpp Cache.h Set.h Slot.h
 	$(CC) -c Cache.cpp $(CFLAGS)
 
-Set.o: Set.cpp Set.h
+Set.o: Set.cpp Set.h Slot.h
 	$(CC) -c Set.cpp $(CFLAGS)
 
 Slot.o: Slot.cpp Slot.h
