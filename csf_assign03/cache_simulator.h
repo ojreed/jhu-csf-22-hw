@@ -1,6 +1,7 @@
 #ifndef CACHE_SIMULATOR_H
 #define CACHE_SIMULATOR_H
 #include "Cache.h"
+#include "Cache.cpp"
 #include <vector>
 
 
@@ -31,8 +32,8 @@ public:
         mem_ctr = new uint32_t;
         // *cache_ctr = (uint32_t) 0;
         // *mem_ctr = (uint32_t) 0;
-        cache_ctr = 0;
-        mem_ctr = 0;
+        *cache_ctr = 0;
+        *mem_ctr = 0;
         cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
     }
     ~cache_simulator();
