@@ -9,7 +9,7 @@
 #include "Set.h"
 
 // default constructor
-Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t& cache_ctr,uint32_t& mem_ctr)
+Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr,uint32_t* mem_ctr)
 {
    this->sets = sets;
    this->blocks = blocks;
@@ -19,11 +19,11 @@ Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, 
    this->lru = lru;
    this->tag = tag;
    this->current_ts = 0;
-   cache_ctr = cache_ctr;
-   mem_ctr = mem_ctr;
+   this->cache_ctr = cache_ctr;
+   this->mem_ctr = mem_ctr;
    for (int x = 0; x < sets; x++)
    {
-      cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru,cache_ctr,mem_ctr));
+      cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr));
    }
 }
 
@@ -96,14 +96,14 @@ int Cache::store(uint32_t address)
       if (this->write_thr) //write through (Update Cache and access memory)
       { // write to memory immediately
         // write to cache
-        cache_ctr++; //increment the number of accesses to cache
+        (*cache_ctr)++; //increment the number of accesses to cache
         // write to mem
-        mem_ctr++; //increment the number of accesses to mem
+        (*mem_ctr)++; //increment the number of accesses to mem
       }
       else //write back (dont modify memory until overwrite)
       {
          // write to cache
-         cache_ctr++; //increment the number of accesses to cache
+         (*cache_ctr)++; //increment the number of accesses to cache
          // do not write to mem --> defer to replacment
         Slot *slot = (*target_set).get_slot(tag, offset);
         (*slot).set_diff_from_mem(true);
@@ -118,12 +118,12 @@ int Cache::store(uint32_t address)
          // write information from DRAM into cache
          (*target_set).pull_mem(tag, index, offset, current_ts);
          //write data to cache
-         cache_ctr++; //increment the number of accesses to cache
+         (*cache_ctr)++; //increment the number of accesses to cache
       }
       else //No Write Alloc (doesnt bother to pull mem)
       {
          // writes straight to memory
-         mem_ctr++; //increment the number of accesses to mem
+         (*mem_ctr)++; //increment the number of accesses to mem
          // no cache call
       }
       return 0;
