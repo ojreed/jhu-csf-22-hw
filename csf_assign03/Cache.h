@@ -7,7 +7,7 @@ class Cache
 
 public:
     Cache();
-    Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr,uint32_t* mem_ctr); // default constructor
+    Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t cache_ctr,uint32_t mem_ctr); // default constructor
     int access(uint32_t adddress, char instruction);
     int load(uint32_t adddress);
     int store(uint32_t adddress);
