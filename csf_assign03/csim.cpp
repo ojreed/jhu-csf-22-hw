@@ -17,10 +17,6 @@ Main function of program --> will manage input of command line arguments as well
         lru (least-recently-used) or fifo evictions
 */
 
-uint32_t mem_ctr = 0;
-uint32_t cache_ctr = 0;
-
-
 int main(int argc, char *argv[])
 {
     // validate correct number of inputs

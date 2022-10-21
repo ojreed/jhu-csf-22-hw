@@ -5,7 +5,7 @@
 class Set
 {
 public:
-    Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);//, uint32_t* cache_ctr,uint32_t* mem_ctr);            // default constructor
+    Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t& cache_ctr,uint32_t& mem_ctr);            // default constructor
     bool is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts);                   // checks if block exists in cache
     void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts); // used to pull memory from DRAM
     Slot* get_slot(uint32_t tag, uint32_t offset);                                // gets the correct slot
