@@ -56,7 +56,7 @@ void cache_simulator::printResult(std::vector<int> values)
     std::cout << "Load misses: " << values[3] << "\n";
     std::cout << "Store hits: " << values[4] << "\n";
     std::cout << "Store misses: " << values[5] << "\n";
-    std::cout << "Total cycles: " << values[6];
+    std::cout << "Total cycles: " << values[6] << "\n";
 }
 
 std::vector<int> cache_simulator::parseTraces()
