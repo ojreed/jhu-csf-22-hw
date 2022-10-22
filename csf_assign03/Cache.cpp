@@ -9,23 +9,23 @@
 #include "Set.h"
 
 // default constructor
-Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr_in,uint32_t* mem_ctr_in)
-{
-   this->sets = sets;
-   this->blocks = blocks;
-   this->bytes = bytes;
-   this->write_alloc = write_alloc;
-   this->write_thr = write_thr;
-   this->lru = lru;
-   this->tag = tag;
-   this->current_ts = 0;
-   uint32_t* cache_ctr = cache_ctr_in;
-   uint32_t* mem_ctr = mem_ctr_in;
-   for (int x = 0; x < sets; x++)
-   {
-      cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr));
-   }
-}
+// Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr_in,uint32_t* mem_ctr_in)
+// {
+//    this->sets = sets;
+//    this->blocks = blocks;
+//    this->bytes = bytes;
+//    this->write_alloc = write_alloc;
+//    this->write_thr = write_thr;
+//    this->lru = lru;
+//    this->tag = tag;
+//    this->current_ts = 0;
+//    this->cache_ctr = cache_ctr_in;
+//    this->mem_ctr = mem_ctr_in;
+//    for (int x = 0; x < sets; x++)
+//    {
+//       cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr));
+//    }
+// }
 
 // helper function to make calling of load and store directly from trace simpler
 int Cache::access(uint32_t adddress, char instruction)
