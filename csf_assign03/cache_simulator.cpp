@@ -114,7 +114,7 @@ std::vector<int> cache_simulator::parseTraces()
             str_misses++;
         }
     }
-    total = (*cache_ctr) * 10 + (*mem_ctr) * 100;
+    total = (*cache_ctr) * 1 + (*mem_ctr) * 100;
     // stores results to vector
     results.push_back(loads);
     results.push_back(stores);
@@ -144,5 +144,6 @@ Load hits: 216821
 Load misses: 101376
 Store hits: 151658
 Store misses: 45828
+Total cycles: 22833960
 
 */
