@@ -8,21 +8,21 @@
 #include "Slot.h"
 
 // default constructor
-Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr,uint32_t* mem_ctr)
-{
-    this->blocks = blocks;
-    this->bytes = bytes;
-    this->write_alloc = write_alloc;
-    this->write_thr = write_thr;
-    this->lru = lru;
-    this->tag = tag;
-    cache_ctr = cache_ctr,
-    mem_ctr = mem_ctr;
-    for (int x = 0; x < blocks; x++)
-    {
-        set.push_back(Slot(bytes, write_alloc, write_thr, lru));
-    }
-}
+// Set::Set(int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr,uint32_t* mem_ctr)
+// {
+//     this->blocks = blocks;
+//     this->bytes = bytes;
+//     this->write_alloc = write_alloc;
+//     this->write_thr = write_thr;
+//     this->lru = lru;
+//     this->tag = tag;
+//     cache_ctr = cache_ctr,
+//     mem_ctr = mem_ctr;
+//     for (int x = 0; x < blocks; x++)
+//     {
+//         set.push_back(Slot(bytes, write_alloc, write_thr, lru));
+//     }
+// }
 
 bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts)
 {
