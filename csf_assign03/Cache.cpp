@@ -36,7 +36,7 @@ int Cache::split_address(uint32_t address, uint32_t* tag, uint32_t* index, uint3
    uint32_t offset_and_val = (one << offset_size) - 1;
    *offset = *tag & offset_and_val;
    *tag = (*tag >> offset_size);
-   int index_size = std::log2(blocks);
+   int index_size = std::log2(sets);
    uint32_t index_and_val = (one << index_size) - 1;
    *index = *tag & index_and_val;
    *tag = (*tag >> index_size);
