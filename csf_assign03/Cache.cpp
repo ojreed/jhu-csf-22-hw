@@ -29,6 +29,7 @@
 
 
 int Cache::process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset, std::vector<Set> cache) {
+   //todo: store log2 of bytes and blocks in the cache --> speed up
    *tag = address;
    int offset_size = std::log2(bytes);
    uint32_t one = 1;
@@ -39,8 +40,6 @@ int Cache::process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_
    uint32_t index_and_val = (one << index_size) - 1;
    *index = *tag & index_and_val;
    *tag = (*tag >> index_size);
-   // TODO: add private settings members to set and slot (like lru and stuff)
-   Set *target_set = &(cache[*index]);
    return 0;
 }
 
