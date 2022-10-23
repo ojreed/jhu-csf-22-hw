@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     // validate correct number of inputs
     if (argc != 7)
     {             // invalid number of arguments
-        return 0; // process cant run
+        return 1; // process cant run
     }
 
     // TODO:: validate trace tookover CIN
@@ -47,19 +47,19 @@ int main(int argc, char *argv[])
     catch (const std::exception &e) // catch invalid input errors for sets, blocks, and bytes
     {
         std::cerr << e.what() << " Cache Size Parameter Not an Int" << '\n';
-        return 0;
+        return 1;
     }
     // validate power of 2
     if ((sets % 2 != 0 && sets != 1 ) || (blocks % 2 != 0  && blocks != 1) || (bytes % 2 != 0))
     {
         std::cerr << "Input is not a power of two" << std::endl;
-        return 0;
+        return 1;
     }
     // validate pos
     if ((sets < 0) || (blocks < 0) || (bytes < 4))
     {
         std::cerr << "Input is not of valid size" << std::endl;
-        return 0;
+        return 1;
     }
 
     // parse input for cache usage modes
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     else
     {
         std::cout << "Invalid Input Param for Write_Alloc" << std::endl;
-        return 0;
+        return 1;
     }
     // write through
     if (params[5].compare("write-through") == 0)
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     else
     {
         std::cout << "Invalid Input Param for Write_Thr" << std::endl;
-        return 0;
+        return 1;
     }
     // lru
     if (params[6].compare("lru") == 0)
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     else
     {
         std::cout << "Invalid Input Param for LRU" << std::endl;
-        return 0;
+        return 1;
     }
 
     // test inputs
