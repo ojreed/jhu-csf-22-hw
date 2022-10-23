@@ -18,7 +18,7 @@ public:
     int access(uint32_t adddress, char instruction);
     int load(uint32_t adddress);
     int store(uint32_t adddress);
-    int process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset);
+    int split_address(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset);
     uint64_t current_ts;
     // more stuff
 

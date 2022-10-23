@@ -28,7 +28,7 @@
 // }
 
 
-int Cache::process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset) {
+int Cache::split_address(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset) {
    //todo: store log2 of bytes and blocks in the cache --> speed up
    *tag = address;
    int offset_size = std::log2(bytes);
@@ -66,17 +66,7 @@ int Cache::load(uint32_t address)
    uint32_t tag = 0;
    uint32_t index = 0;
    uint32_t offset = 0;
-   Cache::process_add(address,&tag,&index,&offset);
-   // uint32_t tag = address;
-   // int offset_size = std::log2(bytes);
-   // uint32_t one = 1;
-   // uint32_t offset_and_val = (one << offset_size) - 1;
-   // uint32_t offset = tag & offset_and_val;
-   // tag = (tag >> offset_size);
-   // int index_size = std::log2(blocks);
-   // uint32_t index_and_val = (one << index_size) - 1;
-   // uint32_t index = tag & index_and_val;
-   // tag = (tag >> index_size);
+   Cache::split_address(address,&tag,&index,&offset);
    // TODO: add private settings members to set and slot (like lru and stuff)
    Set *target_set = &(cache[index]);
    current_ts++;
@@ -100,18 +90,7 @@ int Cache::store(uint32_t address)
    uint32_t tag = 0;
    uint32_t index = 0;
    uint32_t offset = 0;
-   Cache::process_add(address,&tag,&index,&offset);
-   // uint32_t tag = address;
-   // int offset_size = std::log2(bytes);
-   // uint32_t one = 1;
-   // uint32_t offset_and_val = (one << offset_size) - 1;
-   // uint32_t offset = tag & offset_and_val;
-   // tag = (tag >> offset_size);
-   // int index_size = std::log2(blocks);
-   // uint32_t index_and_val = (one << index_size) - 1;
-   // uint32_t index = tag & index_and_val;
-   // tag = (tag >> index_size);
-   // TODO: add private settings members to set and slot (like lru and stuff)
+   Cache::split_address(address,&tag,&index,&offset);
    Set *target_set = &(cache[index]);
    current_ts++;
    bool hit = (*target_set).is_hit(tag, offset, current_ts);
