@@ -44,7 +44,7 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
     cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
 }
 
-void cache_simulator::printResult(std::vector<int> values)
+void cache_simulator::printResult(std::vector<uint32_t> values)
 {
     // loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
     // have the lines below
@@ -63,7 +63,7 @@ std::vector<int> cache_simulator::parseTraces()
 {
     std::vector<int> results; // store info in vector
     // initalizes inputs
-    int loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total;
+    uint32_t loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total;
     loads = 0;
     stores = 0;
     ldr_hits = 0;
@@ -114,7 +114,7 @@ std::vector<int> cache_simulator::parseTraces()
             str_misses++;
         }
     }
-    total = (*cache_ctr) * 1 * bytes/4 + (*mem_ctr) * 100 * bytes/4;
+    total = (*cache_ctr) * 1 + (*mem_ctr) * 100 * bytes/4;
     // stores results to vector
     results.push_back(loads);
     results.push_back(stores);
