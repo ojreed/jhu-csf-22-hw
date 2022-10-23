@@ -63,6 +63,7 @@ int Cache::load(uint32_t address)
    bool hit = (*target_set).is_hit(tag, offset, current_ts);
    if (hit)
    {
+      (*cache_ctr)++; //increment the number of accesses to cache
       return 1; // valid hit
    }
    else

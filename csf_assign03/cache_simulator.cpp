@@ -144,7 +144,8 @@ Load hits: 216821
 Load misses: 101376
 Store hits: 151658
 Store misses: 45828
-Total cycles: 21056586
+Total cycles: 84226344
+
 
 
 */
