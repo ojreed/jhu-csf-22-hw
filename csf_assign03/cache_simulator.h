@@ -21,7 +21,7 @@ private:
 public:
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);
     ~cache_simulator();
-    void printResult(std::vector<int> values);
+    void printResult(std::vector<uint32_t> values);
     std::vector<int> parseTraces();
 };
 
