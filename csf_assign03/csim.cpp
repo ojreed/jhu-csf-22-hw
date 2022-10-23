@@ -118,5 +118,5 @@ int main(int argc, char *argv[])
 
     cache_simulator csim(sets, blocks, bytes, write_alloc, write_thr, lru);
     csim.printResult(csim.parseTraces());
-    return 1;
+    return 0;
 }
