@@ -72,9 +72,9 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
         if (set[x].is_valid() == false) {
             least_recent_slot = &set[x];
             least_recent_ts = set[x].getTS();
-            break;
+            x = blocks;
         }
-        if (set[x].getTS() < least_recent_ts)
+        else if (set[x].getTS() < least_recent_ts)
         {
             least_recent_slot = &set[x];
             least_recent_ts = set[x].getTS();

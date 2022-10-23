@@ -18,7 +18,7 @@ public:
     int access(uint32_t adddress, char instruction);
     int load(uint32_t adddress);
     int store(uint32_t adddress);
-    uint32_t current_ts;
+    uint64_t current_ts;
     // more stuff
 
     std::vector<Set> getCache()
