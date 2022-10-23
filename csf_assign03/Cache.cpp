@@ -66,7 +66,7 @@ int Cache::load(uint32_t address)
    uint32_t tag = 0;
    uint32_t index = 0;
    uint32_t offset = 0;
-   Cache::process_add(address,&tag,&index,&offset,cache);
+   Cache::process_add(address,&tag,&index,&offset);
    // uint32_t tag = address;
    // int offset_size = std::log2(bytes);
    // uint32_t one = 1;
@@ -100,7 +100,7 @@ int Cache::store(uint32_t address)
    uint32_t tag = 0;
    uint32_t index = 0;
    uint32_t offset = 0;
-   Cache::process_add(address,&tag,&index,&offset,cache);
+   Cache::process_add(address,&tag,&index,&offset);
    // uint32_t tag = address;
    // int offset_size = std::log2(bytes);
    // uint32_t one = 1;
