@@ -126,7 +126,7 @@ int Cache::store(uint32_t address)
       else //No Write Alloc (doesnt bother to pull mem)
       {
          // writes straight to memory
-         (*mem_ctr)++; //increment the number of accesses to mem
+         (*miss_mem_ctr)++; //increment the number of accesses to mem
          // no cache call
       }
       return 0;

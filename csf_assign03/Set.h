@@ -5,7 +5,7 @@
 class Set
 {
 public:
-    Set(uint32_t blocks, uint32_t bytes, bool write_alloc, bool write_thr, bool lru, uint32_t *cache_ctr, uint32_t *mem_ctr) : blocks(blocks),bytes(bytes),write_alloc(write_alloc),write_thr(write_thr),lru(lru),cache_ctr(cache_ctr),mem_ctr(mem_ctr)
+    Set(uint32_t blocks, uint32_t bytes, bool write_alloc, bool write_thr, bool lru, uint32_t *cache_ctr, uint32_t *mem_ctr, uint32_t *miss_mem_ctr) : blocks(blocks),bytes(bytes),write_alloc(write_alloc),write_thr(write_thr),lru(lru),cache_ctr(cache_ctr),mem_ctr(mem_ctr),miss_mem_ctr(miss_mem_ctr)
     {
         for (int x = 0; x < blocks; x++)
         {
@@ -31,6 +31,7 @@ private:
     bool lru;
     uint32_t *cache_ctr;
     uint32_t *mem_ctr;
+    uint32_t *miss_mem_ctr;
     std::vector<Slot> set; // vector of slots
 };
 

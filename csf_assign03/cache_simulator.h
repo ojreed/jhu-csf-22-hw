@@ -18,6 +18,7 @@ private:
     //counter information
     uint32_t* mem_ctr;
     uint32_t* cache_ctr;
+    uint32_t* miss_mem_ctr;
     //the actual cache representation
     Cache *cache;
 

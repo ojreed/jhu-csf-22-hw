@@ -25,6 +25,7 @@ cache_simulator::~cache_simulator()
     delete this->cache;
     delete this->cache_ctr;
     delete this->mem_ctr;
+    delete this->miss_mem_ctr;
 }
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
@@ -39,9 +40,11 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
     //dynamically allocated cache and mem access counters to make counting cycles easy
     cache_ctr = new uint32_t;
     mem_ctr = new uint32_t;
+    miss_mem_ctr = new uint32_t;
     *cache_ctr = 0;
     *mem_ctr = 0;
-    cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
+    *miss_mem_ctr = 0;
+    cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr, miss_mem_ctr);
 }
 
 void cache_simulator::printResult(std::vector<uint32_t> values)
@@ -115,7 +118,7 @@ std::vector<uint32_t> cache_simulator::parseTraces()
             str_misses++;
         }
     }
-    total = (*cache_ctr) * 1 + (*mem_ctr) * 100 * bytes/4;
+    total = (*cache_ctr) * 1 + (*mem_ctr) * 1 + (*miss_mem_ctr) * 100 * bytes/4; //total cycles
     // stores results to vector
     results.push_back(loads);
     results.push_back(stores);
