@@ -18,7 +18,7 @@ public:
         return valid;
     }
 
-    uint32_t getTS()
+    uint64_t getTS()
     {
         return this->ts;
     }
