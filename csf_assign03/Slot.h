@@ -44,7 +44,7 @@ public:
         this->valid = new_valid;
     }
 
-    void setTS(uint32_t new_access)
+    void setTS(uint64_t new_access)
     {
         this->ts = new_access;
     }
@@ -60,7 +60,7 @@ public:
 private:
     uint32_t tag;
     bool valid;
-    uint32_t ts;
+    uint64_t ts;
     int bytes;
     bool write_alloc;
     bool write_thr;

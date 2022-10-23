@@ -12,9 +12,9 @@ public:
             set.push_back(Slot(bytes, write_alloc, write_thr, lru));
         }
     }                                                                                  // default constructor
-    bool is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts);                   // checks if block exists in cache
-    void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts); // used to pull memory from DRAM
-    Slot *get_slot(uint32_t tag, uint32_t offset, uint32_t current_ts);                                     // gets the correct slot
+    bool is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts);                   // checks if block exists in cache
+    void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts); // used to pull memory from DRAM
+    Slot *get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts);                                     // gets the correct slot
 
     // get method
     std::vector<Slot> getSet()

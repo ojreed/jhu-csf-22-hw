@@ -24,7 +24,7 @@
 //     }
 // }
 
-bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts)
+bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts)
 {
     for (int i = 0; i < set.size(); i++)
     {
@@ -40,7 +40,7 @@ bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts)
     return false;
 }
 
-Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint32_t current_ts)
+Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts)
 {
     for (int i = 0; i < set.size(); i++)
     {
@@ -56,7 +56,7 @@ Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint32_t current_ts)
     return NULL;
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t current_ts)
+void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts)
 {
     // pull from mem and put into cache
     // add a block to the set in the correct slot by the current rule set, find correct slot and replace
