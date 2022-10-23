@@ -108,13 +108,13 @@ int main(int argc, char *argv[])
     }
 
     // test inputs
-    std::cout << "Validate Inputs: " << "\n";
-    std::cout << "sets: " << sets << "\n";
-    std::cout << "blocks: " << blocks << "\n";
-    std::cout << "bytes: " << bytes << "\n";
-    std::cout << "write_alloc: " << write_alloc << "\n";
-    std::cout << "write_thr: " << write_thr << "\n";
-    std::cout << "lru: " << lru << "\n";
+    // std::cout << "Validate Inputs: " << "\n";
+    // std::cout << "sets: " << sets << "\n";
+    // std::cout << "blocks: " << blocks << "\n";
+    // std::cout << "bytes: " << bytes << "\n";
+    // std::cout << "write_alloc: " << write_alloc << "\n";
+    // std::cout << "write_thr: " << write_thr << "\n";
+    // std::cout << "lru: " << lru << "\n";
 
     cache_simulator csim(sets, blocks, bytes, write_alloc, write_thr, lru);
     csim.printResult(csim.parseTraces());

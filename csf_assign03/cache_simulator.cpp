@@ -48,8 +48,8 @@ void cache_simulator::printResult(std::vector<uint32_t> values)
 {
     // loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
     // have the lines below
-    std::cout << "Simulation Results: "
-              << "\n";
+    // std::cout << "Simulation Results: "
+    //           << "\n";
     std::cout << "Total loads: " << values[0] << "\n";
     std::cout << "Total stores: " << values[1] << "\n";
     std::cout << "Load hits: " << values[2] << "\n";
@@ -145,7 +145,6 @@ Load misses: 101376
 Store hits: 151658
 Store misses: 45828
 Total cycles: 84226344
-
 
 
 */
