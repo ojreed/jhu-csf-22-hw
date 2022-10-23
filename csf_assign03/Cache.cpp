@@ -27,6 +27,23 @@
 //    }
 // }
 
+
+int Cache::process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset, std::vector<Set> cache) {
+   *tag = address;
+   int offset_size = std::log2(bytes);
+   uint32_t one = 1;
+   uint32_t offset_and_val = (one << offset_size) - 1;
+   *offset = *tag & offset_and_val;
+   *tag = (*tag >> offset_size);
+   int index_size = std::log2(blocks);
+   uint32_t index_and_val = (one << index_size) - 1;
+   *index = *tag & index_and_val;
+   *tag = (*tag >> index_size);
+   // TODO: add private settings members to set and slot (like lru and stuff)
+   Set *target_set = &(cache[*index]);
+   return 0;
+}
+
 // helper function to make calling of load and store directly from trace simpler
 int Cache::access(uint32_t adddress, char instruction)
 {
@@ -47,16 +64,20 @@ int Cache::access(uint32_t adddress, char instruction)
 int Cache::load(uint32_t address)
 {
    // break address into components
-   uint32_t tag = address;
-   int offset_size = std::log2(bytes);
-   uint32_t one = 1;
-   uint32_t offset_and_val = (one << offset_size) - 1;
-   uint32_t offset = tag & offset_and_val;
-   tag = (tag >> offset_size);
-   int index_size = std::log2(blocks);
-   uint32_t index_and_val = (one << index_size) - 1;
-   uint32_t index = tag & index_and_val;
-   tag = (tag >> index_size);
+   uint32_t tag = 0;
+   uint32_t index = 0;
+   uint32_t offset = 0;
+   Cache::process_add(address,&tag,&index,&offset,cache);
+   // uint32_t tag = address;
+   // int offset_size = std::log2(bytes);
+   // uint32_t one = 1;
+   // uint32_t offset_and_val = (one << offset_size) - 1;
+   // uint32_t offset = tag & offset_and_val;
+   // tag = (tag >> offset_size);
+   // int index_size = std::log2(blocks);
+   // uint32_t index_and_val = (one << index_size) - 1;
+   // uint32_t index = tag & index_and_val;
+   // tag = (tag >> index_size);
    // TODO: add private settings members to set and slot (like lru and stuff)
    Set *target_set = &(cache[index]);
    current_ts++;
@@ -68,7 +89,7 @@ int Cache::load(uint32_t address)
    }
    else
    {
-      current_ts++;
+      // current_ts++;
       (*target_set).pull_mem(tag, index, offset, current_ts);
       return 0;
    }
@@ -77,16 +98,20 @@ int Cache::load(uint32_t address)
 int Cache::store(uint32_t address)
 {
    // break address into components
-   uint32_t tag = address;
-   int offset_size = std::log2(bytes);
-   uint32_t one = 1;
-   uint32_t offset_and_val = (one << offset_size) - 1;
-   uint32_t offset = tag & offset_and_val;
-   tag = (tag >> offset_size);
-   int index_size = std::log2(blocks);
-   uint32_t index_and_val = (one << index_size) - 1;
-   uint32_t index = tag & index_and_val;
-   tag = (tag >> index_size);
+   uint32_t tag = 0;
+   uint32_t index = 0;
+   uint32_t offset = 0;
+   Cache::process_add(address,&tag,&index,&offset,cache);
+   // uint32_t tag = address;
+   // int offset_size = std::log2(bytes);
+   // uint32_t one = 1;
+   // uint32_t offset_and_val = (one << offset_size) - 1;
+   // uint32_t offset = tag & offset_and_val;
+   // tag = (tag >> offset_size);
+   // int index_size = std::log2(blocks);
+   // uint32_t index_and_val = (one << index_size) - 1;
+   // uint32_t index = tag & index_and_val;
+   // tag = (tag >> index_size);
    // TODO: add private settings members to set and slot (like lru and stuff)
    Set *target_set = &(cache[index]);
    current_ts++;
