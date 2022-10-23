@@ -5,7 +5,7 @@ class Slot
 {
 
 public:
-    Slot(int bytes, bool write_alloc, bool write_thr, bool lru); // default constructor
+    Slot(uint32_t bytes, bool write_alloc, bool write_thr, bool lru); // default constructor
 
     // "get" methods
     uint32_t getTag()
@@ -61,7 +61,7 @@ private:
     uint32_t tag;
     bool valid;
     uint64_t ts;
-    int bytes;
+    uint32_t bytes;
     bool write_alloc;
     bool write_thr;
     bool lru;

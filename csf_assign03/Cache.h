@@ -30,10 +30,10 @@ public:
 private:
     // stuff
     std::vector<Set> cache; // vector of sets
-    int sets;
-    int blocks;
-    int bytes;
-    int tag;
+    uint32_t sets;
+    uint32_t blocks;
+    uint32_t bytes;
+    uint32_t tag;
     bool write_alloc;
     bool write_thr;
     bool lru;

@@ -7,7 +7,7 @@
 #include "Slot.h"
 
 // default constructor
-Slot::Slot(int bytes, bool write_alloc, bool write_thr, bool lru)
+Slot::Slot(uint32_t bytes, bool write_alloc, bool write_thr, bool lru)
 {
    this->bytes = bytes;
    this->write_alloc = write_alloc;
