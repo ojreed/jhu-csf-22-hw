@@ -46,6 +46,10 @@ Slot* Set::get_slot(uint32_t tag, uint32_t offset)
     {
         if (this->set[i].getTag() == tag && this->set[i].is_valid())
         {
+            if (this->lru)
+            {
+                set[i].setTS(current_ts);
+            } // if fifo we don't need to modify
             return &set[i];
         }
     }
@@ -65,7 +69,7 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint32_t curre
     // find correct slot to replace
     for (int x = 1; x < blocks; x++)
     {
-        if (set[x].getTS() <= least_recent_ts)
+        if (set[x].getTS() < least_recent_ts)
         {
             least_recent_slot = &set[x];
             least_recent_ts = set[x].getTS();
