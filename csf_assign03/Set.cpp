@@ -40,7 +40,7 @@ bool Set::is_hit(uint32_t tag, uint32_t offset, uint32_t current_ts)
     return false;
 }
 
-Slot* Set::get_slot(uint32_t tag, uint32_t offset)
+Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint32_t current_ts)
 {
     for (int i = 0; i < set.size(); i++)
     {
