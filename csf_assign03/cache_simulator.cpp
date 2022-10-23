@@ -59,9 +59,9 @@ void cache_simulator::printResult(std::vector<uint32_t> values)
     std::cout << "Total cycles: " << values[6] << "\n";
 }
 
-std::vector<int> cache_simulator::parseTraces()
+std::vector<uint32_t> cache_simulator::parseTraces()
 {
-    std::vector<int> results; // store info in vector
+    std::vector<uint32_t> results; // store info in vector
     // initalizes inputs
     uint32_t loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total;
     loads = 0;
