@@ -142,7 +142,7 @@ int Cache::store(uint32_t address)
       if (this->write_alloc) //write alloc (pulls from mem)
       {
          // write information from DRAM into cache
-         (*target_set).pull_mem(tag, index, offset, current_ts);
+         (*target_set).pull_mem(*tag, *index, *offset, current_ts);
          //write data to cache
          (*cache_ctr)++; //increment the number of accesses to cache
       }
