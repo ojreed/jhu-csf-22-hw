@@ -28,7 +28,7 @@
 // }
 
 
-int Cache::process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset, std::vector<Set> cache) {
+int Cache::process_add(uint32_t address, uint32_t* tag, uint32_t* index, uint32_t* offset) {
    //todo: store log2 of bytes and blocks in the cache --> speed up
    *tag = address;
    int offset_size = std::log2(bytes);
