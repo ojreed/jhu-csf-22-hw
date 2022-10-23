@@ -29,16 +29,16 @@ cache_simulator::~cache_simulator()
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 {
+    //store all cache parameters
     this->sets = sets;
     this->blocks = blocks;
     this->bytes = bytes;
     this->write_alloc = write_alloc;
     this->write_thr = write_thr;
     this->lru = lru;
+    //dynamically allocated cache and mem access counters to make counting cycles easy
     cache_ctr = new uint32_t;
     mem_ctr = new uint32_t;
-    // *cache_ctr = (uint32_t) 0;
-    // *mem_ctr = (uint32_t) 0;
     *cache_ctr = 0;
     *mem_ctr = 0;
     cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr);
@@ -80,13 +80,12 @@ std::vector<uint32_t> cache_simulator::parseTraces()
     std::string add;
     while (std::getline(std::cin, line))
     {
-        // something like this below, finish later
-        std::istringstream ss(line);
-        // std::getline(ss, lOrS, ' ');
-        ss >> lOrS; // maybe will store first char
-        ss >> std::hex >> addr;
-        // std::cout<<addr<<std::endl;
-        // addr = std::stoi(add.substr(2,8),nullptr,16);
+        //get operation type from the trace file
+        std::istringstream ss(line); //read in total line
+        ss >> lOrS; //store the first char (has to be l or s)
+        //get mem address
+        ss >> std::hex >> addr; //store the second word (hex address)
+        //count total loads and stores
         if (lOrS.compare("l") == 0)
         {
             loads = loads + 1;
@@ -95,8 +94,10 @@ std::vector<uint32_t> cache_simulator::parseTraces()
         {
             stores = stores + 1;
         }
+        //access the mem address w/ the specified operation from trace
         hOrM = cache->access(addr, lOrS[0]);
-        // std::cout<<hOrM<<std::endl;
+        //increments correct data counter
+        //based on hit or miss and load or store
         if (hOrM == 1 && lOrS.compare("l") == 0)
         {
             ldr_hits++;
@@ -126,25 +127,3 @@ std::vector<uint32_t> cache_simulator::parseTraces()
 
     return results;
 }
-
-/*
-Goal:
-Total loads: 318197
-Total stores: 197486
-Load hits: 314171
-Load misses: 4026
-Store hits: 188047
-Store misses: 9439
-Total cycles: 9845283
-
-Current:
-Total loads: 318197
-Total stores: 197486
-Load hits: 216821
-Load misses: 101376
-Store hits: 151658
-Store misses: 45828
-Total cycles: 84226344
-
-
-*/

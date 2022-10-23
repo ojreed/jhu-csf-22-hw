@@ -19,14 +19,12 @@ Main function of program --> will manage input of command line arguments as well
 
 int main(int argc, char *argv[])
 {
+    //FIRST: Valdate all inputs
     // validate correct number of inputs
     if (argc != 7)
     {             // invalid number of arguments
         return 1; // process cant run
     }
-
-    // TODO:: validate trace tookover CIN
-
     // convert input to strings for easy use
     std::string current_exec_name = argv[0]; // Name of the current exec program
     std::vector<std::string> params;
@@ -34,7 +32,6 @@ int main(int argc, char *argv[])
     {
         params.assign(argv, argv + argc);
     }
-
     // parse input for set block and byte size
     int sets, blocks, bytes;
     try
@@ -61,7 +58,6 @@ int main(int argc, char *argv[])
         std::cerr << "Input is not of valid size" << std::endl;
         return 1;
     }
-
     // parse input for cache usage modes
     bool write_alloc, write_thr, lru;
     // write alloc
@@ -106,17 +102,9 @@ int main(int argc, char *argv[])
         std::cout << "Invalid Input Param for LRU" << std::endl;
         return 1;
     }
-
-    // test inputs
-    // std::cout << "Validate Inputs: " << "\n";
-    // std::cout << "sets: " << sets << "\n";
-    // std::cout << "blocks: " << blocks << "\n";
-    // std::cout << "bytes: " << bytes << "\n";
-    // std::cout << "write_alloc: " << write_alloc << "\n";
-    // std::cout << "write_thr: " << write_thr << "\n";
-    // std::cout << "lru: " << lru << "\n";
-
+    //create a cache_simulator class with the validated parameters
     cache_simulator csim(sets, blocks, bytes, write_alloc, write_thr, lru);
+    //print out the results from parsing and executing the trace file
     csim.printResult(csim.parseTraces());
     return 0;
 }

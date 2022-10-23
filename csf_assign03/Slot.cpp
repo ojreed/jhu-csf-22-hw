@@ -9,12 +9,14 @@
 // default constructor
 Slot::Slot(uint32_t bytes, bool write_alloc, bool write_thr, bool lru)
 {
+   //cache parameters
    this->bytes = bytes;
    this->write_alloc = write_alloc;
    this->write_thr = write_thr;
    this->lru = lru;
+   //store tag
    tag = 0;
-   valid = false;
-   diff_from_mem = true;
-   this->ts = 0;
+   valid = false; //by defualt block is invalid
+   diff_from_mem = true; //by defualt diff from memory
+   this->ts = 0; //by defualt no timestamp
 }

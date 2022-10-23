@@ -8,14 +8,17 @@ class cache_simulator
 {
 private:
     /* data */
+    //cache params
     uint32_t sets;
     uint32_t blocks;
     uint32_t bytes;
     bool write_alloc;
     bool write_thr;
     bool lru;
+    //counter information
     uint32_t* mem_ctr;
     uint32_t* cache_ctr;
+    //the actual cache representation
     Cache *cache;
 
 public:
