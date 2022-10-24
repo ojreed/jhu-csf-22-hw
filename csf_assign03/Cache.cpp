@@ -79,6 +79,7 @@ int Cache::load(uint32_t address)
    else //block does not exist
    {
       // current_ts++;
+      (*cache_ctr)++; //increment the number of accesses to cache
       (*target_set).pull_mem(tag, index, offset, current_ts); //find the oldest element (by mode) and load value from DRAM to that block
       return 0;
    }
@@ -106,7 +107,7 @@ int Cache::store(uint32_t address)
       else //write back (dont modify memory until overwrite)
       {
          // write to cache
-         // (*cache_ctr)++; //increment the number of accesses to cache
+         (*cache_ctr)++; //increment the number of accesses to cache
          // do not write to mem --> defer to replacment
         Slot *slot = (*target_set).get_slot(tag, offset,current_ts);
         (*slot).set_diff_from_mem(true);
