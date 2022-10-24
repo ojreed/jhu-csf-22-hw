@@ -39,7 +39,7 @@ Slot *Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts) // same 
     return NULL; // NO BLOCK EXISTS
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts, int hOrM)
+void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts, int lOrS)
 {
     // pull from mem and put into cache
     // add a block to the set in the correct slot by the current rule set, find correct slot and replace
@@ -65,11 +65,11 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
             least_recent_ts = set[x].getTS();
         }
     }
-    if ((*least_recent_slot).is_diff_from_mem() && !write_thr)
+    if ((*least_recent_slot).is_diff_from_mem() && !write_thr && lOrS)
     {                 // if write back we write back on overload
         (*miss_mem_ctr)++; // increment the number of accesses to mem --> for write back
     }
-    if (hOrM == 1)
+    if (lOrS == 1)
     {
         (*miss_mem_ctr)++;
     } // increment the number of accesses to mem --> for pull new} //miss
