@@ -97,6 +97,11 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         std::cerr << "Input is not a power of two" << std::endl;
         return 1;
     }
+    // validate that there are at least 4 bytes
+    if (*bytes < 4) {
+        std::cerr << "Not valid number of bytes" << std::endl;
+        return 1;
+    }
     // validate pos
     if ((*sets <= 0) || (*blocks <= 0) || (*bytes < 4))
     {
