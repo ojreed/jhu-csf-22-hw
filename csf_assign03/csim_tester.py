@@ -30,12 +30,14 @@ def get_LRU(inp):
 results = np.zeros(shape = (50,50,50,2,2,2))
 # print(results)
 for file in files:
+	with open( file, 'r' ) as f:
+    	data = f.read()
 	for Byte in range(byte_range[0],byte_range[1]):
 		for Block in range(block_range[0],block_range[1]):
 			for Set in range(set_range[0],set_range[1]):
 				for LRU in range(0,1):
 					for write_alloc in range(0,1):
 						for write_thr in range(0,1):
-							inp = subprocess.run(["./csim", str(Set), str(Block), str(Byte), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = file, shell=False, check=False)
+							inp = subprocess.run(["./csim", str(Set), str(Block), str(Byte), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, shell=False, check=False)
 							print(inp)
 							# results[Set][Block][Byte][write_alloc][write_thr][LRU] = inp.split()[-1]
