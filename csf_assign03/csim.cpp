@@ -16,6 +16,22 @@ Main function of program --> will manage input of command line arguments as well
         write-through or write-back
         lru (least-recently-used) or fifo evictions
 */
+/*
+error checker
+Before starting the simulation, your simulator should check to make sure that the simulation parameters are reasonable. Examples of invalid configuration parameters include (but are not limited to):
+
+    block size is not a power of 2
+    number of sets is not a power of 2
+    block size is less than 4
+    write-back and no-write-allocate were both specified
+
+If the configuration parameters are invalid, the program should
+
+    Print an error message to stderr or std::cerr, and
+    Exit with a non-zero exit code
+
+*/
+
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +39,7 @@ int main(int argc, char *argv[])
     // validate correct number of inputs
     if (argc != 7)
     {             // invalid number of arguments
+        std::cerr << " Wrong number of parameters" << '\n';
         return 1; // process cant run
     }
     // convert input to strings for easy use
@@ -53,7 +70,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     // validate pos
-    if ((sets < 0) || (blocks < 0) || (bytes < 4))
+    if ((sets <= 0) || (blocks <= 0) || (bytes < 4))
     {
         std::cerr << "Input is not of valid size" << std::endl;
         return 1;
@@ -71,7 +88,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        std::cout << "Invalid Input Param for Write_Alloc" << std::endl;
+        std::cerr << "Invalid Input Param for Write_Alloc" << std::endl;
         return 1;
     }
     // write through
@@ -85,7 +102,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        std::cout << "Invalid Input Param for Write_Thr" << std::endl;
+        std::cerr << "Invalid Input Param for Write_Thr" << std::endl;
         return 1;
     }
     // lru
@@ -99,7 +116,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        std::cout << "Invalid Input Param for LRU" << std::endl;
+        std::cerr << "Invalid Input Param for LRU" << std::endl;
         return 1;
     }
     //create a cache_simulator class with the validated parameters
