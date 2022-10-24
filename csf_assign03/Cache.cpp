@@ -80,7 +80,7 @@ int Cache::load(uint32_t address)
    {
       // current_ts++;
       // (*cache_ctr)++;                                         // increment the number of accesses to cache
-      (*target_set).pull_mem(tag, index, offset, current_ts,0); // find the oldest element (by mode) and load value from DRAM to that block
+      (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
       return 0;
    }
 }
@@ -120,7 +120,7 @@ int Cache::store(uint32_t address)
       if (this->write_alloc) // write alloc (pulls from mem)
       {
          // write information from DRAM into cache
-         (*target_set).pull_mem(tag, index, offset, current_ts,0);
+         (*target_set).pull_mem(tag, index, offset, current_ts,1);
          // write data to cache
          // (*cache_ctr)++; // increment the number of accesses to cache
          // (*miss_mem_ctr)++;
