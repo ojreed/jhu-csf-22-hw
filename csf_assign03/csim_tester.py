@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import subprocess
 
 byte_range = [4,50]
 block_range = [4,50]
@@ -35,8 +36,5 @@ for file in files:
 				for LRU in range(0,1):
 					for write_alloc in range(0,1):
 						for write_thr in range(0,1):
-							os.system("./csim" + " " + str(Set) + " " + str(Block) + " " + str(Byte) + " " + str(get_alloc(write_alloc)) + " " + str(get_thr(write_thr)) + " " + str(get_LRU(LRU)) + " < " + str(file) + "\n")
-							inp = input()
-							print(inp.split())
-							print('\n')
-							# results[Set][Block][Byte][write_alloc][write_thr][LRU] = inp.split()[-1]
+							inp = subprocess.call("./csim" + " " + str(Set) + " " + str(Block) + " " + str(Byte) + " " + str(get_alloc(write_alloc)) + " " + str(get_thr(write_thr)) + " " + str(get_LRU(LRU)) + " < " + str(file) + "\n")
+							results[Set][Block][Byte][write_alloc][write_thr][LRU] = inp.split()[-1]
