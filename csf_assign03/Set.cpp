@@ -20,7 +20,7 @@ bool Set::is_hit(uint32_t tag, uint64_t current_ts) // check if a block w/ corre
             return true; // hit
         }
     }
-    return false; // mis
+    return false; // miss
 }
 
 Slot *Set::get_slot(uint32_t tag, uint64_t current_ts) // same as is hit but returns the correct block
@@ -66,18 +66,10 @@ void Set::pull_mem(uint32_t tag, uint64_t current_ts)
         }
     }
     if ((*least_recent_slot).is_diff_from_mem() && (*least_recent_slot).is_valid() && !write_thr)
-    {                 // if write back we write back on overload
+    {   // if write back we write back on overload
         (*cache_ctr)+=(bytes/4*100); // increment the number of accesses to mem --> for write back
     }
     (*cache_ctr)+=(bytes/4*100);
-    // if (hOrM == 1)
-    // {
-    //     (*miss_mem_ctr)++;
-    // } // increment the number of accesses to mem --> for pull new} //miss
-    // else
-    // {
-    //     (*mem_ctr)++;
-    // } // increment the number of accesses to mem --> for pull new}
 
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);

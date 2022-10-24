@@ -137,9 +137,9 @@ int main(int argc, char *argv[])
         return 1;
     }
     
-    //create a cache_simulator class with the validated parameters
+    //c reate a cache_simulator class with the validated parameters
     cache_simulator csim(sets, blocks, bytes, write_alloc, write_thr, lru);
-    //print out the results from parsing and executing the trace file
+    // print out the results from parsing and executing the trace file
     csim.printResult(csim.parseTraces());
     return 0;
 }

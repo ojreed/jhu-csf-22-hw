@@ -6,20 +6,6 @@
 #include "cache_simulator.h"
 #include "Cache.h"
 
-/*
-Big Todo:
-    Understand what we store for accesses to the cache/dram
-        WHAT EXACTLY ARE WE COUNTING
-    Figure out write back overwrite code
-    Implement
-        write thr
-        write bk
-        write alloc
-        no write alloc
-
-
-*/
-
 cache_simulator::~cache_simulator()
 {
     delete this->cache;
@@ -30,14 +16,14 @@ cache_simulator::~cache_simulator()
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 {
-    //store all cache parameters
+    // store all cache parameters
     this->sets = sets;
     this->blocks = blocks;
     this->bytes = bytes;
     this->write_alloc = write_alloc;
     this->write_thr = write_thr;
     this->lru = lru;
-    //dynamically allocated cache and mem access counters to make counting cycles easy
+    // dynamically allocated cache and mem access counters to make counting cycles easy
     cache_ctr = new uint32_t;
     mem_ctr = new uint32_t;
     miss_mem_ctr = new uint32_t;
@@ -49,10 +35,6 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
 
 void cache_simulator::printResult(std::vector<uint32_t> values)
 {
-    // loads, stores, ldr_hits, ldr_misses, str_hits, str_misses, total
-    // have the lines below
-    // std::cout << "Simulation Results: "
-    //           << "\n";
     std::cout << "Total loads: " << values[0] << "\n";
     std::cout << "Total stores: " << values[1] << "\n";
     std::cout << "Load hits: " << values[2] << "\n";
@@ -83,12 +65,12 @@ std::vector<uint32_t> cache_simulator::parseTraces()
     std::string add;
     while (std::getline(std::cin, line))
     {
-        //get operation type from the trace file
+        // get operation type from the trace file
         std::istringstream ss(line); //read in total line
         ss >> lOrS; //store the first char (has to be l or s)
-        //get mem address
+        // get mem address
         ss >> std::hex >> addr; //store the second word (hex address)
-        //count total loads and stores
+        // count total loads and stores
         if (lOrS.compare("l") == 0)
         {
             loads = loads + 1;
@@ -97,10 +79,10 @@ std::vector<uint32_t> cache_simulator::parseTraces()
         {
             stores = stores + 1;
         }
-        //access the mem address w/ the specified operation from trace
+        // access the mem address w/ the specified operation from trace
         hOrM = cache->access(addr, lOrS[0]);
-        //increments correct data counter
-        //based on hit or miss and load or store
+        // increments correct data counter
+        // based on hit or miss and load or store
         if (hOrM == 1 && lOrS.compare("l") == 0)
         {
             ldr_hits++;
