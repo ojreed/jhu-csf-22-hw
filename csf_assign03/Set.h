@@ -13,7 +13,7 @@ public:
         }
     }                                                                                  // default constructor
     bool is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts);                   // checks if block exists in cache
-    void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts,int lOrS); // used to pull memory from DRAM
+    void pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts,int hOrM); // used to pull memory from DRAM
     Slot *get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts);                                     // gets the correct slot
 
     // get method
