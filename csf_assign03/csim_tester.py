@@ -35,7 +35,7 @@ for file in files:
 				for LRU in range(0,1):
 					for write_alloc in range(0,1):
 						for write_thr in range(0,1):
-							os.system("./csim" + " " + str(Set) + " " + str(Block) + " " + str(Byte) + " " + str(get_alloc(write_alloc)) + " " + str(get_thr(write_thr)) + " " + str(get_LRU(LRU)) + " < " + str(file))
+							os.system("./csim" + " " + str(Set) + " " + str(Block) + " " + str(Byte) + " " + str(get_alloc(write_alloc)) + " " + str(get_thr(write_thr)) + " " + str(get_LRU(LRU)) + " < " + str(file) + "\n")
 							inp = input()
-							print(split(inp)[-1])
+							print(inp.split()[-1])
 							results[Set][Block][Byte][write_alloc][write_thr][LRU] = split(inp)[-1]
