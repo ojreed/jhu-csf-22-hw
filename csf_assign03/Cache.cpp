@@ -73,15 +73,14 @@ int Cache::load(uint32_t address)
    bool hit = (*target_set).is_hit(tag, offset, current_ts); // look to see if the tag exists within the correct set (by index)
    if (hit)                                                  // this means the block exists
    {
-      (*cache_ctr)+=bytes/4; // increment the number of accesses to cache
+      (*cache_ctr)+=1; // increment the number of accesses to cache
       return 1;       // valid hit
    }
    else // block does not exist
    {
-      // current_ts++;
-      (*cache_ctr)+=bytes/4;                                         // increment the number of accesses to cache
+      //cycels handeled by pull_mem 
+      //pulls from mem wired into cache
       (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
-      (*miss_mem_ctr)++;
       return 0;
    }
 }
@@ -100,18 +99,16 @@ int Cache::store(uint32_t address)
    {
       if (this->write_thr) // write through (Update Cache and access memory)
       {                    // write to memory immediately
-         // write to cache
-         // (*cache_ctr)++; // increment the number of accesses to cache
-         // write to mem
-         (*miss_mem_ctr)++; // increment the number of accesses to mem
+         // write to mem and wired into cache
+         (*cache_ctr)+=100; // increment the number of accesses to cache
       }
       else // write back (dont modify memory until overwrite)
       {
          // write to cache
-         (*cache_ctr)++; // increment the number of accesses to cache
          // do not write to mem --> defer to replacment
+         (*cache_ctr)+=1;//write to cache and mark dirty
          Slot *slot = (*target_set).get_slot(tag, offset, current_ts);
-         (*slot).set_diff_from_mem(true);
+         (*slot).set_diff_from_mem(true); //set dirty bit
       }
       return 1; // valid hit
    }
@@ -121,16 +118,14 @@ int Cache::store(uint32_t address)
       if (this->write_alloc) // write alloc (pulls from mem)
       {
          // write information from DRAM into cache
+         //handels cycles counts - writes to mem - wired into cache
          (*target_set).pull_mem(tag, index, offset, current_ts,0);
          // write data to cache
-         // (*cache_ctr)++; // increment the number of accesses to cache
-         (*miss_mem_ctr)++;
       }
       else // No Write Alloc (doesnt bother to pull mem)
       {
          // writes straight to memory
-         // (*miss_mem_ctr)++; // increment the number of accesses to mem
-         (*mem_ctr)++;
+         (*cache_ctr)+=100; // increment the number of accesses to cache
          // no cache call
       }
       return 0;

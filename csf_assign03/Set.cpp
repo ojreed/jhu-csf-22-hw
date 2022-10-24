@@ -67,8 +67,9 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
     }
     if ((*least_recent_slot).is_diff_from_mem() && (*least_recent_slot).is_valid() && !write_thr)
     {                 // if write back we write back on overload
-        (*mem_ctr)++; // increment the number of accesses to mem --> for write back
+        (*cache_ctr)+=(bytes/4*100); // increment the number of accesses to mem --> for write back
     }
+    (*cache_ctr)+=(bytes/4*100);
     // if (hOrM == 1)
     // {
     //     (*miss_mem_ctr)++;
