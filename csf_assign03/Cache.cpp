@@ -102,7 +102,7 @@ int Cache::store(uint32_t address)
          // write to cache
          // (*cache_ctr)++; // increment the number of accesses to cache
          // write to mem
-         (*miss_mem_ctr)++; // increment the number of accesses to mem
+         (*mem_ctr)++; // increment the number of accesses to mem
       }
       else // write back (dont modify memory until overwrite)
       {
