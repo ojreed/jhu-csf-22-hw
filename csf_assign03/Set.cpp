@@ -69,14 +69,14 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
     {                 // if write back we write back on overload
         (*miss_mem_ctr)++; // increment the number of accesses to mem --> for write back
     }
-    if (hOrM == 1)
-    {
-        (*miss_mem_ctr)++;
-    } // increment the number of accesses to mem --> for pull new} //miss
-    else
-    {
-        (*mem_ctr)++;
-    } // increment the number of accesses to mem --> for pull new}
+    // if (hOrM == 1)
+    // {
+    //     (*miss_mem_ctr)++;
+    // } // increment the number of accesses to mem --> for pull new} //miss
+    // else
+    // {
+    //     (*mem_ctr)++;
+    // } // increment the number of accesses to mem --> for pull new}
 
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);
