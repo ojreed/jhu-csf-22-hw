@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <stdexcept>
 #include "cache_simulator.h"
 #include "Cache.h"
 
@@ -38,22 +37,11 @@ int main(int argc, char *argv[])
 {
     //FIRST: Valdate all inputs
     // validate correct number of inputs
-    try
-    {
-        if (argc != 7) {
-            throw std::invalid_argument("Wrong Number of Params");
-        }
+    if (argc != 7)
+    {             // invalid number of arguments
+        std::cerr << " Wrong number of parameters" << '\n';
+        return 1; // process cant run
     }
-    catch(const std::invalid_argument& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    
-    // if (argc != 7)
-    // {             // invalid number of arguments
-    //     std::cerr << " Wrong number of parameters" << '\n';
-    //     return 1; // process cant run
-    // }
     // convert input to strings for easy use
     std::string current_exec_name = argv[0]; // Name of the current exec program
     std::vector<std::string> params;
