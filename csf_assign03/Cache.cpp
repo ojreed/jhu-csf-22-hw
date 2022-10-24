@@ -108,7 +108,7 @@ int Cache::store(uint32_t address)
       else // write back (dont modify memory until overwrite)
       {
          // write to cache
-         (*cache_ctr)++; // increment the number of accesses to cache
+         (*cache_ctr)+=bytes/16; // increment the number of accesses to cache
          // do not write to mem --> defer to replacment
          Slot *slot = (*target_set).get_slot(tag, offset, current_ts);
          (*slot).set_diff_from_mem(true);
