@@ -7,7 +7,7 @@
 #include "Set.h"
 #include "Slot.h"
 
-bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts) //check if a block w/ correct info exists
+bool Set::is_hit(uint32_t tag, uint64_t current_ts) //check if a block w/ correct info exists
 {
     for (int i = 0; i < set.size(); i++)//loop through all blocks
     {
