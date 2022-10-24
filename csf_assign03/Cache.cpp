@@ -73,15 +73,15 @@ int Cache::load(uint32_t address)
    bool hit = (*target_set).is_hit(tag, offset, current_ts); // look to see if the tag exists within the correct set (by index)
    if (hit)                                                  // this means the block exists
    {
-      (*cache_ctr)++; // increment the number of accesses to cache
+      // (*cache_ctr)++; // increment the number of accesses to cache
       return 1;       // valid hit
    }
    else // block does not exist
    {
       // current_ts++;
-      (*cache_ctr)++;                                         // increment the number of accesses to cache
+      // (*cache_ctr)++;                                         // increment the number of accesses to cache
       (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
-      (*miss_mem_ctr)++;
+      // (*miss_mem_ctr)++;
       return 0;
    }
 }
@@ -101,14 +101,14 @@ int Cache::store(uint32_t address)
       if (this->write_thr) // write through (Update Cache and access memory)
       {                    // write to memory immediately
          // write to cache
-         (*cache_ctr)++; // increment the number of accesses to cache
+         // (*cache_ctr)++; // increment the number of accesses to cache
          // write to mem
-         (*miss_mem_ctr)++; // increment the number of accesses to mem
+         // (*miss_mem_ctr)++; // increment the number of accesses to mem
       }
       else // write back (dont modify memory until overwrite)
       {
          // write to cache
-         (*cache_ctr)++; // increment the number of accesses to cache
+         // (*cache_ctr)++; // increment the number of accesses to cache
          // do not write to mem --> defer to replacment
          Slot *slot = (*target_set).get_slot(tag, offset, current_ts);
          (*slot).set_diff_from_mem(true);
@@ -124,12 +124,12 @@ int Cache::store(uint32_t address)
          (*target_set).pull_mem(tag, index, offset, current_ts,0);
          // write data to cache
          // (*cache_ctr)++; // increment the number of accesses to cache
-         (*mem_ctr)++;
+         // (*mem_ctr)++;
       }
       else // No Write Alloc (doesnt bother to pull mem)
       {
          // writes straight to memory
-         (*miss_mem_ctr)++; // increment the number of accesses to mem
+         // (*miss_mem_ctr)++; // increment the number of accesses to mem
          // no cache call
       }
       return 0;
