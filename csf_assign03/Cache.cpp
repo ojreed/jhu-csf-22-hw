@@ -101,7 +101,7 @@ int Cache::store(uint32_t address)
         // write to cache
         (*cache_ctr)++; //increment the number of accesses to cache
         // write to mem
-        (*mem_ctr)++; //increment the number of accesses to mem
+        (*miss_mem_ctr)++; //increment the number of accesses to mem
       }
       else //write back (dont modify memory until overwrite)
       {
@@ -121,13 +121,13 @@ int Cache::store(uint32_t address)
          // write information from DRAM into cache
          (*target_set).pull_mem(tag, index, offset, current_ts);
          //write data to cache
-         // (*cache_ctr)++; //increment the number of accesses to cache
+         (*cache_ctr)++; //increment the number of accesses to cache
          // (*miss_mem_ctr)++;
       }
       else //No Write Alloc (doesnt bother to pull mem)
       {
          // writes straight to memory
-         (*mem_ctr)++; //increment the number of accesses to mem
+         (*miss_mem_ctr)++; //increment the number of accesses to mem
          // no cache call
       }
       return 0;
