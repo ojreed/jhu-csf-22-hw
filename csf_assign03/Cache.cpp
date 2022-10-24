@@ -79,7 +79,7 @@ int Cache::load(uint32_t address)
    else // block does not exist
    {
       // current_ts++;
-      (*cache_ctr)+=4/bytes;                                         // increment the number of accesses to cache
+      (*cache_ctr)++;                                         // increment the number of accesses to cache
       (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
       (*miss_mem_ctr)++;
       return 0;
