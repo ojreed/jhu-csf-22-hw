@@ -38,4 +38,5 @@ for file in files:
 							os.system("./csim" + " " + str(Set) + " " + str(Block) + " " + str(Byte) + " " + str(get_alloc(write_alloc)) + " " + str(get_thr(write_thr)) + " " + str(get_LRU(LRU)) + " < " + str(file) + "\n")
 							inp = input()
 							print(inp.split())
+							print('\n')
 							# results[Set][Block][Byte][write_alloc][write_thr][LRU] = inp.split()[-1]
