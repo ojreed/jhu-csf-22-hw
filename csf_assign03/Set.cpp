@@ -9,7 +9,7 @@
 
 bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts) // check if a block w/ correct info exists
 {
-    for (int i = 0; i < set.size(); i++) // loop through all blocks
+    for (uint32_t i = 0; i < set.size(); i++) // loop through all blocks
     {
         if (this->set[i].getTag() == tag && this->set[i].is_valid()) // if is valid and correct tag then we have a hit
         {
@@ -39,7 +39,7 @@ Slot *Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts) // same 
     return NULL; // NO BLOCK EXISTS
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts, int hOrM)
+void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts)
 {
     // pull from mem and put into cache
     // add a block to the set in the correct slot by the current rule set, find correct slot and replace

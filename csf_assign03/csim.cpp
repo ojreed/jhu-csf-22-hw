@@ -75,6 +75,7 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
         std::cerr << "Invalid Input Param for LRU" << std::endl;
         return 1;
     }
+    return 0;
 }
 
 int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *bytes) {
