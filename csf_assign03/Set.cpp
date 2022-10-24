@@ -7,7 +7,7 @@
 #include "Set.h"
 #include "Slot.h"
 
-bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts) // check if a block w/ correct info exists
+bool Set::is_hit(uint32_t tag, uint64_t current_ts) // check if a block w/ correct info exists
 {
     for (uint32_t i = 0; i < set.size(); i++) // loop through all blocks
     {
@@ -39,7 +39,7 @@ Slot *Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts) // same 
     return NULL; // NO BLOCK EXISTS
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts,int hOrM)
+void Set::pull_mem(uint32_t tag, uint64_t current_ts)
 {
     // pull from mem and put into cache
     // add a block to the set in the correct slot by the current rule set, find correct slot and replace
@@ -51,7 +51,7 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
     uint32_t least_recent_ts = set[0].getTS();
     Slot *least_recent_slot = &set[0];
     // find correct slot to replace
-    for (int x = 1; x < blocks; x++)
+    for (uint32_t x = 1; x < blocks; x++)
     {
         if (set[x].is_valid() == false)
         { // if we find and unused block just use that and stop search

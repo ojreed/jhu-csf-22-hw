@@ -70,7 +70,7 @@ int Cache::load(uint32_t address)
    Cache::split_address(address, &tag, &index, &offset);
    Set *target_set = &(cache[index]);                        // get the target set from the address index
    current_ts++;                                             // increment timestamp to keep time
-   bool hit = (*target_set).is_hit(tag, offset, current_ts); // look to see if the tag exists within the correct set (by index)
+   bool hit = (*target_set).is_hit(tag, current_ts); // look to see if the tag exists within the correct set (by index)
    if (hit)                                                  // this means the block exists
    {
       (*cache_ctr)+=1; // increment the number of accesses to cache
@@ -80,8 +80,8 @@ int Cache::load(uint32_t address)
    {
       //cycels handeled by pull_mem 
       //pulls from mem wired into cache
-      (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
-      return 0;
+      (*target_set).pull_mem(tag, current_ts); // find the oldest element (by mode) and load value from DRAM to that block
+      return 0; 
    }
 }
 
@@ -94,7 +94,7 @@ int Cache::store(uint32_t address)
    Cache::split_address(address, &tag, &index, &offset);
    Set *target_set = &(cache[index]);                        // get the target set from the address index
    current_ts++;                                             // increment timestamp to keep time
-   bool hit = (*target_set).is_hit(tag, offset, current_ts); // look to see if the tag exists within the correct set (by index)
+   bool hit = (*target_set).is_hit(tag, current_ts); // look to see if the tag exists within the correct set (by index)
    if (hit)
    {
       if (this->write_thr) // write through (Update Cache and access memory)
@@ -119,7 +119,7 @@ int Cache::store(uint32_t address)
       {
          // write information from DRAM into cache
          //handels cycles counts - writes to mem - wired into cache
-         (*target_set).pull_mem(tag, index, offset, current_ts,0);
+         (*target_set).pull_mem(tag, current_ts);
          // write data to cache
       }
       else // No Write Alloc (doesnt bother to pull mem)

@@ -7,7 +7,7 @@
 #include "Set.h"
 #include "Slot.h"
 
-bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts) //check if a block w/ correct info exists
+bool Set::is_hit(uint32_t tag, uint64_t current_ts) //check if a block w/ correct info exists
 {
     for (int i = 0; i < set.size(); i++)//loop through all blocks
     {
@@ -39,7 +39,7 @@ Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts)//same as
     return NULL; //NO BLOCK EXISTS
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts)
+void Set::pull_mem(uint32_t tag, uint64_t current_ts)
 {
     // pull from mem and put into cache
     // add a block to the set in the correct slot by the current rule set, find correct slot and replace
