@@ -31,7 +31,7 @@ results = np.zeros(shape = (50,50,50,2,2,2))
 # print(results)
 for file in files:
 	with open( file, 'r' ) as f:
-    	data = f.read()
+		data = f.read()
 	for Byte in range(byte_range[0],byte_range[1]):
 		for Block in range(block_range[0],block_range[1]):
 			for Set in range(set_range[0],set_range[1]):
