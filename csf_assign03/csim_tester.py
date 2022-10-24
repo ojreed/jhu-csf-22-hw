@@ -5,7 +5,7 @@ import subprocess
 byte_range = [4,50]
 block_range = [4,50]
 set_range = [4,50]
-files = ["read01.trace"]
+files = ["gcc.trace"]
 
 
 def get_alloc(inp):
