@@ -107,7 +107,7 @@ int Cache::store(uint32_t address)
          // write to cache
          // do not write to mem --> defer to replacment
          (*cache_ctr)+=1;//write to cache and mark dirty
-         Slot *slot = (*target_set).get_slot(tag, offset, current_ts);
+         Slot *slot = (*target_set).get_slot(tag, current_ts);
          (*slot).set_diff_from_mem(true); //set dirty bit
       }
       return 1; // valid hit

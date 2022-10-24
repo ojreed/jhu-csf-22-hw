@@ -23,9 +23,9 @@ bool Set::is_hit(uint32_t tag, uint64_t current_ts) // check if a block w/ corre
     return false; // mis
 }
 
-Slot *Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts) // same as is hit but returns the correct block
+Slot *Set::get_slot(uint32_t tag, uint64_t current_ts) // same as is hit but returns the correct block
 {
-    for (int i = 0; i < set.size(); i++) // loop through all blocks
+    for (uint32_t i = 0; i < set.size(); i++) // loop through all blocks
     {
         if (this->set[i].getTag() == tag && this->set[i].is_valid()) // find the correct valid tag
         {

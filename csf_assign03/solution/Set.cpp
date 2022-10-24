@@ -23,7 +23,7 @@ bool Set::is_hit(uint32_t tag, uint64_t current_ts) //check if a block w/ correc
     return false;//mis
 }
 
-Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts)//same as is hit but returns the correct block
+Slot* Set::get_slot(uint32_t tag, uint64_t current_ts)//same as is hit but returns the correct block
 {
     for (int i = 0; i < set.size(); i++) //loop through all blocks
     {
