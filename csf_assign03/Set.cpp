@@ -65,18 +65,10 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
             least_recent_ts = set[x].getTS();
         }
     }
-    if ((*least_recent_slot).is_diff_from_mem() && !write_thr)
-    {                 // if write back we write back on overload
-        (*miss_mem_ctr)++; // increment the number of accesses to mem --> for write back
+    if ((*least_recent_slot).is_diff_from_mem() && !write_thr) {//if write back we write back on overload
+        (*mem_ctr)++; //increment the number of accesses to mem --> for write back
     }
-    if (lOrS == 1)
-    {
-        (*miss_mem_ctr)++;
-    } // increment the number of accesses to mem --> for pull new} //miss
-    else
-    {
-        (*mem_ctr)++;
-    } // increment the number of accesses to mem --> for pull new}
+    (*miss_mem_ctr)++; //increment the number of accesses to mem --> for pull new
 
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);
