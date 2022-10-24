@@ -103,6 +103,7 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         std::cerr << "Input is not of valid size" << std::endl;
         return 1;
     }
+    return 0;
 }
 
 

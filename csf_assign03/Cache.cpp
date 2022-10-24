@@ -80,8 +80,8 @@ int Cache::load(uint32_t address)
    {
       //cycels handeled by pull_mem 
       //pulls from mem wired into cache
-      (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
-      return 0;
+      (*target_set).pull_mem(tag, current_ts); // find the oldest element (by mode) and load value from DRAM to that block
+      return 0; 
    }
 }
 
@@ -119,7 +119,7 @@ int Cache::store(uint32_t address)
       {
          // write information from DRAM into cache
          //handels cycles counts - writes to mem - wired into cache
-         (*target_set).pull_mem(tag, index, offset, current_ts,0);
+         (*target_set).pull_mem(tag, current_ts);
          // write data to cache
       }
       else // No Write Alloc (doesnt bother to pull mem)
