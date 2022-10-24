@@ -26,7 +26,7 @@ def get_LRU(inp):
 		return "fifo"
 
 
-results = np.zeros(shape = (100,100,100,2,2,2))
+results = np.zeros(shape = (50,50,50,2,2,2))
 # print(results)
 for file in files:
 	for Byte in range(byte_range[0],byte_range[1]):
@@ -37,5 +37,5 @@ for file in files:
 						for write_thr in range(0,1):
 							os.system("./csim" + " " + str(Set) + " " + str(Block) + " " + str(Byte) + " " + str(get_alloc(write_alloc)) + " " + str(get_thr(write_thr)) + " " + str(get_LRU(LRU)) + " < " + str(file))
 							inp = input()
-							print(inp)
-							# results[Set][Block][Byte][write_alloc][write_thr][LRU] = inp
+							print(split(inp)[-1])
+							results[Set][Block][Byte][write_alloc][write_thr][LRU] = split(inp)[-1]
