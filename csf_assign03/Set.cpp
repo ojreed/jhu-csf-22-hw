@@ -7,39 +7,39 @@
 #include "Set.h"
 #include "Slot.h"
 
-bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts) //check if a block w/ correct info exists
+bool Set::is_hit(uint32_t tag, uint32_t offset, uint64_t current_ts) // check if a block w/ correct info exists
 {
-    for (int i = 0; i < set.size(); i++)//loop through all blocks
+    for (int i = 0; i < set.size(); i++) // loop through all blocks
     {
-        if (this->set[i].getTag() == tag && this->set[i].is_valid()) //if is valid and correct tag then we have a hit
+        if (this->set[i].getTag() == tag && this->set[i].is_valid()) // if is valid and correct tag then we have a hit
         {
-            if (this->lru) //lru mode needs to update timestamp
+            if (this->lru) // lru mode needs to update timestamp
             {
                 set[i].setTS(current_ts);
-            } // if fifo we don't need to modify
-            return true; //hit
+            }            // if fifo we don't need to modify
+            return true; // hit
         }
     }
-    return false;//mis
+    return false; // mis
 }
 
-Slot* Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts)//same as is hit but returns the correct block
+Slot *Set::get_slot(uint32_t tag, uint32_t offset, uint64_t current_ts) // same as is hit but returns the correct block
 {
-    for (int i = 0; i < set.size(); i++) //loop through all blocks
+    for (int i = 0; i < set.size(); i++) // loop through all blocks
     {
-        if (this->set[i].getTag() == tag && this->set[i].is_valid()) //find the correct valid tag
+        if (this->set[i].getTag() == tag && this->set[i].is_valid()) // find the correct valid tag
         {
-            if (this->lru) //if LRU update ts
+            if (this->lru) // if LRU update ts
             {
                 set[i].setTS(current_ts);
-            } // if fifo we don't need to modify
-            return &set[i]; //block found
+            }               // if fifo we don't need to modify
+            return &set[i]; // block found
         }
     }
-    return NULL; //NO BLOCK EXISTS
+    return NULL; // NO BLOCK EXISTS
 }
 
-void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts)
+void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t current_ts, int hOrM)
 {
     // pull from mem and put into cache
     // add a block to the set in the correct slot by the current rule set, find correct slot and replace
@@ -47,27 +47,37 @@ void Set::pull_mem(uint32_t tag, uint32_t index, uint32_t offset, uint64_t curre
     // lru- based on last used time
     // fifo- based on load order
 
-    //base case of first block
+    // base case of first block
     uint32_t least_recent_ts = set[0].getTS();
     Slot *least_recent_slot = &set[0];
     // find correct slot to replace
-    for (int x = 1; x < blocks; x++) 
+    for (int x = 1; x < blocks; x++)
     {
-        if (set[x].is_valid() == false) { //if we find and unused block just use that and stop search
+        if (set[x].is_valid() == false)
+        { // if we find and unused block just use that and stop search
             least_recent_slot = &set[x];
             least_recent_ts = set[x].getTS();
             x = blocks;
         }
-        else if (set[x].getTS() < least_recent_ts) //if we find an older block than the current one 
+        else if (set[x].getTS() < least_recent_ts) // if we find an older block than the current one
         {
-            least_recent_slot = &set[x]; //make the older block the current best replace block
+            least_recent_slot = &set[x]; // make the older block the current best replace block
             least_recent_ts = set[x].getTS();
         }
     }
-    if ((*least_recent_slot).is_diff_from_mem() && !write_thr) {//if write back we write back on overload
-        (*mem_ctr)++; //increment the number of accesses to mem --> for write back
+    if ((*least_recent_slot).is_diff_from_mem() && !write_thr)
+    {                 // if write back we write back on overload
+        (*mem_ctr)++; // increment the number of accesses to mem --> for write back
     }
-    (*mem_ctr)++; //increment the number of accesses to mem --> for pull new
+    if (hOrM == 1)
+    {
+        (*miss_mem_ctr)++;
+    } // increment the number of accesses to mem --> for pull new} //miss
+    else
+    {
+        (*mem_ctr)++;
+    } // increment the number of accesses to mem --> for pull new}
+
     (*least_recent_slot).setTag(tag);
     (*least_recent_slot).setTS(current_ts);
     (*least_recent_slot).set_valid(true);
