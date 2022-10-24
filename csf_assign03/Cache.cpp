@@ -73,13 +73,13 @@ int Cache::load(uint32_t address)
    bool hit = (*target_set).is_hit(tag, offset, current_ts); // look to see if the tag exists within the correct set (by index)
    if (hit)                                                  // this means the block exists
    {
-      (*cache_ctr)++; // increment the number of accesses to cache
+      (*cache_ctr)+=(4/bytes); // increment the number of accesses to cache
       return 1;       // valid hit
    }
    else // block does not exist
    {
       // current_ts++;
-      (*cache_ctr)+=(4/bytes);                                         // increment the number of accesses to cache
+      (*cache_ctr)++;                                         // increment the number of accesses to cache
       (*target_set).pull_mem(tag, index, offset, current_ts,1); // find the oldest element (by mode) and load value from DRAM to that block
       return 0;
    }
