@@ -1,3 +1,4 @@
 Madeline (Maddie) Estey and Owen Reed
 
-we worked together in brody on mst1 functionality such as the command line parsing and trace file reading
+In the beginning, we worked together in Brody to create the project's general file and class structure. We did some functions together
+but then also worked individually on some and worked individually to debug (ex: debugging why our counter amounts were wrong).
