@@ -4,7 +4,7 @@ import os
 byte_range = [4,50]
 block_range = [4,50]
 set_range = [4,50]
-files = ["gcc.trace"]
+files = ["read01.trace"]
 
 
 def get_alloc(inp):
