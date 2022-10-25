@@ -45,5 +45,5 @@ for file in files:
 						if len(output) > 0:
 							# print(1/int(output[-1]))
 							results[Set][Block][write_alloc][write_thr][LRU] += (1/int(output[-1]))
-
+print(results)
 pickle.dump(results , open( "results.p", "wb" ) )
