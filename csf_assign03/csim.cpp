@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <math.h>
 #include "cache_simulator.h"
 #include "Cache.h"
 
@@ -92,20 +93,24 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         return 1;
     }
     // validate power of 2
-    if ((*sets % 2 != 0 && *sets != 1 ) || (*blocks % 2 != 0  && *blocks != 1) || (*bytes % 2 != 0))
+    if (is_power_of_two(*sets) || is_power_of_two(*blocks) || (is_power_of_two(*bytes) && *bytes >= 4))
     {
         std::cerr << "Input is not a power of two" << std::endl;
-        return 1;
-    }
-    // validate that there are at least 4 bytes
-    if (*bytes < 4) {
-        std::cerr << "Not valid number of bytes" << std::endl;
         return 1;
     }
     // validate pos
     if ((*sets <= 0) || (*blocks <= 0) || (*bytes < 4))
     {
         std::cerr << "Input is not of valid size" << std::endl;
+        return 1;
+    }
+    return 0;
+}
+
+// helper function to determine if input parameters are powers of two
+int is_power_of_two(int x) {
+    int log_result = log2(x);
+    if(ceil(log_result) == floor(log_result)) {
         return 1;
     }
     return 0;
