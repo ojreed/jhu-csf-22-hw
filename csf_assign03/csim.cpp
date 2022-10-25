@@ -93,7 +93,7 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         return 1;
     }
     // validate power of 2
-    if (is_power_of_two(*sets) || is_power_of_two(*blocks) || (is_power_of_two(*bytes) && *bytes >= 4))
+    if (ceil(log2(*sets)) == floor(log2(*sets)) || ceil(log2(*blocks)) == floor(log2(*blocks)) || (ceil(log2(*bytes)) == floor(log2(*bytes)) && *bytes >= 4))
     {
         std::cerr << "Input is not a power of two" << std::endl;
         return 1;
@@ -109,14 +109,14 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
 
 
 // helper function to determine if input parameters are powers of two, used in csim.cpp
-int is_power_of_two(int x) 
-{
-    int log_result = log2(x);
-    if(ceil(log_result) == floor(log_result)) {
-        return 1;
-    }
-    return 0;
-}
+//int is_power_of_two(int x) 
+//{
+    //int log_result = log2(x);
+    //if(ceil(log_result) == floor(log_result)) {
+        //return 1;
+    //}
+    //return 0;
+//}
 
 int main(int argc, char *argv[])
 {
