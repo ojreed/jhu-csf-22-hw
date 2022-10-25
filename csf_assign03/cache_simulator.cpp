@@ -3,22 +3,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <math.h>
 #include "cache_simulator.h"
 #include "Cache.h"
-
-/*
-Big Todo:
-    Understand what we store for accesses to the cache/dram
-        WHAT EXACTLY ARE WE COUNTING
-    Figure out write back overwrite code
-    Implement
-        write thr
-        write bk
-        write alloc
-        no write alloc
-
-
-*/
 
 cache_simulator::~cache_simulator()
 {
@@ -83,12 +70,12 @@ std::vector<uint32_t> cache_simulator::parseTraces()
     std::string add;
     while (std::getline(std::cin, line))
     {
-        //get operation type from the trace file
-        std::istringstream ss(line); //read in total line
-        ss >> lOrS; //store the first char (has to be l or s)
-        //get mem address
-        ss >> std::hex >> addr; //store the second word (hex address)
-        //count total loads and stores
+        // get operation type from the trace file
+        std::istringstream ss(line); // read in total line
+        ss >> lOrS; // store the first char (has to be l or s)
+        // get mem address
+        ss >> std::hex >> addr; // store the second word (hex address)
+        // count total loads and stores
         if (lOrS.compare("l") == 0)
         {
             loads = loads + 1;
@@ -97,10 +84,10 @@ std::vector<uint32_t> cache_simulator::parseTraces()
         {
             stores = stores + 1;
         }
-        //access the mem address w/ the specified operation from trace
+        // access the mem address w/ the specified operation from trace
         hOrM = cache->access(addr, lOrS[0]);
-        //increments correct data counter
-        //based on hit or miss and load or store
+        // increments correct data counter
+        // based on hit or miss and load or store
         if (hOrM == 1 && lOrS.compare("l") == 0)
         {
             ldr_hits++;
@@ -118,7 +105,7 @@ std::vector<uint32_t> cache_simulator::parseTraces()
             str_misses++;
         }
     }
-    total = (*cache_ctr);// * 1 + (*mem_ctr) * 100 + (*miss_mem_ctr) * 100 * bytes/4; //total cycles
+    total = (*cache_ctr); // * 1 + (*mem_ctr) * 100 + (*miss_mem_ctr) * 100 * bytes/4; //total cycles
     // stores results to vector
     results.push_back(loads);
     results.push_back(stores);
@@ -130,3 +117,4 @@ std::vector<uint32_t> cache_simulator::parseTraces()
 
     return results;
 }
+

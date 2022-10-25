@@ -8,28 +8,8 @@
 #include "Cache.h"
 #include "Set.h"
 
-// default constructor
-// Cache::Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t* cache_ctr_in,uint32_t* mem_ctr_in)
-// {
-//    this->sets = sets;
-//    this->blocks = blocks;
-//    this->bytes = bytes;
-//    this->write_alloc = write_alloc;
-//    this->write_thr = write_thr;
-//    this->lru = lru;
-//    this->tag = tag;
-//    this->current_ts = 0;
-//    this->cache_ctr = cache_ctr_in;
-//    this->mem_ctr = mem_ctr_in;
-//    for (int x = 0; x < sets; x++)
-//    {
-//       cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr));
-//    }
-// }
-
 int Cache::split_address(uint32_t address, uint32_t *tag, uint32_t *index, uint32_t *offset)
 {
-   // TODO: store log2 of bytes and blocks in the cache --> speed up
    // store the address in the tag (will be witteled down)
    *tag = address;
    int offset_size = std::log2(bytes);                 // ofset size is the number of bits needed to represent offset

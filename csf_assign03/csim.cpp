@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <math.h>
 #include "cache_simulator.h"
 #include "Cache.h"
 
@@ -92,7 +93,7 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         return 1;
     }
     // validate power of 2
-    if ((*sets % 2 != 0 && *sets != 1 ) || (*blocks % 2 != 0  && *blocks != 1) || (*bytes % 2 != 0))
+    if (ceil(log2(*sets)) != floor(log2(*sets)) || ceil(log2(*blocks)) != floor(log2(*blocks)) || (ceil(log2(*bytes)) != floor(log2(*bytes)) && *bytes >= 4))
     {
         std::cerr << "Input is not a power of two" << std::endl;
         return 1;
@@ -105,7 +106,6 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
     }
     return 0;
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -137,9 +137,9 @@ int main(int argc, char *argv[])
         return 1;
     }
     
-    //create a cache_simulator class with the validated parameters
+    //c reate a cache_simulator class with the validated parameters
     cache_simulator csim(sets, blocks, bytes, write_alloc, write_thr, lru);
-    //print out the results from parsing and executing the trace file
+    // print out the results from parsing and executing the trace file
     csim.printResult(csim.parseTraces());
     return 0;
 }
