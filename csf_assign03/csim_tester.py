@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import subprocess
-
+import pkl
 byte_size = 4
 block_range = [4,50]
 set_range = [4,50]
@@ -42,6 +42,5 @@ for file in files:
 						if len(output) > 0:
 							print(1/int(output[-1]))
 							results[Set][Block][write_alloc][write_thr][LRU] += (1/int(output[-1]))
-						else:
-							print(results.stderr)
-						# 
+
+pickle.dump(results , open( "results.p", "wb" ) )
