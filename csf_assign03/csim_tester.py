@@ -32,15 +32,18 @@ results = np.zeros(shape = (50,50,2,2,2))
 for file in files:
 	with open(file, 'rb') as f:
 		data = f.read()
+	print("File: " + file)
 	for Block in range(block_range[0],block_range[1]):
+		print("Block Size: " + str(Block))
 		for Set in range(set_range[0],set_range[1]):
+			print("Set Size: " + str(Set))
 			for LRU in range(0,1):
 				for write_alloc in range(0,1):
 					for write_thr in range(0,1):
 						return_data = subprocess.run(["./csim", str(Set), str(Block), str(byte_size), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, capture_output = True, shell=False, check=False)
 						output = return_data.stdout.split()
 						if len(output) > 0:
-							print(1/int(output[-1]))
+							# print(1/int(output[-1]))
 							results[Set][Block][write_alloc][write_thr][LRU] += (1/int(output[-1]))
 
 pickle.dump(results , open( "results.p", "wb" ) )
