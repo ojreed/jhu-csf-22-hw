@@ -107,17 +107,6 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
     return 0;
 }
 
-
-// helper function to determine if input parameters are powers of two, used in csim.cpp
-//int is_power_of_two(int x) 
-//{
-    //int log_result = log2(x);
-    //if(ceil(log_result) == floor(log_result)) {
-        //return 1;
-    //}
-    //return 0;
-//}
-
 int main(int argc, char *argv[])
 {
     //FIRST: Valdate all inputs
