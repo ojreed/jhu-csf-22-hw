@@ -93,7 +93,7 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         return 1;
     }
     // validate power of 2
-    if (ceil(log2(*sets)) == floor(log2(*sets)) || ceil(log2(*blocks)) == floor(log2(*blocks)) || (ceil(log2(*bytes)) == floor(log2(*bytes)) && *bytes >= 4))
+    if (!(ceil(log2(*sets)) == floor(log2(*sets)) || ceil(log2(*blocks)) == floor(log2(*blocks)) || (ceil(log2(*bytes)) == floor(log2(*bytes)) && *bytes >= 4)))
     {
         std::cerr << "Input is not a power of two" << std::endl;
         return 1;
