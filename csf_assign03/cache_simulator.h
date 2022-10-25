@@ -29,6 +29,7 @@ public:
     ~cache_simulator();
     void printResult(std::vector<uint32_t> values);
     std::vector<uint32_t> parseTraces();
+    int is_power_of_two(int x);
 };
 
 #endif // CACHE_SIMULATOR_H

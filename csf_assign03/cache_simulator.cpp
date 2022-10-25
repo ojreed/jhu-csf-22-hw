@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <math.h>
 #include "cache_simulator.h"
 #include "Cache.h"
 
@@ -116,3 +117,14 @@ std::vector<uint32_t> cache_simulator::parseTraces()
 
     return results;
 }
+
+// helper function to determine if input parameters are powers of two, used in csim.cpp
+int is_power_of_two(int x) 
+{
+    int log_result = log2(x);
+    if(ceil(log_result) == floor(log_result)) {
+        return 1;
+    }
+    return 0;
+}
+
