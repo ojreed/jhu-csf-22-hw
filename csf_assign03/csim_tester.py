@@ -37,7 +37,6 @@ for file in files:
 			for LRU in range(0,1):
 				for write_alloc in range(0,1):
 					for write_thr in range(0,1):
-						out = ""
-						inp = subprocess.run(["./csim", str(Set), str(Block), str(byte_size), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, output = out, shell=False, check=False)
-						print("RESULTS", out)
+						inp = subprocess.run(["./csim", str(Set), str(Block), str(byte_size), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, capture_output = True, shell=False, check=False)
+						print("RESULTS", inp)
 						# results[Set][Block][write_alloc][write_thr][LRU] += 1/int(inp.split()[-1])
