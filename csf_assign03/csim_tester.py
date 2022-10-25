@@ -5,7 +5,7 @@ import pickle
 byte_size = 4
 block_range = [1,20,1]
 set_range = [1,500,5]
-files = ["gcc.trace"]
+files = ["gcc.trace","swim.trace"]
 
 
 def get_alloc(inp):
@@ -44,6 +44,6 @@ for file in files:
 						output = return_data.stdout.split()
 						if len(output) > 0:
 							# print(1/int(output[-1]))
-							results[Set][Block][write_alloc][write_thr][LRU] += (1/int(output[-1]))
+							results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
 print(results)
 pickle.dump(results , open( "results.p", "wb" ) )
