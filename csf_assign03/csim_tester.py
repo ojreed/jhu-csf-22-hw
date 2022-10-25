@@ -3,8 +3,8 @@ import os
 import subprocess
 import pickle
 byte_size = 4
-block_range = [1,20]
-set_range = [1,500]
+block_range = [1,20,1]
+set_range = [1,500,5]
 files = ["gcc.trace"]
 
 
@@ -33,9 +33,9 @@ for file in files:
 	with open(file, 'rb') as f:
 		data = f.read()
 	print("File: " + file)
-	for Block in range(block_range[0],block_range[1],1):
+	for Block in range(block_range[0],block_range[1],block_range[2]):
 		print("Num Blocks: " + str(Block))
-		for Set in range(set_range[0],set_range[1],1):
+		for Set in range(set_range[0],set_range[1],set_range[2]):
 			print("Num Sets: " + str(Set))
 			for LRU in range(0,1):
 				for write_alloc in range(0,1):
