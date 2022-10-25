@@ -3,8 +3,8 @@ import os
 import subprocess
 import pickle
 byte_size = 4
-block_range = [4,50]
-set_range = [4,50]
+block_range = [1,20]
+set_range = [1,500]
 files = ["gcc.trace"]
 
 
@@ -27,16 +27,16 @@ def get_LRU(inp):
 		return "fifo"
 
 
-results = np.zeros(shape = (50,50,2,2,2))
+results = np.zeros(shape = (set_range[1],block_range[1],2,2,2))
 # print(results)
 for file in files:
 	with open(file, 'rb') as f:
 		data = f.read()
 	print("File: " + file)
-	for Block in range(block_range[0],block_range[1]):
-		print("Block Size: " + str(Block))
-		for Set in range(set_range[0],set_range[1]):
-			print("Set Size: " + str(Set))
+	for Block in range(block_range[0],block_range[1],1):
+		print("Num Blocks: " + str(Block))
+		for Set in range(set_range[0],set_range[1],1):
+			print("Num Sets: " + str(Set))
 			for LRU in range(0,1):
 				for write_alloc in range(0,1):
 					for write_thr in range(0,1):
