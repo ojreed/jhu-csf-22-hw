@@ -4,7 +4,7 @@ import subprocess
 import pickle
 byte_size = 4
 block_range = [1,20,1]
-set_range = [1,500,5]
+set_range = [1,500,2]
 files = ["gcc.trace","swim.trace"]
 
 
