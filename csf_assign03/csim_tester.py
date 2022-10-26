@@ -1,11 +1,11 @@
 import numpy as np
 import os
 import subprocess
-
-byte_range = [4,50]
-block_range = [4,50]
-set_range = [4,50]
-files = ["gcc.trace"]
+import pickle
+byte_size = 4
+block_range = [1,20,1]
+set_range = [1,500,1]
+files = ["gcc.trace","swim.trace"]
 
 
 def get_alloc(inp):
@@ -27,17 +27,23 @@ def get_LRU(inp):
 		return "fifo"
 
 
-results = np.zeros(shape = (50,50,50,2,2,2))
+results = np.zeros(shape = (set_range[1],block_range[1],2,2,2))
 # print(results)
 for file in files:
 	with open(file, 'rb') as f:
 		data = f.read()
-	for Byte in range(byte_range[0],byte_range[1]):
-		for Block in range(block_range[0],block_range[1]):
-			for Set in range(set_range[0],set_range[1]):
-				for LRU in range(0,1):
-					for write_alloc in range(0,1):
-						for write_thr in range(0,1):
-							inp = subprocess.run(["./csim", str(Set), str(Block), str(Byte), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, shell=False, check=False)
-							print(inp)
-							# results[Set][Block][Byte][write_alloc][write_thr][LRU] = inp.split()[-1]
+	print("File: " + file)
+	for Block in range(block_range[0],block_range[1],block_range[2]):
+		print("Num Blocks: " + str(Block))
+		for Set in range(set_range[0],set_range[1],set_range[2]):
+			print("Num Sets: " + str(Set))
+			for LRU in range(0,1):
+				for write_alloc in range(0,1):
+					for write_thr in range(0,1):
+						return_data = subprocess.run(["./csim", str(Set), str(Block), str(byte_size), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, capture_output = True, shell=False, check=False)
+						output = return_data.stdout.split()
+						if len(output) > 0:
+							# print(1/int(output[-1]))
+							results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
+print(results)
+pickle.dump(results , open( "results.p", "wb" ) )
