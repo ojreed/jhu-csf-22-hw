@@ -34,6 +34,7 @@ If the configuration parameters are invalid, the program should
 */
 
 int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write_thr,bool *lru){
+    int validCombo = 0;
     // write alloc
     if (params[4].compare("write-allocate") == 0)
     {
@@ -42,6 +43,7 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
     else if (params[4].compare("no-write-allocate") == 0)
     {
         *write_alloc = 0;
+        validCombo = 1;
     }
     else
     {
@@ -51,6 +53,9 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
     // write through
     if (params[5].compare("write-through") == 0)
     {
+        if(validCombo == 1) {
+            return 1;
+        }
         *write_thr = 1;
     }
     else if (params[5].compare("write-back") == 0)
