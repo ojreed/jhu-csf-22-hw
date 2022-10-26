@@ -53,13 +53,13 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
     // write through
     if (params[5].compare("write-through") == 0)
     {
-        if(validCombo == 1) {
-            return 1;
-        }
         *write_thr = 1;
     }
     else if (params[5].compare("write-back") == 0)
     {
+        if(validCombo == 1) {
+            return 1;
+        }
         *write_thr = 0;
     }
     else
