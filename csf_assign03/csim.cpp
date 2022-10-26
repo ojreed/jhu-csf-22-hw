@@ -38,9 +38,9 @@ int is_power_of_two(int x)
 {
     if(ceil(log2(x)) != floor(log2(x))) 
     {
-        return 0;
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write_thr,bool *lru)
