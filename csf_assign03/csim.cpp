@@ -58,6 +58,7 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
     else if (params[5].compare("write-back") == 0)
     {
         if(validCombo == 1) {
+            std::cerr << "Cannot use no-write-allocate and write-back together" << std::endl;
             return 1;
         }
         *write_thr = 0;
