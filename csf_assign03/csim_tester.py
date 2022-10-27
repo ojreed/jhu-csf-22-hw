@@ -49,5 +49,5 @@ for file in files:
 						results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
 print(results)
 k = 10
-np.argpartition(arr, len(arr) - k)[-k:]
+np.argpartition(results, len(results) - k)[-k:]
 pickle.dump(results , open( "results.p", "wb" ) )
