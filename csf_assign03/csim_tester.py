@@ -54,11 +54,10 @@ for file in files:
 
 print(results)
 results = [list(results.keys()),list(results.values())]
-print(results)
-best = [None,None]
-for index, val in enumerate(results[1]):
-	if (index == 0) or (val < best[1]):
-		best = [index,val]
-print(results[0][index],results[1][index])
+temp = []
+for index in range(results):
+	temp.append((results[1][index],results[0][index]))
+results = temp
+print(results.sort())
 
 
