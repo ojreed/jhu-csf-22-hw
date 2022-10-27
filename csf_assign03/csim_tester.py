@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 import os
 import subprocess
 import pickle
@@ -46,6 +47,8 @@ for file in files:
 					if len(output) > 0:
 						# print(1/int(output[-1]))
 						results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
+
+np.set_printoptions(threshold=sys.maxsize)
 print(results.flatten())
 k = 3
 np.argpartition(results, len(results) - k)[-k:]
