@@ -66,11 +66,8 @@ results = [list(results.keys()),list(results.values())]
 # print(results)
 formatted = []
 for index in range(len(results[0])):
-	print((results[1][index],results[0][index]))
+	# print((results[1][index],results[0][index]))
 	formatted.append((results[1][index],results[0][index]))
-# print(formatted)
-# print(results)
 formatted.sort()
-print(formatted)
 printout(formatted)
 pickle.dump(formatted, open( "results.p", "wb" ) )
