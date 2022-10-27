@@ -48,7 +48,7 @@ for file in files:
 		print("Num Sets: " + str(Set))
 		print("Num Blocks: " + str(Block))
 		print("Total Space: " + str(Block*Set*byte_size))
-		for LRU in range(0,1):
+		for LRU in range(0,2):
 			for write_alloc in range(0,2):
 				for write_thr in range(0,2):
 					return_data = subprocess.run(["./csim", str(Set), str(Block), str(byte_size), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, capture_output = True, shell=False, check=False)
