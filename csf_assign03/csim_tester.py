@@ -60,7 +60,7 @@ for file in files:
 							results[(Set,Block,write_alloc,write_thr,LRU)] = (int(output[-1]))
 						else: 
 							results[(Set,Block,write_alloc,write_thr,LRU)] += (int(output[-1]))
-		Set = Set>>2
+		Set = Set>>1
 results = [list(results.keys()),list(results.values())]
 formatted = []
 for index in range(len(results[0])):
