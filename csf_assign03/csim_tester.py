@@ -2,6 +2,7 @@ import numpy as np
 import os
 import subprocess
 import pickle
+import math
 total_size = 16000
 byte_size = 4
 set_range = [1,500,1]
@@ -34,7 +35,7 @@ for file in files:
 		data = f.read()
 	print("File: " + file)
 	for Set in range(set_range[0],set_range[1],set_range[2]):
-		Block = floor(total_size/(Set*byte_size))
+		Block = math.floor(total_size/(Set*byte_size))
 		print("Num Sets: " + str(Set))
 		print("Num Blocks: " + str(Block))
 		print("Total Space: " + str(Block*Set*byte_size))
