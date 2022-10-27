@@ -6,8 +6,8 @@ import pickle
 total_size = 16384
 byte_size = 4
 set_max = int(total_size/byte_size)
-# files = ["gcc.trace","swim.trace"]
-files = ["read01.trace"]
+files = ["gcc.trace","swim.trace"]
+# files = ["read01.trace"]
 
 def printout(results):
 	for ind in range(len(results)):
