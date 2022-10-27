@@ -34,9 +34,10 @@ for file in files:
 		data = f.read()
 	print("File: " + file)
 	for Set in range(set_range[0],set_range[1],set_range[2]):
-		Block = total_size/(Set*byte_size)
+		Block = floor(total_size/(Set*byte_size))
 		print("Num Sets: " + str(Set))
 		print("Num Blocks: " + str(Block))
+		print("Total Space: " + str(Block*Set*byte_size))
 		for LRU in range(0,1):
 			for write_alloc in range(0,1):
 				for write_thr in range(0,1):
