@@ -12,12 +12,12 @@ files = ["read01.trace"]
 def printout(results):
 	for ind, setting in results:
 		print("Option #" + str(ind))
-		print("	Sets: ", results[0][0])
-		print("	Blocks: ", results[0][1])
-		print("	Allocation: ", get_alloc(results[0][2]))
-		print("	Thr/Bck: ", get_thr(results[0][3]))
-		print("	Mode: ", get_LRU(results[0][4]))
-		print("	Score: ", results[1])
+		print("	Sets: ", results[1][0])
+		print("	Blocks: ", results[1][1])
+		print("	Allocation: ", get_alloc(results[1][2]))
+		print("	Thr/Bck: ", get_thr(results[1][3]))
+		print("	Mode: ", get_LRU(results[1][4]))
+		print("	Score: ", results[0])
 
 def get_alloc(inp):
 	if inp == 0:
