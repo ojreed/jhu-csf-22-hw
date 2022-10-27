@@ -55,6 +55,10 @@ for file in files:
 print(results)
 results = [results.keys(),results.values()]
 print(results)
-k = 3
-np.argpartition(results, len(results) - k)[-k:]
-pickle.dump(results , open( "results.p", "wb" ) )
+best = [None,None]
+for index, val in enumerate(results[1]):
+	if (index == 0) or (val < best[1]):
+		best = [index,val]
+print(results[0][index],results[1][index])
+
+
