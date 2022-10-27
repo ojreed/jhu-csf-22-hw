@@ -53,6 +53,8 @@ for file in files:
 		Set = Set>>2
 
 print(results)
+results = [results.keys(),results.vals()]
+print(results)
 k = 3
 np.argpartition(results, len(results) - k)[-k:]
 pickle.dump(results , open( "results.p", "wb" ) )
