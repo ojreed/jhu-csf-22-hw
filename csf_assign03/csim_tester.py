@@ -10,7 +10,7 @@ set_max = int(total_size/byte_size)
 files = ["read01.trace"]
 
 def printout(results):
-	for ind, setting in results:
+	for ind in range(len(results)):
 		print("Option #" + str(ind))
 		print("	Sets: ", results[ind][1][0])
 		print("	Blocks: ", results[ind][1][1])
