@@ -64,6 +64,7 @@ for file in files:
 
 print(results)
 results = [list(results.keys()),list(results.values())]
+print(results)
 temp = []
 for index in range(len(results)):
 	temp.append((results[1][index],results[0][index]))
