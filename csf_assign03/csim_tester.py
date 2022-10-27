@@ -61,13 +61,10 @@ for file in files:
 						else: 
 							results[(Set,Block,write_alloc,write_thr,LRU)] += (int(output[-1]))
 		Set = Set>>2
-# print(results)
 results = [list(results.keys()),list(results.values())]
-# print(results)
 formatted = []
 for index in range(len(results[0])):
-	# print((results[1][index],results[0][index]))
 	formatted.append((results[1][index],results[0][index]))
-formatted.sort()
+formatted.sort(reverse = True)
 printout(formatted)
 pickle.dump(formatted, open( "results.p", "wb" ) )
