@@ -46,7 +46,7 @@ for file in files:
 					if len(output) > 0:
 						# print(1/int(output[-1]))
 						results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
-print(results)
+print(results.flatten())
 k = 3
 np.argpartition(results, len(results) - k)[-k:]
 pickle.dump(results , open( "results.p", "wb" ) )
