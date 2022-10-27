@@ -4,7 +4,7 @@ import subprocess
 import pickle
 total_size = 16000
 byte_size = 4
-set_range = [1,500,1]
+set_range = [1,500]
 files = ["gcc.trace","swim.trace"]
 
 
@@ -33,7 +33,7 @@ for file in files:
 	with open(file, 'rb') as f:
 		data = f.read()
 	print("File: " + file)
-	for Set in range(set_range[0],set_range[1],set_range[2]):
+	for Set in range(set_range[0],set_range[1]):
 		Block = round(total_size/(Set*byte_size))
 		print("Num Sets: " + str(Set))
 		print("Num Blocks: " + str(Block))
