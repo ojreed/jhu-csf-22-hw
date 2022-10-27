@@ -35,7 +35,7 @@ for file in files:
 		data = f.read()
 	print("File: " + file)
 	for Set in range(set_range[0],set_range[1],set_range[2]):
-		Block = math.floor(total_size/(Set*byte_size))
+		Block = math.round(total_size/(Set*byte_size))
 		print("Num Sets: " + str(Set))
 		print("Num Blocks: " + str(Block))
 		print("Total Space: " + str(Block*Set*byte_size))
@@ -48,6 +48,6 @@ for file in files:
 						# print(1/int(output[-1]))
 						results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
 print(results)
-k = 10
+k = 3
 np.argpartition(results, len(results) - k)[-k:]
 pickle.dump(results , open( "results.p", "wb" ) )
