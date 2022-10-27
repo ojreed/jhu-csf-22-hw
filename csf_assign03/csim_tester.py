@@ -50,7 +50,7 @@ for file in files:
 							results[(Set,Block,write_alloc,write_thr,LRU)] = (int(output[-1]))
 						else: 
 							results[(Set,Block,write_alloc,write_thr,LRU)] += (int(output[-1]))
-		Set = Set/2
+		Set = Set>>2
 
 print(results)
 k = 3
