@@ -53,7 +53,7 @@ for file in files:
 		Set = Set>>2
 
 print(results)
-results = [results.keys(),results.values()]
+results = [list(results.keys()),list(results.values())]
 print(results)
 best = [None,None]
 for index, val in enumerate(results[1]):
