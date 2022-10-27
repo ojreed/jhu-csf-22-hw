@@ -55,13 +55,13 @@ for file in files:
 					return_data = subprocess.run(["./csim", str(Set), str(Block), str(byte_size), str(get_alloc(write_alloc)), str(get_thr(write_thr)), str(get_LRU(LRU))], input = data, capture_output = True, shell=False, check=False)
 					output = return_data.stdout.split()
 					if len(output) > 0:
-						# print(1/int(output[-1]))
+						print(int(output[-1]))
 						if (Set,Block,write_alloc,write_thr,LRU) not in results.keys():
 							results[(Set,Block,write_alloc,write_thr,LRU)] = (int(output[-1]))
 						else: 
 							results[(Set,Block,write_alloc,write_thr,LRU)] += (int(output[-1]))
 		Set = Set>>2
-
+exit()
 print(results)
 results = [list(results.keys()),list(results.values())]
 print(results)
