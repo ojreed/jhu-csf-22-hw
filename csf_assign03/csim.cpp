@@ -33,7 +33,18 @@ If the configuration parameters are invalid, the program should
 
 */
 
-int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write_thr,bool *lru){
+// helper function to determine if parameter is a power of two
+int is_power_of_two(int x) 
+{
+    if(ceil(log2(x)) != floor(log2(x))) 
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write_thr,bool *lru)
+{
     int validCombo = 0;
     // write alloc
     if (params[4].compare("write-allocate") == 0)
@@ -85,7 +96,8 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
     return 0;
 }
 
-int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *bytes) {
+int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *bytes) 
+{
     try
     {
         // pull inputs and convert string to ints
@@ -99,7 +111,7 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
         return 1;
     }
     // validate power of 2
-    if (ceil(log2(*sets)) != floor(log2(*sets)) || ceil(log2(*blocks)) != floor(log2(*blocks)) || (ceil(log2(*bytes)) != floor(log2(*bytes)) && *bytes >= 4))
+    if (is_power_of_two(*sets) || is_power_of_two(*blocks) || (is_power_of_two(*bytes) && *bytes >= 4))
     {
         std::cerr << "Input is not a power of two" << std::endl;
         return 1;
