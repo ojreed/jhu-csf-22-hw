@@ -55,7 +55,7 @@ for file in files:
 print(results)
 results = [list(results.keys()),list(results.values())]
 temp = []
-for index in range(results):
+for index in range(len(results)):
 	temp.append((results[1][index],results[0][index]))
 results = temp
 print(results.sort())
