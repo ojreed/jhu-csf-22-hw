@@ -8,6 +8,15 @@ byte_size = 4
 set_max = int(total_size/byte_size)
 files = ["gcc.trace","swim.trace"]
 
+def printout(results):
+	for ind, setting in results:
+		print("Option #" + str(ind))
+		print("	Sets: ", results[0][0])
+		print("	Blocks: ", results[0][0])
+		print("	Allocation: ", get_alloc(results[0][0]))
+		print("	Thr/Bck: ", get_thr(results[0][0]))
+		print("	Mode: ", get_LRU(results[0][0]))
+		print("	Score: ", results[1])
 
 def get_alloc(inp):
 	if inp == 0:
@@ -58,6 +67,6 @@ temp = []
 for index in range(len(results)):
 	temp.append((results[1][index],results[0][index]))
 results = temp
-print(results.sort())
-
-
+results = results.sort()
+printout(results)
+pickle.dump(results, open( "results.p", "wb" ) )
