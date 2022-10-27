@@ -3,7 +3,7 @@ import sys
 import os
 import subprocess
 import pickle
-total_size = 16384
+total_size = 16384*2
 byte_size = 4
 set_max = int(total_size/byte_size)
 files = ["gcc.trace","swim.trace"]
