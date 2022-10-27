@@ -53,7 +53,7 @@ for file in files:
 		Set = Set>>2
 
 print(results)
-results = [results.keys(),results.vals()]
+results = [results.keys(),results.values()]
 print(results)
 k = 3
 np.argpartition(results, len(results) - k)[-k:]
