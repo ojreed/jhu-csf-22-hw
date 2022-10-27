@@ -27,8 +27,7 @@ def get_LRU(inp):
 	else:
 		return "fifo"
 
-
-results = np.zeros(shape = (set_range[1],set_range[1],2,2,2))
+results = {}
 print("Total Size: " + str(total_size) + "bytes")
 for file in files:
 	with open(file, 'rb') as f:
@@ -46,10 +45,12 @@ for file in files:
 					output = return_data.stdout.split()
 					if len(output) > 0:
 						# print(1/int(output[-1]))
-						results[Set][Block][write_alloc][write_thr][LRU] += (int(output[-1]))
+						if (Set,Block,write_alloc,write_thr,LRU) not in results.keys():
+							results[(Set,Block,write_alloc,write_thr,LRU)] = (int(output[-1]))
+						else: 
+							results[(Set,Block,write_alloc,write_thr,LRU)] += (int(output[-1]))
 
-np.set_printoptions(threshold=sys.maxsize)
-print(results.flatten())
+print(results)
 k = 3
 np.argpartition(results, len(results) - k)[-k:]
 pickle.dump(results , open( "results.p", "wb" ) )
