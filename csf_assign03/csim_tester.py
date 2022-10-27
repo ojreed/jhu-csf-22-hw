@@ -66,6 +66,7 @@ results = [list(results.keys()),list(results.values())]
 print(results)
 temp = []
 for index in range(len(results[0])):
+	print((results[1][index],results[0][index]))
 	temp.append((results[1][index],results[0][index]))
 print(results)
 results = temp
