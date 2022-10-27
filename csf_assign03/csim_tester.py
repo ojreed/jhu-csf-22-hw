@@ -34,7 +34,7 @@ for file in files:
 		data = f.read()
 	print("File: " + file)
 	for Set in range(set_range[0],set_range[1],set_range[2]):
-		Block = (Set*byte_size)/total_size
+		Block = total_size/(Set*byte_size)
 		print("Num Sets: " + str(Set))
 		print("Num Blocks: " + str(Block))
 		for LRU in range(0,1):
