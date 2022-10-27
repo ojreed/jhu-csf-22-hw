@@ -67,6 +67,7 @@ results = [list(results.keys()),list(results.values())]
 temp = []
 for index in range(len(results)):
 	temp.append((results[1][index],results[0][index]))
+print(results)
 results = temp
 results = results.sort()
 printout(results)
