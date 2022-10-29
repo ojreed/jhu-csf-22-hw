@@ -1,6 +1,24 @@
 import pickle
 
 
+def get_alloc(inp):
+	if inp == 0:
+		return "write-allocate"
+	else:
+		return "no-write-allocate"
+
+def get_thr(inp):
+	if inp == 0:
+		return "write-through"
+	else:
+		return "write-back"
+
+def get_LRU(inp):
+	if inp == 0:
+		return "lru"
+	else:
+		return "fifo"
+
 def printout(results):
 	for ind in range(len(results)):
 		print("Option #" + str(ind))
