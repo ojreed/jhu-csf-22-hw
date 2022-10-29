@@ -46,6 +46,7 @@ int is_power_of_two(int x)
 int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write_thr,bool *lru)
 {
     int validCombo = 0;
+    // set correct cache settings based on parameters
     // write alloc
     if (params[4].compare("write-allocate") == 0)
     {
@@ -68,7 +69,7 @@ int validate_bools(std::vector<std::string> params,bool *write_alloc,bool *write
     }
     else if (params[5].compare("write-back") == 0)
     {
-        if(validCombo == 1) {
+        if(validCombo == 1) { // special error check
             std::cerr << "Cannot use no-write-allocate and write-back together" << std::endl;
             return 1;
         }
@@ -127,10 +128,9 @@ int validate_ints(std::vector<std::string> params, int *sets, int *blocks, int *
 
 int main(int argc, char *argv[])
 {
-    //FIRST: Valdate all inputs
     // validate correct number of inputs
     if (argc != 7)
-    {             // invalid number of arguments
+    {   // invalid number of arguments
         std::cerr << " Wrong number of parameters" << '\n';
         return 1; // process cant run
     }
