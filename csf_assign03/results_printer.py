@@ -11,5 +11,5 @@ def printout(results):
 		print("	Mode: ", get_LRU(results[ind][1][4]))
 		print("	Score: ", results[ind][0])
 
-frormatted = pickle.load(open( "results.p", "rb" ) )
+formatted = pickle.load(open( "results.p", "rb" ) )
 printout(formatted)
