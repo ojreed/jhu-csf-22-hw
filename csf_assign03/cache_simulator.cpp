@@ -11,8 +11,6 @@ cache_simulator::~cache_simulator()
 {
     delete this->cache;
     delete this->cache_ctr;
-    delete this->mem_ctr;
-    delete this->miss_mem_ctr;
 }
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
@@ -26,11 +24,7 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
     this->lru = lru;
     // dynamically allocated cache and mem access counters to make counting cycles easy
     cache_ctr = new uint32_t;
-    mem_ctr = new uint32_t;
-    miss_mem_ctr = new uint32_t;
     *cache_ctr = 0;
-    *mem_ctr = 0;
-    *miss_mem_ctr = 0;
     cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr);
 }
 
