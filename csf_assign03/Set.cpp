@@ -53,13 +53,13 @@ void Set::pull_mem(uint32_t tag, uint64_t current_ts)
     // find correct slot to replace
     for (uint32_t x = 1; x < blocks; x++)
     {
-        if (this->set[x].is_valid() == false)
+        if (set[x].is_valid() == false)
         { // if we find and unused block just use that and stop search
             least_recent_slot = &set[x];
             least_recent_ts = set[x].getTS();
             x = blocks;
         }
-        else if (this->set[x].getTS() < least_recent_ts) // if we find an older block than the current one
+        else if (set[x].getTS() < least_recent_ts) // if we find an older block than the current one
         {
             least_recent_slot = &set[x]; // make the older block the current best replace block
             least_recent_ts = set[x].getTS();
