@@ -9,8 +9,8 @@
 
 cache_simulator::~cache_simulator()
 {
-    delete cache;
-    delete cache_ctr;
+    delete this->cache;
+    delete this->cache_ctr;
 
 }
 

@@ -15,6 +15,7 @@ public:
         {
             cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr));
         }
+        this->current_ts = 0;
 
     }; 
     int access(uint32_t adddress, char instruction); // usable function to parse weather we load or store
