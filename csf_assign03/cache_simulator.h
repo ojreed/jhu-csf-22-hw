@@ -17,12 +17,10 @@ private:
     bool lru;
 
     // counter information
-    uint32_t* mem_ctr;
     uint32_t* cache_ctr;
-    uint32_t* miss_mem_ctr;
     
     // the actual cache representation
-    Cache *cache;
+    Cache cache;
 
 public:
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);

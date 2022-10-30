@@ -9,7 +9,7 @@
 
 cache_simulator::~cache_simulator()
 {
-    delete this->cache;
+    // delete this->cache;
     delete this->cache_ctr;
 }
 
@@ -25,7 +25,7 @@ cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_all
     // dynamically allocated cache and mem access counters to make counting cycles easy
     cache_ctr = new uint32_t;
     *cache_ctr = 0;
-    cache = new Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr);
+    cache = Cache(sets, blocks, bytes, write_alloc, write_thr, lru, cache_ctr);
 }
 
 void cache_simulator::printResult(std::vector<uint32_t> values)
@@ -76,7 +76,7 @@ std::vector<uint32_t> cache_simulator::parseTraces()
             stores = stores + 1;
         }
         // access the mem address w/ the specified operation from trace
-        hOrM = cache->access(addr, lOrS[0]);
+        hOrM = cache.access(addr, lOrS[0]);
         // increments correct data counter based on hit or miss and load or store
         if (hOrM == 1 && lOrS.compare("l") == 0)
         {
