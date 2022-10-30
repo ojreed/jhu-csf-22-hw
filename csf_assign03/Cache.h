@@ -6,7 +6,7 @@ class Cache
 {
 
 public:
-    // Cache();
+    Cache();
     // constructor in initalizer list format to fix issue of shadowing pointers
     Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t *cache_ctr): sets(sets), blocks(blocks), bytes(bytes), write_alloc(write_alloc),write_thr(write_thr),lru(lru),cache_ctr(cache_ctr)
     {

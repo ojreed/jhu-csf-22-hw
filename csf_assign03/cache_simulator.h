@@ -20,7 +20,7 @@ private:
     uint32_t* cache_ctr;
     
     // the actual cache representation
-    Cache cache;
+    Cache *cache;
 
 public:
     cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru);
