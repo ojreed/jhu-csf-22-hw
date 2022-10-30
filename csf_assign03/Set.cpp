@@ -48,7 +48,7 @@ void Set::pull_mem(uint32_t tag, uint64_t current_ts)
     // fifo- based on load order
 
     // base case of first block
-    uint32_t least_recent_ts = set[0].getTS();
+    uint64_t least_recent_ts = set[0].getTS();
     Slot *least_recent_slot = &set[0];
     // find correct slot to replace
     for (uint32_t x = 1; x < blocks; x++)
