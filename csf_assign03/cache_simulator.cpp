@@ -16,12 +16,12 @@ cache_simulator::~cache_simulator()
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
 {
     // store all cache parameters
-    sets = sets;
-    blocks = blocks;
-    bytes = bytes;
-    write_alloc = write_alloc;
-    write_thr = write_thr;
-    lru = lru;
+    this->sets = sets;
+    this->blocks = blocks;
+    this->bytes = bytes;
+    this->write_alloc = write_alloc;
+    this->write_thr = write_thr;
+    this->lru = lru;
     // dynamically allocated cache and mem access counters to make counting cycles easy
     cache_ctr = new uint32_t;
     *cache_ctr = 0;
