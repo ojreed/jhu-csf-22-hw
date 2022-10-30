@@ -48,10 +48,12 @@ void Set::pull_mem(uint32_t tag, uint64_t current_ts)
     // fifo- based on load order
 
     // base case of first block
-    uint32_t least_recent_ts = set[0].getTS();
-    Slot *least_recent_slot = &set[0];
+    // uint32_t least_recent_ts = set[0].getTS();
+    // Slot *least_recent_slot = &set[0];
+    uint32_t least_recent_ts = current_ts;
+    Slot *least_recent_slot = nullptr;
     // find correct slot to replace
-    for (uint32_t x = 1; x < blocks; x++)
+    for (uint32_t x = 0; x < blocks; x++)
     {
         if (set[x].is_valid() == false)
         { // if we find and unused block just use that and stop search
@@ -59,7 +61,7 @@ void Set::pull_mem(uint32_t tag, uint64_t current_ts)
             least_recent_ts = set[x].getTS();
             x = blocks;
         }
-        else if (set[x].getTS() != NULL && set[x].getTS() < least_recent_ts) // if we find an older block than the current one
+        else if (set[x].getTS() < least_recent_ts) // if we find an older block than the current one
         {
             least_recent_slot = &set[x]; // make the older block the current best replace block
             least_recent_ts = set[x].getTS();
