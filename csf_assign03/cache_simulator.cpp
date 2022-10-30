@@ -10,7 +10,7 @@
 cache_simulator::~cache_simulator()
 {
     // delete this->cache;
-    delete this->cache_ctr;
+    delete cache_ctr;
 }
 
 cache_simulator::cache_simulator(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru)
