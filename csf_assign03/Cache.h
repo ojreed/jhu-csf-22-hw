@@ -8,12 +8,12 @@ class Cache
 public:
     Cache();
     // constructor in initalizer list format to fix issue of shadowing pointers
-    Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t *cache_ctr, uint32_t *mem_ctr, uint32_t *miss_mem_ctr): sets(sets), blocks(blocks), bytes(bytes), write_alloc(write_alloc),write_thr(write_thr),lru(lru),cache_ctr(cache_ctr),mem_ctr(mem_ctr),miss_mem_ctr(miss_mem_ctr)
+    Cache(int sets, int blocks, int bytes, bool write_alloc, bool write_thr, bool lru, uint32_t *cache_ctr): sets(sets), blocks(blocks), bytes(bytes), write_alloc(write_alloc),write_thr(write_thr),lru(lru),cache_ctr(cache_ctr)
     {
         // creates a vector of sets with the correct number of sets
         for (int x = 0; x < sets; x++)
         {
-            cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr, mem_ctr, miss_mem_ctr));
+            cache.push_back(Set(blocks, bytes, write_alloc, write_thr, lru, cache_ctr));
         }
 
     }; 
@@ -42,8 +42,6 @@ private:
     bool lru;
     // data counters
     uint32_t *cache_ctr;
-    uint32_t *mem_ctr;
-    uint32_t *miss_mem_ctr;
 };
 
 #endif // CACHE_H
