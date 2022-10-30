@@ -59,7 +59,7 @@ void Set::pull_mem(uint32_t tag, uint64_t current_ts)
             least_recent_ts = set[x].getTS();
             x = blocks;
         }
-        else if (set[x].getTS() != NULL && set[x].getTS() < least_recent_ts) // if we find an older block than the current one
+        else if (set[x].getTS() < least_recent_ts) // if we find an older block than the current one
         {
             least_recent_slot = &set[x]; // make the older block the current best replace block
             least_recent_ts = set[x].getTS();

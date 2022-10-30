@@ -18,5 +18,5 @@ Slot::Slot(uint32_t bytes, bool write_alloc, bool write_thr, bool lru)
    tag = 0;
    valid = false; // by defualt block is invalid
    diff_from_mem = true; // by defualt diff from memory
-   this->ts = 0; // by defualt no timestamp
+   ts = 0; // by defualt no timestamp
 }
