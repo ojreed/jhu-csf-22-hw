@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
   }
   size_t file_size_in_bytes = statbuf.st_size;
   // TODO: map the file into memory using mmap
-  int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)
+  int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   if (data == MAP_FAILED) {
       // handle mmap error and exit
       return 1;
