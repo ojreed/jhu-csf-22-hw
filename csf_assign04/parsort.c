@@ -67,6 +67,11 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   */
 }
 
+int is_sorted(int64_t *arr) { //ensures that the array is sorted
+  //TODO: implement
+  return 1;
+}
+
 int main(int argc, char **argv) {
   // check for correct number of command line arguments
   if (argc != 3) {
@@ -82,14 +87,30 @@ int main(int argc, char **argv) {
     /* TODO: report an error (threshold value is invalid) */;
 
   // TODO: open the file
-
+  int fd = open(filename, O_RDWR);
+  if (fd < 0) {
+    // file couldn't be opened: handle error and exit
+  }
   // TODO: use fstat to determine the size of the file
-
+  struct stat statbuf;
+  int rc = fstat(fd, &statbuf);
+  if (rc != 0) {
+      // handle fstat error and exit
+  }
+  size_t file_size_in_bytes = statbuf.st_size;
   // TODO: map the file into memory using mmap
-
+  int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)
+  if (data == MAP_FAILED) {
+      // handle mmap error and exit
+  }
+  // *data now behaves like a standard array of int64_t. Be careful though! Going off the end
+  // of the array will silently extend the file, which can rapidly lead to disk space
+  // depletion!
   // TODO: sort the data!
-
+  merge_sort(data,0,file_size_in_bytes,threshold);//TODO: CHECK that file_size_in_bytes makes sence
   // TODO: unmap and close the file
-
+  munmap(NULL, file_size_in_bytes); //TODO: CHECK that NULL is correct
+  close(fd);
   // TODO: exit with a 0 exit code if sort was successful
+  return is_sorted(data);
 }
