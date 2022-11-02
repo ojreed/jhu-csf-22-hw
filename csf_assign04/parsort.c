@@ -53,6 +53,16 @@ void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr)
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   // TODO: implement
+  if (end-begin <= threshold) {
+    sort(arr, begin, end);
+  }
+  else {
+    size_t mid = (end-begin)/2
+    merge_sort(arr, begin, mid, threshold);
+    merge_sort(arr, begin, mid, threshold);
+    int64_t temp[end-begin];
+    merge(arr,being,mid,end,temp);
+  }
   /*
   if (number of elements is at or below the threshold)
     sort the elements sequentially
@@ -65,6 +75,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     copy the contents of the temp array back to the original array
   }
   */
+ 
 }
 
 int is_sorted(int64_t *arr) { //ensures that the array is sorted
