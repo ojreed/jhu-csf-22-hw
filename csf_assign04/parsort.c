@@ -48,7 +48,30 @@ TODO:
 
 
 void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr) {
-  
+  // TODO: implement
+  size_t p1 = begin; //pointer for first half
+  size_t p2 = mid; //pointer for second half
+  size_t pt = 0; //pointer for temp array
+  while (p1 < mid && p2 < end) {
+    if (arr[p1] <= arr[p2]) {
+      temparr[pt] = arr[p1];
+      p1++;
+    } else {
+      temparr[pt] = arr[p2];
+      p2++;
+    }
+    pt++;
+  }
+  while (p1 < mid) {
+    temparr[pt] = arr[p1];
+    p1++;
+    pt++;
+  }
+  while (p2 < end) {
+    temparr[pt] = arr[p2];
+    p2++;
+    pt++;
+  }
 }
 
 int cmp_func (const void *a, const void * b) {
