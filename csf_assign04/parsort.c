@@ -84,7 +84,7 @@ void sort(int64_t *arr, size_t begin, size_t end) {
   for(size_t i = begin; i < end; i++) {
     tmp[i-begin] = arr[i];
   }
-  qsort(tmp, end-begin, sizeof(int), cmp_func);
+  qsort(tmp, end-begin, sizeof(int64_t), cmp_func);
   // TODO: implement
 }
 
