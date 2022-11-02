@@ -49,6 +49,29 @@ TODO:
 
 void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr) {
   // TODO: implement
+  size_t p1 = begin; //pointer for first half
+  size_t p2 = mid; //pointer for second half
+  size_t pt = 0; //pointer for temp array
+  while (p1 < mid && p2 < end) {
+    if (arr[p1] <= arr[p2]) {
+      temparr[pt] = arr[p1];
+      p1++;
+    } else {
+      temparr[pt] = arr[p2];
+      p2++;
+    }
+    pt++;
+  }
+  while (p1 < mid) {
+    temparr[pt] = arr[p1];
+    p1++;
+    pt++;
+  }
+  while (p2 < end) {
+    temparr[pt] = arr[p2];
+    p2++;
+    pt++;
+  }
 }
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
@@ -57,11 +80,14 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     sort(arr, begin, end);
   }
   else {
-    size_t mid = (end-begin)/2
+    size_t mid = (end-begin)/2;//TODO: check for an off by one error
     merge_sort(arr, begin, mid, threshold);
-    merge_sort(arr, begin, mid, threshold);
+    merge_sort(arr, mid, end, threshold);
     int64_t temp[end-begin];
-    merge(arr,being,mid,end,temp);
+    merge(arr,begin,mid,end,temp);
+    for (int x = begin; x<end; x++) {
+      arr[x] = temp[x-begin];
+    }
   }
   /*
   if (number of elements is at or below the threshold)
