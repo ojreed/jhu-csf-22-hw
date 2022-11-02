@@ -82,7 +82,7 @@ int cmp_func (const void *a, const void * b) {
 void sort(int64_t *arr, size_t begin, size_t end) {
   int tmp[end-begin];
   for(size_t i = begin; i < end; i++) {
-    tmp[i] = arr[i];
+    tmp[i-begin] = arr[i];
   }
   qsort(tmp, end-begin, sizeof(int), cmp_func);
   // TODO: implement
