@@ -48,11 +48,23 @@ TODO:
 
 
 void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr) {
-  // TODO: implement
+  
+}
+
+int cmp_func (const void *a, const void * b) {
+  return ( *(int*)a - *(int*)b);
+}
+
+// helper function for merge sort function
+void sort(int64_t *arr, size_t begin, size_t end) {
+  int tmp[end-begin];
+  for(size_t i = begin; i < end; i++) {
+    tmp[i] = arr[i];
+  }
+  qsort(tmp, end-begin, sizeof(int), cmp_func);
 }
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
-  // TODO: implement
   if (end-begin <= threshold) {
     sort(arr, begin, end);
   }
