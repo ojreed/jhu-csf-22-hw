@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 /*
 TODO:
@@ -161,7 +162,7 @@ int main(int argc, char **argv) {
   // of the array will silently extend the file, which can rapidly lead to disk space
   // depletion!
   // TODO: sort the data!
-  uint64_t num_elements = log(file_size_in_bytes)
+  uint64_t num_elements = log2(file_size_in_bytes);
   merge_sort(data,0,num_elements,threshold);//TODO: CHECK that file_size_in_bytes makes sence
   // TODO: unmap and close the file
   munmap(NULL, file_size_in_bytes); //TODO: CHECK that NULL is correct
