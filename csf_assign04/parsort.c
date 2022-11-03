@@ -161,11 +161,12 @@ int main(int argc, char **argv) {
   // of the array will silently extend the file, which can rapidly lead to disk space
   // depletion!
   // TODO: sort the data!
-  merge_sort(data,0,file_size_in_bytes,threshold);//TODO: CHECK that file_size_in_bytes makes sence
+  uint64_t num_elements = log(file_size_in_bytes)
+  merge_sort(data,0,num_elements,threshold);//TODO: CHECK that file_size_in_bytes makes sence
   // TODO: unmap and close the file
   munmap(NULL, file_size_in_bytes); //TODO: CHECK that NULL is correct
   close(fd);
-  for (int x = 0; x<file_size_in_bytes; x++) {
+  for (int x = 0; x<num_elements; x++) {
     printf("%ld\n",data[x]);
   }
   // TODO: exit with a 0 exit code if sort was successful
