@@ -99,7 +99,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       merge_sort(arr, begin, mid, threshold);
     } else if (pid == 0) {
       merge_sort(arr, mid, end, threshold);
-      exit();
+      exit(0);
     }
     /*
     serial
