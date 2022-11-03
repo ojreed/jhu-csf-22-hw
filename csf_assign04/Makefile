@@ -11,7 +11,7 @@ EXES = $(SRCS:%.c=%)
 all : $(EXES)
 
 parsort : parsort.o
-	$(CC) -o $@ $@.o -lm
+	$(CC) -o $@ $@.o
 
 is_sorted : is_sorted.o
 	$(CC) -o $@ $@.o
