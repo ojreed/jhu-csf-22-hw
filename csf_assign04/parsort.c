@@ -93,7 +93,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     sort(arr, begin, end);
   }
   else {
-    size_t mid = (end-begin)/2;//TODO: check for an off by one error
+    size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
     merge_sort(arr, begin, mid, threshold);
     merge_sort(arr, mid, end, threshold);
     int64_t temp[end-begin];
