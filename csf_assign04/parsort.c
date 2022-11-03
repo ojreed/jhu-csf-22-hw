@@ -166,7 +166,7 @@ int main(int argc, char **argv) {
   munmap(NULL, file_size_in_bytes); //TODO: CHECK that NULL is correct
   close(fd);
   for (int x = 0; x<file_size_in_bytes; x++) {
-    printf("%ld",data[x]);
+    printf("%ld\n",data[x]);
   }
   // TODO: exit with a 0 exit code if sort was successful
   return is_sorted(data);
