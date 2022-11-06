@@ -74,7 +74,7 @@ void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr)
   }
 }
 
-int cmp_func(const void *a, const void * b) {
+int cmp_func(const void *left_, const void * right_) {
   int64_t left = *(const int64_t *)left_;
   int64_t right = *(const int64_t *)right_;
 
