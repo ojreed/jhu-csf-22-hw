@@ -74,13 +74,15 @@ void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr)
   }
 }
 
-int cmp_func (const void *a, const void * b) {
-  if(a < b) {
+int cmp_func(const void *a, const void * b) {
+  int64_t left = *(const int64_t *)left_;
+  int64_t right = *(const int64_t *)right_;
+
+  if(left < right) {
     return -1;
   } else {
-    return 1;
+    return 0;
   }
-  //old statement, keeping in case: return ( *(int*)a - *(int*)b);
 }
 
 // helper function for merge sort function
