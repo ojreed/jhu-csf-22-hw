@@ -75,7 +75,7 @@ void merge(int64_t *arr, size_t begin, size_t mid, size_t end, int64_t *temparr)
 }
 
 int cmp_func(const void *left_, const void * right_) {
-  /*int64_t left = *(const int64_t *)left_;
+  int64_t left = *(const int64_t *)left_;
   int64_t right = *(const int64_t *)right_;
 
   if(left < right) {
@@ -83,8 +83,6 @@ int cmp_func(const void *left_, const void * right_) {
   } else {
     return 0;
   }
-  */
- return ( *(int*)left_ - *(int*)right_);
 }
 
 // helper function for merge sort function
