@@ -96,11 +96,12 @@ void sort(int64_t *arr, size_t begin, size_t end) {
 }
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
-  if (end-begin <= threshold) {
-    sort(arr, begin, end);
-  }
-  else {
-    size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
+  sort(arr, begin, end);
+  //if (end-begin <= threshold) {
+    //sort(arr, begin, end);
+  //}
+  //else {
+    //size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
     /*
     pid_t pid = fork();
     if (pid == -1) {
@@ -111,14 +112,16 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     }
     */
     //serial
-    merge_sort(arr, begin, mid, threshold);
-    merge_sort(arr, mid, end, threshold);
-    int64_t temp[end-begin];
-    merge(arr,begin,mid,end,temp);
-    for (int x = begin; x<end; x++) {
-      arr[x] = temp[x-begin];
-    }
-  }
+    //merge_sort(arr, begin, mid, threshold);
+    //merge_sort(arr, mid, end, threshold);
+    //int64_t temp[end-begin];
+    //merge(arr,begin,mid,end,temp);
+    //for (int x = begin; x<end; x++) {
+      //arr[x] = temp[x-begin];
+    //}
+  
+  //}
+  
   /*
   if (number of elements is at or below the threshold)
     sort the elements sequentially
