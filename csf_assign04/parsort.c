@@ -111,7 +111,6 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     //serial
     merge_sort(arr, begin, mid, threshold);
     merge_sort(arr, mid, end, threshold);
-
     int64_t temp[end-begin];
     merge(arr,begin,mid,end,temp);
     for (int x = begin; x<end; x++) {
