@@ -127,16 +127,16 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       perror("Left Broke");
       exit(-1);//error case
     } else if (pid_l == 0) {
-      merge_sort(arr, mid, end, threshold);
-      exit(0);
+      int ret = merge_sort(arr, mid, end, threshold);
+      exit(ret);
     } else { //right fork handler
       pid_r = fork();
       if (pid_r < 0) {
         perror("Right Broke");
         exit(-1);//error case
       } else if (pid_r == 0) {
-        merge_sort(arr, begin, mid, threshold);
-        exit(0);
+        int ret = merge_sort(arr, begin, mid, threshold);
+        exit(ret);
       }  
     }  
 
