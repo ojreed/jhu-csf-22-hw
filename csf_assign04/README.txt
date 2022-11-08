@@ -3,10 +3,35 @@ CONTRIBUTIONS
 TODO: write a brief summary of how each team member contributed to
 the project.
 
+We both met in brody to work on the entierty of this project. 
+
 REPORT
 
 TODO: add your report according to the instructions in the
 "Experiments and analysis" section of the assignment description.
+
+In your README.txt, write a brief report which
+
+    Indicates the amount of time that your parsort program took so sort the test data for each threshold value, and
+    States a reasonable explanation for why you saw the times you did
+
+For #2, think about how the computation unfolds, and in particular, what parts of the computation are being executed 
+in different processes, and thus which parts of the computation could be scheduled by the OS kernel in parallel on different
+CPU cores. We don’t expect a completely rigorous and in-depth explanation, but we would like you to give an intuitive 
+explanation for the results that you observed.
+
+
+Threshold: 2097152 1048576 524288 262144 131072 65536 32768 16384
+Time:      .409s    .245s  .165s  .127s  .136s  .134s .138s .149s
+
+
+It makes sence that as we decrease the threshold we limit the amount of time we spend on large sections of slower sorting. 
+The more time we spend breaking into forked child proccesses to break the data into a tree structure the more efficent we are.
+The fact that there appears to be a diminishing return as we continue to decrease the threshold (and even an increase in time needed
+as we continue to decrease the threshold) suggests that at a certain point, the overhead of creating and managing these forks becomes
+not worth it. So by using a sort threshold of 65536 on 16 megabytes of data we are able to maximize the bennifits of the parallel 
+merge sort while minimizing the overhead of forking on too small an amount of data. This makes sence because at a certain point the 
+inefficency of the qsort (relitive to merge) at a low enough N. 
 
 
 Test run with threshold 2097152
