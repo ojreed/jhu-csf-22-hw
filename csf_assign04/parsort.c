@@ -146,24 +146,24 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     if (!WIFEXITED(wstatus)) {
       // subprocess crashed, was interrupted, or did not exit normally
       // handle as error
-      return 1
+      return 1;
     }
     if (WEXITSTATUS(wstatus) != 0) {
       // subprocess returned a non-zero exit code
       // if following standard UNIX conventions, this is also an error
-      return 1
+      return 1;
     }
     //handle right
     pid_t actual_pid_r = waitpid(pid_r, &wstatus, 0);
     if (!WIFEXITED(wstatus)) {
       // subprocess crashed, was interrupted, or did not exit normally
       // handle as error
-      return 1
+      return 1;
     }
     if (WEXITSTATUS(wstatus) != 0) {
       // subprocess returned a non-zero exit code
       // if following standard UNIX conventions, this is also an error
-      return 1
+      return 1;
     }
 
     
