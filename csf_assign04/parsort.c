@@ -86,7 +86,7 @@ int cmp_func(const void *left_, const void * right_) {
 }
 
 // helper function for merge sort function
-void sort(int64_t *arr, size_t begin, size_t end, int64_t *temp) {
+void sort(int64_t *arr, size_t begin, size_t end, int64_t *tmp) {
   
   for(size_t i = begin; i < end; i++) {
     tmp[i-begin] = arr[i+begin];
