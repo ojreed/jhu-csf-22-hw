@@ -168,7 +168,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     // int64_t temp[end-begin];
     merge(arr,begin,mid,end,*temp);
     for (int x = begin; x<end; x++) {
-      arr[x] = (*temp)[x-begin];
+      arr[x] = temp[x-begin];
     }
   }
   /*
