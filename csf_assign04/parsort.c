@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
 
   //validate that threshold is a digit
   if(isdigit(*argv[2]) == 0) {
-    fprintf(stderr, "Error: Invalid argument\n", argv[0]);
+    fprintf(stderr, "Error: Invalid argument\n");
     return 1;
   }
 
