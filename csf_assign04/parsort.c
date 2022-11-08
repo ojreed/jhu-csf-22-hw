@@ -123,13 +123,14 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
 
 
     pid_t pid_l = fork();
+    pid_t pid_r;
     if (pid_l == -1) { //left fork handler
       exit(1);//error case
     } else if (pid_l == 0) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
     } else { //right fork handler
-      pid_t pid_r = fork();
+      pid_r = fork();
       if (pid_r == -1) {
         exit(1);//error case
       } else if (pid_r == 0) {
