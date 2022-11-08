@@ -181,7 +181,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     }
   
   }
-  exit(0)
+  exit(0);
   /*
   if (number of elements is at or below the threshold)
     sort the elements sequentially
