@@ -225,11 +225,11 @@ int main(int argc, char **argv) {
   const char *filename = argv[1];
   char *end;
   size_t threshold = (size_t) strtoul(argv[2], &end, 10);
-  if (end != argv[2] + strlen(argv[2]))
+  if (end != argv[2] + strlen(argv[2])){
     /* TODO: report an error (threshold value is invalid) */
     fprintf(stderr,"Bad threshold");
     return 1;
-
+  }
   // TODO: open the file
   int fd = open(filename, O_RDWR);
   if (fd < 0) {
