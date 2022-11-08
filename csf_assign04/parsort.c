@@ -112,18 +112,32 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   }
   else {
     size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
-    /*
     pid_t pid = fork();
     if (pid == -1) {
-      merge_sort(arr, begin, mid, threshold);
+      exit(1);
     } else if (pid == 0) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
     }
-    */
-    //serial
     merge_sort(arr, begin, mid, threshold);
-    merge_sort(arr, mid, end, threshold);
+    int wstatus;
+    // blocks until the process indentified by pid_to_wait_for completes
+    pid_t actual_pid = waitpid(pid_to_wait_for, &wstatus, 0);
+    if (actual_pid == -1) {
+      // handle waitpid failure
+      if (!WIFEXITED(wstatus)) {
+      // subprocess crashed, was interrupted, or did not exit normally
+      // handle as error
+      }
+      if (WEXITSTATUS(wstatus) != 0) {
+        // subprocess returned a non-zero exit code
+        // if following standard UNIX conventions, this is also an error
+      }
+    }
+
+    //serial
+    //merge_sort(arr, begin, mid, threshold);
+    //merge_sort(arr, mid, end, threshold);
     int64_t temp[end-begin];
     merge(arr,begin,mid,end,temp);
     for (int x = begin; x<end; x++) {
