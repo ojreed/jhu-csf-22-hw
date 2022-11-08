@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 /*
 TODO:
@@ -111,6 +112,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   }
   else {
     size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
+    /*
     pid_t pid = fork();
     if (pid == -1) {
       merge_sort(arr, begin, mid, threshold);
@@ -118,11 +120,10 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
     }
-    /*
+    */
     //serial
     merge_sort(arr, begin, mid, threshold);
     merge_sort(arr, mid, end, threshold);
-    */
     int64_t temp[end-begin];
     merge(arr,begin,mid,end,temp);
     for (int x = begin; x<end; x++) {
@@ -160,6 +161,11 @@ int main(int argc, char **argv) {
   // check for correct number of command line arguments
   if (argc != 3) {
     fprintf(stderr, "Usage: %s <filename> <sequential threshold>\n", argv[0]);
+    return 1;
+  }
+
+  if(isdigit(argv[2]) == 0) {
+    fprintf(stderr, "Invalid argument\n", argv[0]);
     return 1;
   }
 
