@@ -13,11 +13,6 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  if((size_t)(argv[1])%8 != 0) {
-    fprintf(stderr, "Not a valid byte amount", argv[2]);
-    return 1;
-  }
-
   char *end;
   size_t size = strtoul(argv[1], &end, 10);
   if (*end == 'M')
