@@ -103,7 +103,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   if (end-begin <= threshold) {
     //create temp 
     // int64_t tmp[end-begin]; //temp should come from outside
-    int64_t* temp = malloc(end-begin,sizeof(int64_t));
+    int64_t* tmp = malloc(end-begin,sizeof(int64_t));
     sort(arr, begin, end, tmp); //pass in pointer TO temp
     //set arr to the info in temp
       // copy array contents from temp to arr
