@@ -216,7 +216,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  if(isdigit(argv[2]) == 0) {
+  if(isdigit(*argv[2]) == 0) {
     fprintf(stderr, "Invalid argument\n", argv[0]);
     return 1;
   }
