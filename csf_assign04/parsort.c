@@ -87,7 +87,7 @@ int cmp_func(const void *left_, const void * right_) {
 
 // helper function for merge sort function
 void sort(int64_t *arr, size_t begin, size_t end) {
-  int tmp[end-begin];
+  int tmp[end-begin]; //temp should come from outside
   for(size_t i = begin; i < end; i++) {
     tmp[i-begin] = arr[i];
   }
@@ -98,7 +98,9 @@ void sort(int64_t *arr, size_t begin, size_t end) {
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   sort(arr, begin, end);
   //if (end-begin <= threshold) {
-    //sort(arr, begin, end);
+    //create temp 
+    //sort(arr, begin, end); //pass in pointer TO temp
+    //set arr to the info in temp
   //}
   //else {
     //size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
