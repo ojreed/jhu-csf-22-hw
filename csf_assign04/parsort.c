@@ -119,6 +119,12 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       exit(0);
     }
     merge_sort(arr, begin, mid, threshold);
+    int wstatus;
+    // blocks until the process indentified by pid_to_wait_for completes
+    pid_t actual_pid = waitpid(pid_to_wait_for, &wstatus, 0);
+    if (actual_pid == -1) {
+        // handle waitpid failure
+    }
     /*
     //serial
     merge_sort(arr, begin, mid, threshold);
