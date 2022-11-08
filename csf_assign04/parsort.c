@@ -123,28 +123,13 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
 
 
     pid_t pid_l = fork();
-    pid_t pid_r;
+    pid_t pid_r = fork();;
     if (pid_l == -1) { //left fork handler
       exit(1);//error case
     } else if (pid_l == 0) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
     } else { //right fork handler
-      int wstatus;
-      //handle left
-      // blocks until the process indentified by pid_to_wait_for completes
-      pid_t actual_pid_l = waitpid(pid_l, &wstatus, 0);
-      if (!WIFEXITED(wstatus)) {
-        // subprocess crashed, was interrupted, or did not exit normally
-        // handle as error
-        exit(1);
-      }
-      if (WEXITSTATUS(wstatus) != 0) {
-        // subprocess returned a non-zero exit code
-        // if following standard UNIX conventions, this is also an error
-        exit(1);
-      }
-      pid_r = fork();
       if (pid_r == -1) {
         exit(1);//error case
       } else if (pid_r == 0) {
@@ -153,7 +138,20 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       }  
     }  
 
-    
+    int wstatus;
+    //handle left
+    // blocks until the process indentified by pid_to_wait_for completes
+    pid_t actual_pid_l = waitpid(pid_l, &wstatus, 0);
+    if (!WIFEXITED(wstatus)) {
+      // subprocess crashed, was interrupted, or did not exit normally
+      // handle as error
+      exit(1);
+    }
+    if (WEXITSTATUS(wstatus) != 0) {
+      // subprocess returned a non-zero exit code
+      // if following standard UNIX conventions, this is also an error
+      exit(1);
+    }
     //handle right
     pid_t actual_pid_r = waitpid(pid_r, &wstatus, 0);
     if (!WIFEXITED(wstatus)) {
