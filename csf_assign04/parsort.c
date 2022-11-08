@@ -93,6 +93,11 @@ void sort(int64_t *arr, size_t begin, size_t end) {
   }
   
   qsort(tmp, end-begin, sizeof(int64_t), cmp_func);
+
+  // copy array contents from temp to arr
+  for(size_t i = begin; i < end; i++) {
+    arr[i] = tmp[i];
+  }
 }
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
