@@ -124,15 +124,15 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     pid_t pid_r;
     pid_t pid_l = fork();
     if (pid_l < 0) { //left fork handler
-      perror("Left Broke");
+      perror("Error: Left Broke");
       exit(1);//error case
     } else if (pid_l == 0) {
-      merge_sort(arr, mid, end, threshold);
+      int ret = merge_sort(arr, mid, end, threshold);
       exit(0);
     } else { //right fork handler
       pid_r = fork();
       if (pid_r < 0) {
-        perror("Right Broke");
+        perror("Error: Right Broke");
         exit(1);//error case
       } else if (pid_r == 0) {
         merge_sort(arr, begin, mid, threshold);
@@ -148,13 +148,13 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       // subprocess crashed, was interrupted, or did not exit normally
       // handle as error
       exit(-1);
-      perror("Left Broke 1");
+      perror("Error: Left Broke 1");
     }
     if (WEXITSTATUS(wstatus) != 0) {
       // subprocess returned a non-zero exit code
       // if following standard UNIX conventions, this is also an error
       exit(-1);
-      perror("Left Broke 2");
+      perror("Error: Left Broke 2");
     }
     //handle right
     pid_t actual_pid_r = waitpid(pid_r, &wstatus, 0);
@@ -162,13 +162,13 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       // subprocess crashed, was interrupted, or did not exit normally
       // handle as error
       exit(-1);
-      perror("Right Broke 1");
+      perror("Error: Right Broke 1");
     }
     if (WEXITSTATUS(wstatus) != 0) {
       // subprocess returned a non-zero exit code
       // if following standard UNIX conventions, this is also an error
       exit(-1);
-      perror("Right Broke 2");
+      perror("Error: Right Broke 2");
     }
 
     
@@ -217,7 +217,7 @@ int main(int argc, char **argv) {
   }
 
   if(isdigit(*argv[2]) == 0) {
-    fprintf(stderr, "Invalid argument\n", argv[0]);
+    fprintf(stderr, "Error: Invalid argument\n", argv[0]);
     return 1;
   }
 
@@ -227,14 +227,14 @@ int main(int argc, char **argv) {
   size_t threshold = (size_t) strtoul(argv[2], &end, 10);
   if (end != argv[2] + strlen(argv[2])){
     /* TODO: report an error (threshold value is invalid) */
-    fprintf(stderr,"Bad threshold");
+    fprintf(stderr,"Error: Bad threshold");
     return 1;
   }
   // TODO: open the file
   int fd = open(filename, O_RDWR);
   if (fd < 0) {
     // file couldn't be opened: handle error and exit
-    fprintf(stderr,"Bad file open");
+    fprintf(stderr,"Error: Bad file open");
     return 1;
   }
   // TODO: use fstat to determine the size of the file
@@ -242,7 +242,7 @@ int main(int argc, char **argv) {
   int rc = fstat(fd, &statbuf);
   if (rc != 0) {
       // handle fstat error and exit
-      fprintf(stderr,"Bad fstat");
+      fprintf(stderr,"Error: Bad fstat");
       return 1;
   }
   size_t file_size_in_bytes = statbuf.st_size;
@@ -250,7 +250,7 @@ int main(int argc, char **argv) {
   int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   if (data == MAP_FAILED) {
       // handle mmap error and exit
-    fprintf(stderr,"Bad Map");
+    fprintf(stderr,"Error: Bad Map");
     return 1;
   }
   // *data now behaves like a standard array of int64_t. Be careful though! Going off the end
