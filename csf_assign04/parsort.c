@@ -104,11 +104,11 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     //create temp 
     // int64_t tmp[end-begin]; //temp should come from outside
     int64_t* tmp = malloc(end-begin*sizeof(int64_t));
-    sort(arr, begin, end, tmp); //pass in pointer TO temp
+    sort(arr, begin, end, *tmp); //pass in pointer TO temp
     //set arr to the info in temp
       // copy array contents from temp to arr
     for(size_t i = begin; i < end; i++) {
-      arr[i] = tmp[i-begin];
+      arr[i] = (*tmp)[i-begin];
     }
   }
   else {
@@ -166,9 +166,9 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
 
     int64_t* temp = malloc(end-begin*sizeof(int64_t));
     // int64_t temp[end-begin];
-    merge(arr,begin,mid,end,temp);
+    merge(arr,begin,mid,end,*temp);
     for (int x = begin; x<end; x++) {
-      arr[x] = temp[x-begin];
+      arr[x] = (*temp)[x-begin];
     }
   }
   /*
