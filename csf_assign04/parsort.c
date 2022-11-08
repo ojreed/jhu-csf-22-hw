@@ -103,7 +103,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   if (end-begin <= threshold) {
     //create temp 
     // int64_t tmp[end-begin]; //temp should come from outside
-    int64_t* temp  = new int64_t[end-begin];
+    int64_t* tmp  = new int64_t[end-begin];
     sort(arr, begin, end, tmp); //pass in pointer TO temp
     //set arr to the info in temp
       // copy array contents from temp to arr
