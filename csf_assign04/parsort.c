@@ -262,9 +262,9 @@ int main(int argc, char **argv) {
   // TODO: unmap and close the file
   munmap(NULL, file_size_in_bytes); //TODO: CHECK that NULL is correct
   close(fd);
-  for (int x = 0; x<num_elements; x++) {
-    printf("%ld\n",data[x]);
-  }
+  // for (int x = 0; x<num_elements; x++) {
+  //   printf("%ld\n",data[x]);
+  // }
   // TODO: exit with a 0 exit code if sort was successful
   return is_sorted(data);
 }
