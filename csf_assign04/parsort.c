@@ -112,34 +112,62 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   }
   else {
     size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
-    pid_t pid = fork();
-    if (pid == -1) {
+    // pid_t pid = fork();
+    // if (pid == -1) {
+    //   exit(1);//error case
+    // } else if (pid == 0) {
+    //   merge_sort(arr, mid, end, threshold);
+    //   exit(0);
+    // }
+    // merge_sort(arr, begin, mid, threshold);
+
+
+    pid_t pid_l = fork()
+    if (pid_l == -1) { //left fork handler
       exit(1);//error case
     } else if (pid == 0) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
-    }
-    merge_sort(arr, begin, mid, threshold);
+    } else { //right fork handler
+      pid_t pid_r = fork()
+      if (pid_r == -1) {
+        exit(1);//error case
+      } else if (pid == 0) {
+        merge_sort(arr, begin, mid, threshold);
+        exit(0);
+      }  
+    }  
+
     int wstatus;
+    //handle left
     // blocks until the process indentified by pid_to_wait_for completes
-    pid_t actual_pid = waitpid(pid, &wstatus, 0);
-    if (actual_pid == -1) {
-      // handle waitpid failure
-      if (!WIFEXITED(wstatus)) {
-        // subprocess crashed, was interrupted, or did not exit normally
-        // handle as error
-        exit(1);
-      }
-      if (WEXITSTATUS(wstatus) != 0) {
-          // subprocess returned a non-zero exit code
-          // if following standard UNIX conventions, this is also an error
-        exit(1);
-      }
+    pid_t actual_pid_l = waitpid(pid_l, &wstatus, 0);
+    if (!WIFEXITED(wstatus)) {
+    // subprocess crashed, was interrupted, or did not exit normally
+    // handle as error
     }
+    if (WEXITSTATUS(wstatus) != 0) {
+        // subprocess returned a non-zero exit code
+        // if following standard UNIX conventions, this is also an error
+    }
+    //handle right
+    pid_t actual_pid_r = waitpid(pid_r, &wstatus, 0);
+    if (!WIFEXITED(wstatus)) {
+    // subprocess crashed, was interrupted, or did not exit normally
+    // handle as error
+    }
+    if (WEXITSTATUS(wstatus) != 0) {
+        // subprocess returned a non-zero exit code
+        // if following standard UNIX conventions, this is also an error
+    }
+
+    
 
     //serial
     //merge_sort(arr, begin, mid, threshold);
     //merge_sort(arr, mid, end, threshold);
+
+
     int64_t temp[end-begin];
     merge(arr,begin,mid,end,temp);
     for (int x = begin; x<end; x++) {
