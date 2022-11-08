@@ -162,7 +162,7 @@ int is_sorted(int64_t *arr) { //ensures that the array is sorted
 int main(int argc, char **argv) {
   // check for correct number of command line arguments
   if (argc != 3) {
-    fprintf(stderr, "Usage: %s <filename> <sequential threshold>\n", *argv[0]);
+    fprintf(stderr, "Usage: %s <filename> <sequential threshold>\n", argv[0]);
     return 1;
   }
 
