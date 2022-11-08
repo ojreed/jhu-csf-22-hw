@@ -143,8 +143,13 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
 }
 
 int is_sorted(int64_t *arr) { //ensures that the array is sorted
-  //TODO: implement
-  return 1;
+  int length = sizeof(arr);
+  for(int i = 1; i < length; i++) { // starting at 1 is okay, must have at least 8 entries anyways
+    if(arr[i] < arr[i-1]) {
+      return -1;
+    }
+  }
+  return 0;
 }
 
 int main(int argc, char **argv) {
