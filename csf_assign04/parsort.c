@@ -102,8 +102,9 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   // sort(arr, begin, end);
   if (end-begin <= threshold) {
     //create temp 
-    int64_t tmp[end-begin]; //temp should come from outside
-    sort(arr, begin, end,tmp); //pass in pointer TO temp
+    // int64_t tmp[end-begin]; //temp should come from outside
+    int64_t* temp  = new int64_t[end-begin];
+    sort(arr, begin, end, tmp); //pass in pointer TO temp
     //set arr to the info in temp
       // copy array contents from temp to arr
     for(size_t i = begin; i < end; i++) {
@@ -112,15 +113,6 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   }
   else {
     size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
-    // pid_t pid = fork();
-    // if (pid == -1) {
-    //   exit(1);//error case
-    // } else if (pid == 0) {
-    //   merge_sort(arr, mid, end, threshold);
-    //   exit(0);
-    // }
-    // merge_sort(arr, begin, mid, threshold);
-
     pid_t pid_r;
     pid_t pid_l = fork();
     if (pid_l < 0) { //left fork handler
@@ -171,14 +163,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       exit(-1);
     }
 
-    
-
-    //serial
-    //merge_sort(arr, begin, mid, threshold);
-    //merge_sort(arr, mid, end, threshold);
-
-
-    int64_t temp[end-begin];
+    int64_t* temp = new int64_t[end-begin];
     merge(arr,begin,mid,end,temp);
     for (int x = begin; x<end; x++) {
       arr[x] = temp[x-begin];
