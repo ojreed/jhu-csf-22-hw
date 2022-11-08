@@ -86,29 +86,29 @@ int cmp_func(const void *left_, const void * right_) {
 }
 
 // helper function for merge sort function
-void sort(int64_t *arr, size_t begin, size_t end) {
-  int tmp[end-begin]; //temp should come from outside
+void sort(int64_t *arr, size_t begin, size_t end, int64_t *temp) {
+  
   for(size_t i = begin; i < end; i++) {
     tmp[i-begin] = arr[i];
   }
   
   qsort(tmp, end-begin, sizeof(int64_t), cmp_func);
-
-  // copy array contents from temp to arr
-  for(size_t i = begin; i < end; i++) {
-    arr[i] = tmp[i];
-  }
 }
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
-  sort(arr, begin, end);
-  //if (end-begin <= threshold) {
+  // sort(arr, begin, end);
+  if (end-begin <= threshold) {
     //create temp 
-    //sort(arr, begin, end); //pass in pointer TO temp
+    int64_t tmp[end-begin]; //temp should come from outside
+    sort(arr, begin, end,temp); //pass in pointer TO temp
     //set arr to the info in temp
-  //}
-  //else {
-    //size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
+      // copy array contents from temp to arr
+    for(size_t i = begin; i < end; i++) {
+      arr[i] = tmp[i];
+    }
+  }
+  else {
+    size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
     /*
     pid_t pid = fork();
     if (pid == -1) {
@@ -119,15 +119,15 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     }
     */
     //serial
-    //merge_sort(arr, begin, mid, threshold);
-    //merge_sort(arr, mid, end, threshold);
-    //int64_t temp[end-begin];
-    //merge(arr,begin,mid,end,temp);
-    //for (int x = begin; x<end; x++) {
-      //arr[x] = temp[x-begin];
-    //}
+    merge_sort(arr, begin, mid, threshold);
+    merge_sort(arr, mid, end, threshold);
+    int64_t temp[end-begin];
+    merge(arr,begin,mid,end,temp);
+    for (int x = begin; x<end; x++) {
+      arr[x] = temp[x-begin];
+    }
   
-  //}
+  }
   
   /*
   if (number of elements is at or below the threshold)
