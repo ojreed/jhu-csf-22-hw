@@ -80,8 +80,10 @@ int cmp_func(const void *left_, const void * right_) {
 
   if(left < right) {
     return -1;
-  } else {
+  } else if (left == right) {
     return 0;
+  } else {
+    return 1;
   }
 }
 
