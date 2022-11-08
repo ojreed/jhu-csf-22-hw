@@ -227,12 +227,14 @@ int main(int argc, char **argv) {
   size_t threshold = (size_t) strtoul(argv[2], &end, 10);
   if (end != argv[2] + strlen(argv[2]))
     /* TODO: report an error (threshold value is invalid) */
+    fprintf(stderr,"Bad threshold");
     return 1;
 
   // TODO: open the file
   int fd = open(filename, O_RDWR);
   if (fd < 0) {
     // file couldn't be opened: handle error and exit
+    fprintf(stderr,"Bad file open");
     return 1;
   }
   // TODO: use fstat to determine the size of the file
@@ -240,6 +242,7 @@ int main(int argc, char **argv) {
   int rc = fstat(fd, &statbuf);
   if (rc != 0) {
       // handle fstat error and exit
+      fprintf(stderr,"Bad fstat");
       return 1;
   }
   size_t file_size_in_bytes = statbuf.st_size;
@@ -247,7 +250,8 @@ int main(int argc, char **argv) {
   int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   if (data == MAP_FAILED) {
       // handle mmap error and exit
-      return 1;
+    fprintf(stderr,"Bad Map");
+    return 1;
   }
   // *data now behaves like a standard array of int64_t. Be careful though! Going off the end
   // of the array will silently extend the file, which can rapidly lead to disk space
