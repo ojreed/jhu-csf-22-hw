@@ -92,7 +92,7 @@ int cmp_func(const void *left_, const void * right_) {
 void sort(int64_t *arr, size_t begin, size_t end, int64_t *tmp) {
   
   for(size_t i = begin; i < end; i++) {
-    tmp[i-begin] = arr[i+begin];
+    tmp[i-begin] = arr[i];
   }
   
   qsort(tmp, end-begin, sizeof(int64_t), cmp_func);
@@ -107,7 +107,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     //set arr to the info in temp
       // copy array contents from temp to arr
     for(size_t i = begin; i < end; i++) {
-      arr[i+begin] = tmp[i];
+      arr[i] = tmp[i-begin];
     }
   }
   else {
@@ -125,7 +125,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     pid_t pid_l = fork();
     if (pid_l < 0) { //left fork handler
       perror("Error: Left Broke");
-      exit(1);//error case
+      exit(-1);//error case
     } else if (pid_l == 0) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
@@ -133,7 +133,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       pid_r = fork();
       if (pid_r < 0) {
         perror("Error: Right Broke");
-        exit(1);//error case
+        exit(-1);//error case
       } else if (pid_r == 0) {
         merge_sort(arr, begin, mid, threshold);
         exit(0);
