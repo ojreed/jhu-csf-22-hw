@@ -128,7 +128,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       exit(1);//error case
     } else if (pid_l == 0) {
       merge_sort(arr, mid, end, threshold);
-      exit();
+      exit(0);
     } else { //right fork handler
       pid_r = fork();
       if (pid_r < 0) {
