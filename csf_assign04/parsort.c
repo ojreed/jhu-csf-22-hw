@@ -89,7 +89,7 @@ int cmp_func(const void *left_, const void * right_) {
 void sort(int64_t *arr, size_t begin, size_t end, int64_t *temp) {
   
   for(size_t i = begin; i < end; i++) {
-    tmp[i-begin] = arr[i];
+    tmp[i-begin] = arr[i+begin];
   }
   
   qsort(tmp, end-begin, sizeof(int64_t), cmp_func);
@@ -104,7 +104,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     //set arr to the info in temp
       // copy array contents from temp to arr
     for(size_t i = begin; i < end; i++) {
-      arr[i] = tmp[i];
+      arr[i+begin] = tmp[i];
     }
   }
   else {
