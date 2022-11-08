@@ -147,13 +147,13 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     if (!WIFEXITED(wstatus)) {
       // subprocess crashed, was interrupted, or did not exit normally
       // handle as error
-      // exit(-1);
+      exit(-1);
       perror("Left Broke 1");
     }
     if (WEXITSTATUS(wstatus) != 0) {
       // subprocess returned a non-zero exit code
       // if following standard UNIX conventions, this is also an error
-      // exit(-1);
+      exit(-1);
       perror("Left Broke 2");
     }
     //handle right
@@ -161,13 +161,13 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     if (!WIFEXITED(wstatus)) {
       // subprocess crashed, was interrupted, or did not exit normally
       // handle as error
-      // exit(-1);
+      exit(-1);
       perror("Right Broke 1");
     }
     if (WEXITSTATUS(wstatus) != 0) {
       // subprocess returned a non-zero exit code
       // if following standard UNIX conventions, this is also an error
-      // exit(-1);
+      exit(-1);
       perror("Right Broke 2");
     }
 
@@ -226,27 +226,27 @@ int main(int argc, char **argv) {
   char *end;
   size_t threshold = (size_t) strtoul(argv[2], &end, 10);
   if (end != argv[2] + strlen(argv[2]))
-    fprintf(stderr, "Invalid threshold value>\n", *argv[0]);
+    /* TODO: report an error (threshold value is invalid) */
     return 1;
 
   // TODO: open the file
   int fd = open(filename, O_RDWR);
   if (fd < 0) {
-    fprintf(stderr, "Unable to open file\n", *argv[0]);
+    // file couldn't be opened: handle error and exit
     return 1;
   }
   // TODO: use fstat to determine the size of the file
   struct stat statbuf;
   int rc = fstat(fd, &statbuf);
   if (rc != 0) {
-      fprintf(stderr, "Fstat error\n", *argv[0]);
+      // handle fstat error and exit
       return 1;
   }
   size_t file_size_in_bytes = statbuf.st_size;
   // TODO: map the file into memory using mmap
   int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   if (data == MAP_FAILED) {
-      fprintf(stderr, "mmap error\n", *argv[0]);
+      // handle mmap error and exit
       return 1;
   }
   // *data now behaves like a standard array of int64_t. Be careful though! Going off the end
