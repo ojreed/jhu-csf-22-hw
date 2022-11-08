@@ -114,7 +114,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     size_t mid = begin + (end-begin)/2;//TODO: check for an off by one error
     pid_t pid = fork();
     if (pid == -1) {
-      exit(1);
+      exit(1);//error case
     } else if (pid == 0) {
       merge_sort(arr, mid, end, threshold);
       exit(0);
@@ -122,7 +122,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     merge_sort(arr, begin, mid, threshold);
     int wstatus;
     // blocks until the process indentified by pid_to_wait_for completes
-    pid_t actual_pid = waitpid(pid_to_wait_for, &wstatus, 0);
+    pid_t actual_pid = waitpid(pid, &wstatus, 0);
     if (actual_pid == -1) {
       // handle waitpid failure
       if (!WIFEXITED(wstatus)) {
@@ -130,8 +130,8 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       // handle as error
       }
       if (WEXITSTATUS(wstatus) != 0) {
-        // subprocess returned a non-zero exit code
-        // if following standard UNIX conventions, this is also an error
+          // subprocess returned a non-zero exit code
+          // if following standard UNIX conventions, this is also an error
       }
     }
 
