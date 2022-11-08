@@ -149,9 +149,8 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   } 
 }
 
-int is_sorted(int64_t *arr) { //ensures that the array is sorted
-  int length = sizeof(arr);
-  for(int i = 1; i < length; i++) { // starting at 1 is okay, must have at least 8 entries anyways
+int is_sorted(int64_t *arr,int64_t num_elements) { //ensures that the array is sorted
+  for(int i = 1; i < num_elements; i++) { // starting at 1 is okay, must have at least 8 entries anyways
     if(arr[i] < arr[i-1]) {
       return -1;
     }
@@ -211,7 +210,7 @@ int main(int argc, char **argv) {
   uint64_t num_elements = file_size_in_bytes/8;
   merge_sort(data,0,num_elements,threshold);//TODO: CHECK that file_size_in_bytes makes sence
   //unmap and close the file
-  int results = is_sorted(data);
+  int results = is_sorted(data,num_elements);
   munmap(data, file_size_in_bytes); //TODO: CHECK that NULL is correct
   close(fd);
   //exit with a 0 exit code if sort was successful
