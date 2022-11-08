@@ -162,7 +162,7 @@ int is_sorted(int64_t *arr) { //ensures that the array is sorted
 int main(int argc, char **argv) {
   // check for correct number of command line arguments
   if (argc != 3) {
-    fprintf(stderr, "Usage: %s <filename> <sequential threshold>\n", argv[0]);
+    fprintf(stderr, "Usage: %s <filename> <sequential threshold>\n", *argv[0]);
     return 1;
   }
 
@@ -211,8 +211,9 @@ int main(int argc, char **argv) {
   uint64_t num_elements = file_size_in_bytes/8;
   merge_sort(data,0,num_elements,threshold);//TODO: CHECK that file_size_in_bytes makes sence
   //unmap and close the file
-  munmap(NULL, file_size_in_bytes); //TODO: CHECK that NULL is correct
+  int results = is_sorted(data);
+  munmap(data, file_size_in_bytes); //TODO: CHECK that NULL is correct
   close(fd);
   //exit with a 0 exit code if sort was successful
-  return is_sorted(data);
+  return results;
 }
