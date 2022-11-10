@@ -33,6 +33,8 @@ not worth it. So by using a sort threshold of 65536 on 16 megabytes of data we a
 merge sort while minimizing the overhead of forking on too small an amount of data. This makes sence because at a certain point the 
 inefficency of the qsort (relitive to merge) at a low enough N. 
 
+Moral of the story. It is efficent to use a fork based merge sort, but at a certain point, the cost of swapping processes overtakes the bennifits
+of spllting in input in half. This point is the correct threshold for calling a regular qsort on the array segment
 
 Test run with threshold 2097152
 
