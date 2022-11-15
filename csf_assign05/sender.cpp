@@ -39,23 +39,24 @@ int main(int argc, char **argv) {
     std::string command;
     std::getline(std::cin, command);
     std::string command_instruction << command;
+    std::string formated_package;
+    
     switch (command_instruction)
     {
-    case "/slogin":
-      //send slogin
     case "/join":
-      //send join
-    case "/sendall":
-      //send sendall
     case "/leave":
-      //send leave
-    case "/ok":
-      //send ok
-    case "/err":
-      //send error
+    case "/quit":
+      //send join/leave/quit needs concatonation of specified header with colon
+      formated_package = command_instruction;
+      command_instruction<<":";
     default:
       //send message
+      formated_package = "sendall";
+      command_instruction<<":"<<command_instruction; //add removed front back
     }
+    formated_package = strcat(formated_package,command);
+    //TODO: verify that sizeof(message) makes sence for rio_writen
+    Rio_writen(fd,formated_package,sizeof(formated_package)); //should send the package in correct tag:message format
     if (/*CONDITION TO QUIT*/) {
       session_active = false;
     }
