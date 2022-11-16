@@ -23,12 +23,11 @@ int main(int argc, char **argv) {
 
   //NOTE FROM OWEN: Unsure if this is how any of this works but this is a loose idea of it
   // TODO: connect to server
-  int fd = open_clientfd(server_hostname, server_port);
-  if (fd < 0) { fatal("Couldn't connect to server"); }
+  int fd = Open_clientfd(argv[1], argv[2]);
 
   // TODO: send slogin message
-  std::string login_message = strcat("slogin:",username);//create login message with tag:payload format 
-  rio_writen(fd, login_message, strlen(argv[3])); // send message to server
+  const std::string login_message = strcat("slogin:",argv[3]);//create login message with tag:payload format 
+  Rio_writen(fd, &login_message, strlen(argv[3])); // send message to server
 
 
   // TODO: loop reading commands from user, sending messages to
@@ -38,26 +37,28 @@ int main(int argc, char **argv) {
   {
     std::string command;
     std::getline(std::cin, command);
-    std::string command_instruction << command;
+    std::string command_instruction;
+    std::stringstream(command) >> command_instruction;
     std::string formated_package;
     
-    switch (command_instruction)
-    {
-    case "/join":
-    case "/leave":
-    case "/quit":
+    if ((command_instruction == "/join") || (command_instruction == "/leave") || (command_instruction == "/quit")){
       //send join/leave/quit needs concatonation of specified header with colon
       formated_package = command_instruction;
-      command_instruction<<":";
-    default:
+      formated_package += ":";
+    } else {
       //send message
       formated_package = "sendall";
-      command_instruction<<":"<<command_instruction; //add removed front back
+      formated_package +=":";
+      formated_package += command_instruction; //add removed front back
     }
-    formated_package = strcat(formated_package,command);
     //TODO: verify that sizeof(message) makes sence for rio_writen
-    Rio_writen(fd,formated_package,sizeof(formated_package)); //should send the package in correct tag:message format
-    if (/*CONDITION TO QUIT*/) {
+    formated_package += command;
+    Rio_writen(fd,&formated_package,sizeof(formated_package)); //should send the package in correct tag:message format
+    std::string result;
+    std::string result_tag;
+    Rio_readn(fd,&result,10);
+    std::stringstream(result) >> result_tag;
+    if ((command_instruction == "quit") && (result_tag == "ok")) {
       session_active = false;
     }
   }
