@@ -7,6 +7,8 @@
 #include "connection.h"
 #include "client_util.h"
 
+
+
 int main(int argc, char **argv) {
   if (argc != 4) {
     std::cerr << "Usage: ./sender [server_address] [port] [username]\n";
@@ -21,13 +23,15 @@ int main(int argc, char **argv) {
   server_port = std::stoi(argv[2]);
   username = argv[3];
 
-  //NOTE FROM OWEN: Unsure if this is how any of this works but this is a loose idea of it
   // TODO: connect to server
   int fd = Open_clientfd(argv[1], argv[2]);
 
   // TODO: send slogin message
-  const std::string login_message = strcat("slogin:",argv[3]);//create login message with tag:payload format 
-  Rio_writen(fd, &login_message, strlen(argv[3])); // send message to server
+  //create login message with tag:payload format 
+  struct Message login_message = {"rlogin",argv[3]};
+
+  //NOTEL what is the correct way to do size??
+  Rio_writen(fd, &login_message, 225); // send message to server
 
 
   // TODO: loop reading commands from user, sending messages to
@@ -37,28 +41,28 @@ int main(int argc, char **argv) {
   {
     std::string command;
     std::getline(std::cin, command);
-    std::string command_instruction;
-    std::stringstream(command) >> command_instruction;
-    std::string formated_package;
-    
-    if ((command_instruction == "/join") || (command_instruction == "/leave") || (command_instruction == "/quit")){
-      //send join/leave/quit needs concatonation of specified header with colon
-      formated_package = command_instruction;
-      formated_package += ":";
-    } else {
-      //send message
-      formated_package = "sendall";
-      formated_package +=":";
-      formated_package += command_instruction; //add removed front back
+    std::stringstream command_ss = std::stringstream(command);
+    std::string command_tag;
+    command_ss >> command_tag;
+    struct Message sender_message;
+    if (command_tag == "/join") { //send join
+      std::string username; 
+      command_ss >> username;
+      sender_message = {"join",username}; //command SS should contain username
+    } else if (command_tag == "/leave") { //send leave
+      sender_message = {"leave","IGNORE"};
+    } else if (command_tag == "/quit") { // send quit
+      sender_message = {"quit","IGNORE"};
+    } else { //send message
+      sender_message = {"sendall",command};
     }
-    //TODO: verify that sizeof(message) makes sence for rio_writen
-    formated_package += command;
-    Rio_writen(fd,&formated_package,sizeof(formated_package)); //should send the package in correct tag:message format
-    std::string result;
+    Rio_writen(fd, &sender_message, 225); // send message to server
+    // std::string result;
     std::string result_tag;
-    Rio_readn(fd,&result,10);
-    std::stringstream(result) >> result_tag;
-    if ((command_instruction == "quit") && (result_tag == "ok")) {
+    // Rio_readlineb(fd,&result,225);
+    // std::stringstream(result) >> result_tag;
+    result_tag = "ok"; //test code NOTE: HOW TO WE GET BACK A MESSAGE
+    if ((command_tag == "/quit") && (result_tag == "ok")) {
       session_active = false;
     }
   }
