@@ -9,6 +9,19 @@
 
 
 
+/*
+OWENS BIG LIST OF ISSUES/TODOS/QUESTIONS
+  Message size? how do we know what size to do
+  String mangament --> as of rn im sure all our strings are fucked ie
+    dont remove / in places or :
+    dont add end line char (as mentioned in class)
+  How do we get a reply back from the server that a message was recived (ok)
+    we need this to ensure we handeld the quit message right?! --> may ask max
+
+
+*/
+
+
 int main(int argc, char **argv) {
   if (argc != 4) {
     std::cerr << "Usage: ./sender [server_address] [port] [username]\n";
