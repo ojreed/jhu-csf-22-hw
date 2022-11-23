@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <stdexcept>
 #include "csapp.h"
@@ -20,14 +21,24 @@ int main(int argc, char **argv) {
 
   Connection conn;
 
-  // TODO: connect to server
+  // listen to port specified
+  int fd = Open_listenfd(argv[2]);
 
-  // TODO: send rlogin and join messages (expect a response from
-  //       the server for each one)
+  // TODO: send rlogin 
+  struct Message login_message = (struct Message) {"rlogin", argv[3]};
+  Rio_writen(fd, &login_message, 225);
+
+  // Join correct room
+  struct Message join_message = (struct Message) {"join", argv[4]};
+  Rio_writen(fd, &join_message, 225);
 
   // TODO: loop waiting for messages from server
   //       (which should be tagged with TAG_DELIVERY)
-
-
+  bool session_active = true;
+  while (session_active)
+  {
+    //TODO: receive messages and print them
+    
+  }
   return 0;
 }

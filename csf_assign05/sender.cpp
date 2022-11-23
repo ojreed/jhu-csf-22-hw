@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 #include <stdexcept>
 #include "csapp.h"
 #include "message.h"
@@ -41,11 +42,12 @@ int main(int argc, char **argv) {
 
   // TODO: send slogin message
   //create login message with tag:payload format 
-  struct Message login_message = {"rlogin",argv[3]};
+  struct Message login_message;
+  login_message.tag = "slogin"; 
+  login_message.data = argv[3];
 
   //NOTEL what is the correct way to do size??
   Rio_writen(fd, &login_message, 225); // send message to server
-
 
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
@@ -61,13 +63,13 @@ int main(int argc, char **argv) {
     if (command_tag == "/join") { //send join
       std::string username; 
       command_ss >> username;
-      sender_message = {"join",username}; //command SS should contain username
+      sender_message = (struct Message) {"join", username}; //command SS should contain username
     } else if (command_tag == "/leave") { //send leave
-      sender_message = {"leave","IGNORE"};
+      sender_message = (struct Message) {"leave","IGNORE"};
     } else if (command_tag == "/quit") { // send quit
-      sender_message = {"quit","IGNORE"};
+      sender_message = (struct Message) {"quit", "IGNORE"};
     } else { //send message
-      sender_message = {"sendall",command};
+      sender_message = (struct Message) {"sendall", command};
     }
     Rio_writen(fd, &sender_message, 225); // send message to server
     // std::string result;
