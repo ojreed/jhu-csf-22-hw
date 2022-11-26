@@ -38,6 +38,15 @@ int main(int argc, char **argv) {
   while (session_active)
   {
     //TODO: receive messages and print them
+    struct Message received;
+    struct rio_t rio_struct; // VScode doesn't like this
+    // Read into buffer
+    rio_readlineb(rio_struct, &received, 255);
+
+    // TODO: parse message
+    // For now, just print message to console
+    std::cout << received.data << std::endl;
+
     
   }
   return 0;
