@@ -18,7 +18,8 @@ OWENS BIG LIST OF ISSUES/TODOS/QUESTIONS
     dont add end line char (as mentioned in class)
   How do we get a reply back from the server that a message was recived (ok)
     we need this to ensure we handeld the quit message right?! --> may ask max
-
+MADDIE HAS MORE QUESTIONS
+  do I really have to do parsing with delimeter stuff I know how to do it I just don't want to so it
 
 */
 

@@ -39,13 +39,18 @@ int main(int argc, char **argv) {
   {
     //TODO: receive messages and print them
     struct Message received;
-    struct rio_t rio_struct; // VScode doesn't like this
-    // Read into buffer
-    rio_readlineb(rio_struct, &received, 255);
+    rio_t rio_struct; // This is definitely set up wrong
+    // Read info into buffer
+    rio_readlineb(&rio_struct, &received, 255);
 
-    // TODO: parse message
-    // For now, just print message to console
-    std::cout << received.data << std::endl;
+    if(received.tag == "delivery") {
+      std::string delimeter = ":";
+      std::string room;
+      std::string sender;
+      std::string message;
+      // TODO: add parsing stuff bhvc urejfgvcur
+      std::cout << sender << ": " << received.data << std::endl;
+    }
 
     
   }
