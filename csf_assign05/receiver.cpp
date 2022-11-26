@@ -19,8 +19,6 @@ int main(int argc, char **argv) {
   std::string username = argv[3];
   std::string room_name = argv[4];
 
-  Connection conn;
-
   // Listen to port specified
   int fd = Open_listenfd(argv[2]);
 
@@ -29,9 +27,8 @@ int main(int argc, char **argv) {
   Rio_writen(fd, &login_message, 225);
   struct Message response;
   rio_t rio_response; // This is definitely set up wrong
-  rio_readlineb(&rio_response, &response, 255);
-
-  // Listen for okay from server, if not okay, don't join room
+  rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
+  // Listen for okay from server, 
   if(response.tag == "err") {
     perror("Error...");
     exit(-1);
@@ -41,7 +38,6 @@ int main(int argc, char **argv) {
   struct Message join_message = (struct Message) {"join", argv[4]};
   Rio_writen(fd, &join_message, 225);
   rio_readlineb(&rio_response, &response, 255); // reusing these variables might not be the move, we'll see
-  
   if(response.tag == "err") {
     perror("Error...");
     exit(-1);
@@ -86,7 +82,6 @@ int main(int argc, char **argv) {
       //std::cout << sender << ": " << received.data << std::endl; <-- for testing
     }
 
-    
   }
   return 0;
 }

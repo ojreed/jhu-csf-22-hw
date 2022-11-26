@@ -27,8 +27,7 @@ void Connection::connect(const std::string &hostname, int port) {
 }
 
 Connection::~Connection() {
-  // Close the socket if it is open
-  
+  // Close the socket if it is open... by closing file descriptor
 }
 
 bool Connection::is_open() const {
