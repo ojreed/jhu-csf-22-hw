@@ -21,19 +21,33 @@ int main(int argc, char **argv) {
 
   Connection conn;
 
-  // listen to port specified
+  // Listen to port specified
   int fd = Open_listenfd(argv[2]);
 
-  // TODO: send rlogin 
+  // Send rlogin 
   struct Message login_message = (struct Message) {"rlogin", argv[3]};
   Rio_writen(fd, &login_message, 225);
+  struct Message response;
+  rio_t rio_response; // This is definitely set up wrong
+  rio_readlineb(&rio_response, &response, 255);
+
+  // Listen for okay from server, if not okay, don't join room
+  if(response.tag == "err") {
+    perror("Error...");
+    exit(-1);
+  }
 
   // Join correct room
   struct Message join_message = (struct Message) {"join", argv[4]};
   Rio_writen(fd, &join_message, 225);
+  rio_readlineb(&rio_response, &response, 255); // reusing these variables might not be the move, we'll see
+  
+  if(response.tag == "err") {
+    perror("Error...");
+    exit(-1);
+  }
 
-  // TODO: loop waiting for messages from server
-  //       (which should be tagged with TAG_DELIVERY)
+  // TODO: loop waiting for messages from server (which should be tagged with TAG_DELIVERY)
   bool session_active = true;
   while (session_active)
   {
