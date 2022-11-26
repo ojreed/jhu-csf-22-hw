@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     struct Message received;
     rio_t rio_struct; // This is definitely set up wrong
     // Read info into buffer
-    rio_readlineb(&rio_struct, &received, 255);
+    rio_readlineb(&rio_struct, &received, 255); 
 
     if(received.tag == "delivery") {
       std::string delimiter = ":";
@@ -54,10 +54,12 @@ int main(int argc, char **argv) {
       size_t pos = 0;
       std::string token;
       int i = 0;
+      // if the tag in received includes the room and sender
+      // then change received.data to received.tag 
       while((pos = (received.data).find(delimiter)) != std::string::npos) {
           token = (received.data).substr(0, pos);
           if(i == 0) {
-              std::string tag = token;
+              std::string tag = token; 
               i++;
           } else if (i == 1) {
               std::string room = token;
