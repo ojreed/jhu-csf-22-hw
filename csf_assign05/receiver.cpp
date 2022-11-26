@@ -44,12 +44,30 @@ int main(int argc, char **argv) {
     rio_readlineb(&rio_struct, &received, 255);
 
     if(received.tag == "delivery") {
-      std::string delimeter = ":";
+      std::string delimiter = ":";
+      std::string tag;
       std::string room;
       std::string sender;
       std::string message;
-      // TODO: add parsing stuff bhvc urejfgvcur
-      std::cout << sender << ": " << received.data << std::endl;
+      
+      // Parse
+      size_t pos = 0;
+      std::string token;
+      int i = 0;
+      while((pos = (received.data).find(delimiter)) != std::string::npos) {
+          token = (received.data).substr(0, pos);
+          if(i == 0) {
+              std::string tag = token;
+              i++;
+          } else if (i == 1) {
+              std::string room = token;
+              i++;
+          } else {
+              std::string sender = token;
+          }
+          received.data.erase(0, pos + delimiter.length());
+      }
+      //std::cout << sender << ": " << received.data << std::endl; <-- for testing
     }
 
     
