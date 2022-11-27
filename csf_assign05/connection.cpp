@@ -23,7 +23,7 @@ void Connection::connect(const std::string &hostname, int port) {
   //int fd = open_clientfd((const char&)hostname, (const char*)port); // Error for some reason on the second (
   // Call rio_readinitb to initialize the rio_t object
   rio_t *rp;
-  rio_readinitb(rp, fd);
+  //rio_readinitb(rp, fd);
 }
 
 Connection::~Connection() {
