@@ -20,7 +20,13 @@ int main(int argc, char **argv) {
   std::string room_name = argv[4];
 
   // Listen to port specified
-  int fd = Open_listenfd(argv[2]);
+  int fd = Open_listenfd(argv[2]); //<-- old thing
+  // In the future put this stuff into connection.cpp functions
+  // I think receiver just needs to listen but sender needs to create conenction? maybe not sure
+  // const char * h = server_hostname.c_str();
+  //int fd = Open_clientfd(h, (const char*)server_port);
+  //rio_t *rp;
+  //Rio_readinitb(rp, fd);
 
   // Send rlogin 
   struct Message login_message = (struct Message) {"rlogin", argv[3]};

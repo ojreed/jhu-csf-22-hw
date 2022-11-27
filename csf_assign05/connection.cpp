@@ -20,10 +20,11 @@ Connection::Connection(int fd)
 
 void Connection::connect(const std::string &hostname, int port) {
   // Call open_clientfd to connect to the server
-  //int fd = open_clientfd((const char&)hostname, (const char*)port); // Error for some reason on the second (
+  const char * h = hostname.c_str();
+  int fd = open_clientfd(h, (const char*)port); 
   // Call rio_readinitb to initialize the rio_t object
   rio_t *rp;
-  //rio_readinitb(rp, fd);
+  rio_readinitb(rp, fd);
 }
 
 Connection::~Connection() {

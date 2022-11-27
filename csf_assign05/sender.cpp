@@ -36,7 +36,11 @@ int main(int argc, char **argv) {
   username = argv[3];
 
   // TODO: connect to server
-  int fd = Open_clientfd(argv[1], argv[2]);
+  //int fd = Open_clientfd(argv[1], argv[2]);
+  const char * h = server_hostname.c_str();
+  int fd = Open_clientfd(h, (const char*)server_port);
+  rio_t *rp;
+  Rio_readinitb(rp, fd);
 
   // TODO: send slogin message
   //create login message with tag:payload format 
