@@ -55,8 +55,8 @@ int main(int argc, char **argv) {
     std::string command;
     std::getline(std::cin, command);
     std::stringstream command_ss = std::stringstream(command);
-    //std::string command_tag;
-    //command_ss >> command_tag;
+    std::string command_tag;
+    command_ss >> command_tag;
     struct Message sender_message;
     if (command_tag == "/join") { //send join
       std::string username; 
