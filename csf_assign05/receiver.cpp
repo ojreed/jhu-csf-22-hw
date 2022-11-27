@@ -20,19 +20,19 @@ int main(int argc, char **argv) {
   std::string room_name = argv[4];
 
   // Listen to port specified
-  int fd = Open_listenfd(argv[2]); //<-- old thing
+  //int fd = Open_listenfd(argv[2]); //<-- old thing
   // In the future put this stuff into connection.cpp functions
   // I think receiver just needs to listen but sender needs to create conenction? maybe not sure
-  // const char * h = server_hostname.c_str();
-  //int fd = Open_clientfd(h, (const char*)server_port);
-  //rio_t *rp;
-  //Rio_readinitb(rp, fd);
+  const char * h = server_hostname.c_str();
+  int fd = Open_clientfd(h, (const char*)server_port);
+  rio_t *rp;
+  Rio_readinitb(rp, fd);
 
   // Send rlogin 
   struct Message login_message = (struct Message) {"rlogin", argv[3]};
   Rio_writen(fd, &login_message, 225);
   struct Message response;
-  rio_t rio_response; // This is definitely set up wrong
+  rio_t rio_response; 
   Rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
   // Listen for okay from server, 
   //if(response.tag == "err") {
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
   {
     //TODO: receive messages and print them
     struct Message received;
-    rio_t rio_struct; // This is definitely set up wrong
+    rio_t rio_struct; 
     // Read info into buffer
     rio_readlineb(&rio_struct, &received, 255); 
 
@@ -87,8 +87,7 @@ int main(int argc, char **argv) {
       }
       message = received.data;
       std::cout << sender << ": " << message << std::endl; 
-    }
-
+    } 
   }
   return 0;
 }
