@@ -27,21 +27,21 @@ int main(int argc, char **argv) {
   Rio_writen(fd, &login_message, 225);
   struct Message response;
   rio_t rio_response; // This is definitely set up wrong
-  rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
+  Rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
   // Listen for okay from server, 
-  if(response.tag == "err") {
-    perror("Error...");
-    exit(-1);
-  }
+  //if(response.tag == "err") {
+    //perror("Error...");
+    //exit(-1);
+  //}
 
   // Join correct room
   struct Message join_message = (struct Message) {"join", argv[4]};
   Rio_writen(fd, &join_message, 225);
-  rio_readlineb(&rio_response, &response, 255); // reusing these variables might not be the move, we'll see
-  if(response.tag == "err") {
-    perror("Error...");
-    exit(-1);
-  }
+  Rio_readlineb(&rio_response, &response, 255); // reusing these variables might not be the move, we'll see
+  //if(response.tag == "err") {
+    //perror("Error...");
+    //exit(-1);
+  //}
 
   // TODO: loop waiting for messages from server (which should be tagged with TAG_DELIVERY)
   bool session_active = true;
@@ -79,7 +79,8 @@ int main(int argc, char **argv) {
           }
           received.data.erase(0, pos + delimiter.length());
       }
-      //std::cout << sender << ": " << received.data << std::endl; <-- for testing
+      message = received.data;
+      std::cout << sender << ": " << message << std::endl; 
     }
 
   }

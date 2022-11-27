@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     std::string result_tag;
     // Rio_readlineb(fd,&result,225);
     // std::stringstream(result) >> result_tag;
-    result_tag = "ok"; //test code NOTE: HOW TO WE GET BACK A MESSAGE
+    result_tag = "ok"; //test code NOTE: HOW TO WE GET BACK A MESSAGE- pretty sure after we rio_writen we need to use a rio read func!
     if ((command_tag == "/quit") && (result_tag == "ok")) {
       session_active = false;
     }
