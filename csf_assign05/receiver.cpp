@@ -30,10 +30,7 @@ int main(int argc, char **argv) {
   Rio_readinitb(rp, fd);
 
   // Send rlogin 
-  //struct Message login_message = (struct Message) {"rlogin", argv[3]};
-  struct Message login_message;
-  login_message.tag = "rlogin";
-  login_message.data = argv[3];
+  struct Message login_message = (struct Message) {"rlogin", argv[3]};
   Rio_writen(fd, &login_message, 225);
   struct Message response;
   rio_t rio_response; 
