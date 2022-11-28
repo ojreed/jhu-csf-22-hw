@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iostream>
 #include <vector>
 #include <stdexcept>
 #include "csapp.h"
@@ -22,9 +23,10 @@ int main(int argc, char **argv) {
   // Listen to port specified
   //int fd = Open_listenfd(argv[2]); //<-- old thing
   // In the future put this stuff into connection.cpp functions
-  // I think receiver just needs to listen but sender needs to create conenction? maybe not sure
   const char * h = server_hostname.c_str();
-  int fd = Open_clientfd(h, (const char*)server_port);
+  std::string temp_str = std::to_string(server_port); // convert number to a string
+  char const* server_port2 = temp_str.c_str(); // convert string to char Array
+  int fd = Open_clientfd(h, server_port2); // SEGFAULT
   rio_t *rp;
   Rio_readinitb(rp, fd);
 
