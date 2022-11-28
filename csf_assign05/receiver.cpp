@@ -30,12 +30,15 @@ int main(int argc, char **argv) {
   Rio_readinitb(rp, fd);
 
   // Send rlogin 
-  struct Message login_message = (struct Message) {"rlogin", argv[3]};
+  //struct Message login_message = (struct Message) {"rlogin", argv[3]};
+  struct Message login_message;
+  login_message.tag = "rlogin";
+  login_message.data = argv[3];
   Rio_writen(fd, &login_message, 225);
   struct Message response;
   rio_t rio_response; 
   Rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
-  // Listen for okay from server, 
+  // Listen for okay from server 
   //if(response.tag == "err") {
     //perror("Error...");
     //exit(-1);
