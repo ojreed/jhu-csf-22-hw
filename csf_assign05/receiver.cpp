@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   const char * h = server_hostname.c_str();
   std::string temp_str = std::to_string(server_port); // convert number to a string
   char const* server_port2 = temp_str.c_str(); // convert string to char Array
-  int fd = Open_clientfd(h, server_port2); // SEGFAULT
+  int fd = Open_clientfd(h, server_port2); 
   rio_t *rp;
   Rio_readinitb(rp, fd);
 
