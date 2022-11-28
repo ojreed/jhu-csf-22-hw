@@ -21,7 +21,6 @@ int main(int argc, char **argv) {
   std::string room_name = argv[4];
 
   // Listen to port specified
-  //int fd = Open_listenfd(argv[2]); //<-- old thing
   // In the future put this stuff into connection.cpp functions
   const char * h = server_hostname.c_str();
   std::string temp_str = std::to_string(server_port); // convert number to a string
@@ -51,11 +50,11 @@ int main(int argc, char **argv) {
     //exit(-1);
   //}
 
-  // TODO: loop waiting for messages from server (which should be tagged with TAG_DELIVERY)
+  // Loop waiting for messages from server (which should be tagged with TAG_DELIVERY)
   bool session_active = true;
   while (session_active)
   {
-    //TODO: receive messages and print them
+    // Receive messages and print them
     struct Message received;
     rio_t rio_struct; 
     // Read info into buffer
