@@ -37,9 +37,9 @@ int main(int argc, char **argv) {
   login_message += "\r\n";
   char const* formatted = login_message.c_str();
   Rio_writen(fd, formatted, strlen(formatted));
-  char response[225];
+  char response[550];
   rio_t rio_response; 
-  Rio_readlineb(&rio_response, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string formatted_reply(response);
   std::cout << formatted_reply << std::endl;
   // Listen for okay from server 
