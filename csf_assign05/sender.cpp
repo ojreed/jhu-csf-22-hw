@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
 
     if (command_tag == "/join") { //send join
       sender_message += "join:";
-      sender_message += command_ss; 
+      sender_message += command_ss.str(); 
     } else if (command_tag == "/leave") { //send leave
       sender_message += "leave:";
     } else if (command_tag == "/quit") { // send quit
