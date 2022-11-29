@@ -31,9 +31,9 @@ int main(int argc, char **argv) {
 
   // Send rlogin 
   //struct Message login_message = (struct Message) {"rlogin", argv[3]};
-  char* login_message = "rlogin:";
-  char* user = argv[3];
-  strcat(login_message, user);
+  std::string login_message = "rlogin:";
+  std::string user = argv[3];
+  login_message += user;
   Rio_writen(fd, login_message, 225);
   struct Message response;
   rio_t rio_response; 
