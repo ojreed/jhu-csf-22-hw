@@ -87,23 +87,17 @@ int main(int argc, char **argv) {
       sender_message += "join:";
       sender_message += username; 
     } else if (command_tag == "/leave") { //send leave
-      sender_message = (struct Message) {"leave","IGNORE"};
+      sender_message += "leave";
     } else if (command_tag == "/quit") { // send quit
-      sender_message = (struct Message) {"quit", "IGNORE"};
+      sender_message += "quit";
+      session_active = false;
     } else { //send message
-      sender_message = (struct Message) {"sendall", command};
+      //sender_message = (struct Message) {"sendall", command};
     }
     //Rio_writen(fd, &sender_message, 225); // send message to server
     sender_message += "\r\n";
     char const* formatted_join = sender_message.c_str();
     Rio_writen(fd, formatted_join, 225) //new correct way
-    // std::string result;
-    std::string result_tag;
-    // Rio_readlineb(fd,&result,225);
-    // std::stringstream(result) >> result_tag;
-    result_tag = "ok"; //test code NOTE: HOW TO WE GET BACK A MESSAGE- pretty sure after we rio_writen we need to use a rio read func!
-    if ((command_tag == "/quit") && (result_tag == "ok")) {
-      session_active = false;
     }
   }
   return 0;
