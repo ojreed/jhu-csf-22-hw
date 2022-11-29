@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
   char const* formatted = login_message.c_str();
   Rio_writen(fd, &formatted, sizeof(formatted));
 
-  //NOTEL what is the correct way to do size??
+  //NOTE: what is the correct way to do size??
   Rio_writen(fd, &login_message, 225); // send message to server
 
   // TODO: loop reading commands from user, sending messages to
@@ -78,12 +78,20 @@ int main(int argc, char **argv) {
       sender_message = (struct Message) {"sendall", command};
     }
     Rio_writen(fd, &sender_message, 225); // send message to server
-    // std::string result;
-    std::string result_tag;
-    // Rio_readlineb(fd,&result,225);
-    // std::stringstream(result) >> result_tag;
-    result_tag = "ok"; //test code NOTE: HOW TO WE GET BACK A MESSAGE- pretty sure after we rio_writen we need to use a rio read func!
-    if ((command_tag == "/quit") && (result_tag == "ok")) {
+
+    //get server response back
+    char response[550];
+    // rio_t rio_response; THIS IS NOTHING --> THIS IS WHAT I REPLACED WITH RP BELOW TO FIX 
+    Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+    std::string formatted_reply(response);
+    std::string delimiter = ":";
+    std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
+    // Listen for okay from server 
+    if(tag != "ok") {
+      perror("Error...");
+      exit(-1);
+    }
+    if ((command_tag == "/quit") && (tag == "ok")) {
       session_active = false;
     }
   }

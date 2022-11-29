@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
   char const* formatted = login_message.c_str();
   Rio_writen(fd, formatted, strlen(formatted));
   char response[550];
-  rio_t rio_response; 
+  // rio_t rio_response; THIS IS NOTHING --> THIS IS WHAT I REPLACED WITH RP BELOW TO FIX 
   Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string formatted_reply(response);
   std::string delimiter = ":";
