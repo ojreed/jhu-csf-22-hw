@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
     //Rio_writen(fd, &sender_message, 225); // send message to server
     sender_message += "\r\n";
     char const* formatted_join = sender_message.c_str();
-    Rio_writen(fd, formatted_join, 225) //new correct way
+    Rio_writen(fd, formatted_join, 225); //new correct way
     }
   }
   return 0;
