@@ -100,5 +100,5 @@ int main(int argc, char **argv) {
     Rio_writen(fd, formatted_join, 225); //new correct way
     }
   }
-  return 0;
+  return 0; //error?? "expected a declaration"
 }
