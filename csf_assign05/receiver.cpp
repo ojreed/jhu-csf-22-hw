@@ -97,8 +97,8 @@ int main(int argc, char **argv) {
       int i = 0;
       // if the tag in received includes the room and sender
       // then change received.data to received.tag 
-      while((pos = (formatted_reply).find(delimiter)) != std::string::npos) {
-          token = (formatted_reply).substr(0, pos);
+      while((pos = (formatted_message).find(delimiter)) != std::string::npos) {
+          token = (formatted_message).substr(0, pos);
           if(i == 0) {
               i++;
           } else if (i == 1) {
@@ -107,9 +107,9 @@ int main(int argc, char **argv) {
           } else {
               std::string sender = token;
           }
-          formatted_reply.erase(0, pos + delimiter.length());
+          formatted_message.erase(0, pos + delimiter.length());
       }
-      message = formatted_reply;
+      message = formatted_message;
       std::cout << sender << ": " << message << std::endl; 
     } 
   }
