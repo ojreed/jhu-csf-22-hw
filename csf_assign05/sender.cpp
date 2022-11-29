@@ -87,12 +87,15 @@ int main(int argc, char **argv) {
       sender_message += "join:";
       sender_message += username; 
     } else if (command_tag == "/leave") { //send leave
-      sender_message += "leave";
+      sender_message += "leave:";
     } else if (command_tag == "/quit") { // send quit
-      sender_message += "quit";
+      sender_message += "quit:";
       session_active = false;
     } else { //send message
-      //sender_message = (struct Message) {"sendall", command};
+      std::string msg; 
+      command_ss >> msg;
+      sender_message += "sendall:";
+      sender_message += msg;
     }
     //Rio_writen(fd, &sender_message, 225); // send message to server
     sender_message += "\r\n";
