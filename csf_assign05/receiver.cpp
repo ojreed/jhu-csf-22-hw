@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
   login_message += user;
   // login_message += "\r\n";
   char const* formatted = login_message.c_str();
-  Rio_writen(fd, &formatted, sizeof(formatted));
+  Rio_writen(fd, &formatted, strlen(formatted));
   struct Message response;
   rio_t rio_response; 
   Rio_readlineb(&rio_response, &response, 225); // Rio_readlineb might be sufficient error-wise actually...
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
   join_message += room;
   // join_message += "\r\n";
   char const* formatted_join = join_message.c_str();
-  Rio_writen(fd, &formatted_join, sizeof(formatted_join));
+  Rio_writen(fd, &formatted_join, strlen(formatted_join));
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
