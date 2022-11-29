@@ -78,13 +78,12 @@ int main(int argc, char **argv) {
   while (session_active)
   {
     // Receive messages and print them
-    struct Message received;
     // Read info into buffer
     char message[550];
-    rio_readlineb(rp, message, 225);
+    Rio_readlineb(rp, message, 225);
     std::string formatted_message(message);
     delimiter = ":";
-    tag = formatted_reply.substr(0, formatted_message.find(delimiter)); 
+    tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
 
     if(tag == "delivery") {
       std::string delimiter = ":";
