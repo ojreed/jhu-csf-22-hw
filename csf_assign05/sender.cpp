@@ -46,9 +46,11 @@ int main(int argc, char **argv) {
 
   // TODO: send slogin message
   //create login message with tag:payload format 
-  struct Message login_message;
-  login_message.tag = "slogin"; 
-  login_message.data = argv[3];
+  std::string login_message = "slogin:";
+  std::string user = argv[3];
+  login_message += user;
+  char const* formatted = login_message.c_str();
+  Rio_writen(fd, &formatted, 225);
 
   //NOTEL what is the correct way to do size??
   Rio_writen(fd, &login_message, 225); // send message to server
