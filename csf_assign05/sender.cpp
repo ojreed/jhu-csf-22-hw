@@ -86,8 +86,10 @@ int main(int argc, char **argv) {
     // Rio_writen(fd, formatted, strlen(formatted));
 
     if (command_tag == "/join") { //send join
+      std::string roomname; 
+      roomname = command_ss.substr(x.find("/join ") + 1); 
       sender_message += "join:";
-      sender_message += command_ss.str(); 
+      sender_message += roomname; 
     } else if (command_tag == "/leave") { //send leave
       sender_message += "leave:";
     } else if (command_tag == "/quit") { // send quit
@@ -111,8 +113,7 @@ int main(int argc, char **argv) {
     std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
     // Listen for okay from server 
     if(tag != "ok") {
-      std::string reply_payload = formatted_reply.substr(1, formatted_reply.find(delimiter)); // token is "scott"
-      perror(reply_payload.c_str());
+      perror(formatted_reply.c_str());
       // exit(-1);
     }
     if ((command_tag == "/quit") && (tag == "ok")) {
