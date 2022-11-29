@@ -102,8 +102,8 @@ int main(int argc, char **argv) {
     }
     //Rio_writen(fd, &sender_message, 225); // send message to server
     sender_message += "\r\n";
-    char const* formatted_join = sender_message.c_str();
-    Rio_writen(fd, formatted_join, 225); //new correct way
+    char const* formatted_send = sender_message.c_str();
+    Rio_writen(fd, formatted_send, strlen(formatted_send)); //new correct way
 
     //get server response back
     char response[550];
@@ -119,7 +119,6 @@ int main(int argc, char **argv) {
     }
     if ((command_tag == "/quit") && (tag == "ok")) {
       session_active = false;
-    
     }
   }
   return 0; //error?? "expected a declaration"
