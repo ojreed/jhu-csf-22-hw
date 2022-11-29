@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
   std::string login_message = "rlogin:";
   std::string user = argv[3];
   login_message += user;
-  Rio_writen(fd, login_message, 225);
+  Rio_writen(fd, &login_message, 225);
   struct Message response;
   rio_t rio_response; 
   Rio_readlineb(&rio_response, &response, 225); // Rio_readlineb might be sufficient error-wise actually...
