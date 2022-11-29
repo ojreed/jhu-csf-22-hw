@@ -82,10 +82,10 @@ int main(int argc, char **argv) {
     char message[550];
     Rio_readlineb(rp, message, 225);
     std::string formatted_message(message);
-    delimiter = ":";
-    tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
+    std::string new_delimiter = ":";
+    std::string new_tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
 
-    if(tag == "delivery") {
+    if(new_tag == "delivery") {
       std::string delimiter = ":";
       std::string room;
       std::string sender;
