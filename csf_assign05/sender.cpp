@@ -86,10 +86,8 @@ int main(int argc, char **argv) {
     // Rio_writen(fd, formatted, strlen(formatted));
 
     if (command_tag == "/join") { //send join
-      std::string roomname; 
-      command_ss >> roomname;
       sender_message += "join:";
-      sender_message += roomname; 
+      sender_message += command_ss; 
     } else if (command_tag == "/leave") { //send leave
       sender_message += "leave:";
     } else if (command_tag == "/quit") { // send quit
