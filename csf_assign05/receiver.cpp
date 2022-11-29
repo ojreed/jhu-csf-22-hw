@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
           formatted_message.erase(0, pos + delimiter.length());
       }
       message = formatted_message;
-      std::cout << sender << ": " << message << std::endl; 
+      std::cout << sender << ": " << message;
     } 
   }
   return 0;
