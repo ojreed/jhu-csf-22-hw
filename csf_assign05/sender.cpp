@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
   char const* server_port2 = temp_str.c_str(); // convert string to char Array
   int fd = Open_clientfd(h, server_port2);
   if (fd < 0) {
+    std::cerr << "Could Not Open Connection\n";
     exit(-1);//error message should be printed in Open_client
   }
   rio_t *rp = new rio_t();
@@ -123,6 +124,7 @@ int main(int argc, char **argv) {
     if ((command_tag == "/quit") && (tag == "ok")) {
       session_active = false;
     }
+    tag = "";
   }
   Close(fd);
   return 0; //error?? "expected a declaration"
