@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
   if(tag != "ok") {
-    perror("Error...");
+    perror(formatted_reply);
     exit(-1);
   }
 
@@ -113,8 +113,8 @@ int main(int argc, char **argv) {
     std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
     // Listen for okay from server 
     if(tag != "ok") {
-      perror("Error...");
-      exit(-1);
+      perror(formatted_reply);
+      // exit(-1);
     }
     if ((command_tag == "/quit") && (tag == "ok")) {
       session_active = false;
