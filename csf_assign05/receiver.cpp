@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   Rio_writen(fd, formatted, strlen(formatted));
   char* response;
   rio_t rio_response; 
-  Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  Rio_readlineb(fd, response, 225); // Rio_readlineb might be sufficient error-wise actually...
   // Listen for okay from server 
   //if(response.tag == "err") {
     //perror("Error...");
