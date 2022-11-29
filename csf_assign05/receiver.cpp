@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
   std::string login_message = "rlogin:";
   std::string user = argv[3];
   login_message += user;
+  login_message += "\r\n"
   char const* formatted = login_message.c_str();
   Rio_writen(fd, &formatted, 225);
   struct Message response;
@@ -49,7 +50,9 @@ int main(int argc, char **argv) {
   std::string join_message = "join:";
   std::string room = argv[4];
   join_message += user;
-  Rio_writen(fd, &join_message, 225);
+  join_message += "\r\n"
+  char const* formatted_join = join_message.c_str();
+  Rio_writen(fd, &formatted_join, 225);
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
