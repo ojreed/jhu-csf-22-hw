@@ -81,19 +81,20 @@ int main(int argc, char **argv) {
     //struct Message sender_message;
     std::string sender_message; 
     
-    char const* formatted = login_message.c_str();
-    Rio_writen(fd, formatted, strlen(formatted));
+    //WHY DOES THIS EXIST
+    // char const* formatted = login_message.c_str();
+    // Rio_writen(fd, formatted, strlen(formatted));
 
     if (command_tag == "/join") { //send join
-      std::string username; 
-      command_ss >> username;
+      std::string roomname; 
+      command_ss >> roomname;
       sender_message += "join:";
-      sender_message += username; 
+      sender_message += roomname; 
     } else if (command_tag == "/leave") { //send leave
       sender_message += "leave:";
     } else if (command_tag == "/quit") { // send quit
       sender_message += "quit:";
-      session_active = false;
+      // session_active = false; //we want to kill the session after confirmation theoretically 
     } else { //send message
       std::string msg; 
       command_ss >> msg;
