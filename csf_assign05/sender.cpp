@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
   std::string login_message = "slogin:";
   std::string user = argv[3];
   login_message += user;
+  login_message += "\r\n";
   char const* formatted = login_message.c_str();
   Rio_writen(fd, formatted, strlen(formatted));
   char response[550];
