@@ -94,6 +94,8 @@ int main(int argc, char **argv) {
       // Parse
       size_t pos = 0;
       std::string token;
+      std::string room;
+      std::string sender;
       int i = 0;
       // if the tag in received includes the room and sender
       // then change received.data to received.tag 
@@ -102,10 +104,10 @@ int main(int argc, char **argv) {
           if(i == 0) {
               i++;
           } else if (i == 1) {
-              std::string room = token;
+              room = token;
               i++;
           } else if (i == 2) {
-              std::string sender = token;
+              sender = token;
           }
           formatted_message.erase(0, pos + delimiter.length());
       }
