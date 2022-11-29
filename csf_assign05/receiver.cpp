@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   std::string delimiter = ":";
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
-  if(tag != "ok") {
+  if(tag == "err") {
     perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
     Close(fd);
     exit(-1);
@@ -63,10 +63,10 @@ int main(int argc, char **argv) {
   delimiter = ":";
   tag = formatted_reply.substr(0, formatted_join_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
-  if(tag != "ok") {
+  if(tag == "err") {
     perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
     Close(fd);
-    // exit(-1);
+    exit(-1);
   }
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
