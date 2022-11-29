@@ -30,11 +30,22 @@ int main(int argc, char **argv) {
   Rio_readinitb(rp, fd);
 
   // Send rlogin 
-  struct Message login_message = (struct Message) {"rlogin", argv[3]};
-  Rio_writen(fd, &login_message, 255);
-  struct Message response;
+  //struct Message login_message = (struct Message) {"rlogin", argv[3]};
+  std::string login_message = "rlogin:";
+  std::string user = argv[3];
+  login_message += user;
+  login_message += "\r\n";
+  char const* formatted = login_message.c_str();
+  Rio_writen(fd, formatted, strlen(formatted));
+  char response[225];
   rio_t rio_response; 
+<<<<<<< HEAD
   Rio_readlineb(&rio_response, &response, 225); // Rio_readlineb might be sufficient error-wise actually...
+=======
+  Rio_readlineb(&rio_response, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  std::string formatted_reply(response);
+  std::cout << formatted_reply << std::endl;
+>>>>>>> 29d720985b359144d3772b07ec064eaf9e177ee1
   // Listen for okay from server 
   //if(response.tag == "err") {
     //perror("Error...");
@@ -42,9 +53,14 @@ int main(int argc, char **argv) {
   //}
 
   // Join correct room
-  struct Message join_message = (struct Message) {"join", argv[4]};
-  Rio_writen(fd, &join_message, 225);
-  Rio_readlineb(&rio_response, &response, 255); // reusing these variables might not be the move, we'll see
+  std::string join_message = "join:";
+  std::string room = argv[4];
+  join_message += room;
+  join_message += "\r\n";
+  char const* formatted_join = join_message.c_str();
+  Rio_writen(fd, formatted_join, strlen(formatted_join));
+
+  //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
     //perror("Error...");
     //exit(-1);
@@ -58,7 +74,7 @@ int main(int argc, char **argv) {
     struct Message received;
     rio_t rio_struct; 
     // Read info into buffer
-    rio_readlineb(&rio_struct, &received, 255); 
+    rio_readlineb(&rio_struct, &received, 225); 
 
     if(received.tag == "delivery") {
       std::string delimiter = ":";
