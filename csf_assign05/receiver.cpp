@@ -37,9 +37,11 @@ int main(int argc, char **argv) {
   login_message += "\r\n";
   char const* formatted = login_message.c_str();
   Rio_writen(fd, formatted, strlen(formatted));
+  std::cout << "HERE" << std::endl;
   char* response;
   rio_t rio_response; 
   Rio_readlineb(&rio_response, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  std::cout << "HERE" << std::endl;
   // Listen for okay from server 
   //if(response.tag == "err") {
     //perror("Error...");
