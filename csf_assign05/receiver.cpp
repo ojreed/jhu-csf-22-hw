@@ -57,11 +57,10 @@ int main(int argc, char **argv) {
   char const* formatted_join = join_message.c_str();
   Rio_writen(fd, formatted_join, strlen(formatted_join));
   char join_response[550];
-  //rio_t rio_response; 
   Rio_readlineb(rp, join_response, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string formatted_join_reply(join_response);
   delimiter = ":";
-  tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
+  tag = formatted_reply.substr(0, formatted_join_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
   if(tag != "ok") {
     perror("Error...");
@@ -80,13 +79,15 @@ int main(int argc, char **argv) {
   {
     // Receive messages and print them
     struct Message received;
-    rio_t rio_struct; 
     // Read info into buffer
-    rio_readlineb(&rio_struct, &received, 225); 
+    char message[550];
+    rio_readlineb(rp, message, 225);
+    std::string formatted_message(message);
+    delimiter = ":";
+    tag = formatted_reply.substr(0, formatted_message.find(delimiter)); 
 
-    if(received.tag == "delivery") {
+    if(tag == "delivery") {
       std::string delimiter = ":";
-      std::string tag;
       std::string room;
       std::string sender;
       std::string message;
@@ -97,10 +98,9 @@ int main(int argc, char **argv) {
       int i = 0;
       // if the tag in received includes the room and sender
       // then change received.data to received.tag 
-      while((pos = (received.data).find(delimiter)) != std::string::npos) {
-          token = (received.data).substr(0, pos);
+      while((pos = (formatted_reply).find(delimiter)) != std::string::npos) {
+          token = (formatted_reply).substr(0, pos);
           if(i == 0) {
-              std::string tag = token; 
               i++;
           } else if (i == 1) {
               std::string room = token;
@@ -108,9 +108,9 @@ int main(int argc, char **argv) {
           } else {
               std::string sender = token;
           }
-          received.data.erase(0, pos + delimiter.length());
+          formatted_reply.erase(0, pos + delimiter.length());
       }
-      message = received.data;
+      message = formatted_reply;
       std::cout << sender << ": " << message << std::endl; 
     } 
   }
