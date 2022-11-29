@@ -98,6 +98,7 @@ int main(int argc, char **argv) {
     } else { //send message
       std::string msg; 
       command_ss >> msg;
+      std::cout << msg << std:endl;
       sender_message += "sendall:";
       sender_message += msg;
     }
