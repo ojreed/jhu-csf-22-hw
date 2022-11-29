@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
   Rio_writen(fd, &login_message, 255);
   struct Message response;
   rio_t rio_response; 
-  Rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
+  Rio_readlineb(&rio_response, &response, 225); // Rio_readlineb might be sufficient error-wise actually...
   // Listen for okay from server 
   //if(response.tag == "err") {
     //perror("Error...");
