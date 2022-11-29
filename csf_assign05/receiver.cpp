@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
   // Send rlogin 
   struct Message login_message = (struct Message) {"rlogin", argv[3]};
-  Rio_writen(fd, &login_message, 225);
+  Rio_writen(fd, &login_message, 255);
   struct Message response;
   rio_t rio_response; 
   Rio_readlineb(&rio_response, &response, 255); // Rio_readlineb might be sufficient error-wise actually...
