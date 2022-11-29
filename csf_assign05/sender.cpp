@@ -41,6 +41,9 @@ int main(int argc, char **argv) {
   std::string temp_str = std::to_string(server_port); // convert number to a string
   char const* server_port2 = temp_str.c_str(); // convert string to char Array
   int fd = Open_clientfd(h, server_port2);
+  if (fd < 0) {
+    exit(-1);//error message should be printed in Open_client
+  }
   rio_t *rp = new rio_t();
   Rio_readinitb(rp, fd);
 
