@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
   // Join correct room
   std::string join_message = "join:";
   std::string room = argv[4];
-  join_message += user;
+  join_message += room;
   // join_message += "\r\n";
   char const* formatted_join = join_message.c_str();
   Rio_writen(fd, &formatted_join, 225);
