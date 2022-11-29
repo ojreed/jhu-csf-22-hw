@@ -96,7 +96,6 @@ int main(int argc, char **argv) {
       sender_message += "quit:";
       // session_active = false; //we want to kill the session after confirmation theoretically 
     } else { //send message
-      std::cout << command_ss << std::endl;
       sender_message = "sendall:";
       sender_message += command_ss.str();
     }
