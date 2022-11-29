@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
       // session_active = false; //we want to kill the session after confirmation theoretically 
     } else { //send message
       std::cout << command_ss << std::endl;
-      sender_message += "sendall:";
+      sender_message = "sendall:";
       sender_message += command_ss.str();
     }
     //Rio_writen(fd, &sender_message, 225); // send message to server
