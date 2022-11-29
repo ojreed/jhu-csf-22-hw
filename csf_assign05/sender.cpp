@@ -50,10 +50,20 @@ int main(int argc, char **argv) {
   std::string user = argv[3];
   login_message += user;
   char const* formatted = login_message.c_str();
-  Rio_writen(fd, &formatted, sizeof(formatted));
+  Rio_writen(fd, formatted, strlen(formatted));
+  char response[550];
+  rio_t rio_response; 
+  Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  std::string formatted_reply(response);
+  std::string delimiter = ":";
+  std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
+  // Listen for okay from server 
+  if(tag != "ok") {
+    perror("Error...");
+    exit(-1);
+  }
 
-  //NOTEL what is the correct way to do size??
-  Rio_writen(fd, &login_message, 225); // send message to server
+  //Rio_writen(fd, &login_message, 225); // send message to server <-- idk what this was for lol
 
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
@@ -65,11 +75,17 @@ int main(int argc, char **argv) {
     std::stringstream command_ss = std::stringstream(command);
     std::string command_tag;
     command_ss >> command_tag;
-    struct Message sender_message;
+    //struct Message sender_message;
+    std::string sender_message; 
+    
+    char const* formatted = login_message.c_str();
+    Rio_writen(fd, formatted, strlen(formatted));
+
     if (command_tag == "/join") { //send join
       std::string username; 
       command_ss >> username;
-      sender_message = (struct Message) {"join", username}; //command SS should contain username
+      sender_message += "join:";
+      sender_message += username; 
     } else if (command_tag == "/leave") { //send leave
       sender_message = (struct Message) {"leave","IGNORE"};
     } else if (command_tag == "/quit") { // send quit
@@ -77,7 +93,10 @@ int main(int argc, char **argv) {
     } else { //send message
       sender_message = (struct Message) {"sendall", command};
     }
-    Rio_writen(fd, &sender_message, 225); // send message to server
+    //Rio_writen(fd, &sender_message, 225); // send message to server
+    sender_message += "\r\n";
+    char const* formatted_join = sender_message.c_str();
+    Rio_writen(fd, formatted_join, 225) //new correct way
     // std::string result;
     std::string result_tag;
     // Rio_readlineb(fd,&result,225);
