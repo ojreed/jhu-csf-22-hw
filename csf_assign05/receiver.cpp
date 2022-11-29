@@ -42,9 +42,9 @@ int main(int argc, char **argv) {
   Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string formatted_reply(response);
   std::string delimiter = ":";
-  std::string token = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
+  std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
-  if(token[0] != "ok") {
+  if(tag != "ok") {
     perror("Error...");
     exit(-1);
   }
