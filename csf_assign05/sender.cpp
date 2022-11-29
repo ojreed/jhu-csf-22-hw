@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
 
     if (command_tag == "/join") { //send join
       std::string roomname; 
-      roomname = command_ss.substr(x.find("/join ") + 1); 
+      roomname = command_ss.substr(command_ss.find("/join ") + 1); 
       sender_message += "join:";
       sender_message += roomname; 
     } else if (command_tag == "/leave") { //send leave
