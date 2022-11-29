@@ -61,6 +61,8 @@ int main(int argc, char **argv) {
   // Listen for okay from server 
   if(tag != "ok") {
     perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //just prints the payload as a cstr
+    Close(fd);
+    Close(rp);
     exit(-1);
   }
 
@@ -120,5 +122,7 @@ int main(int argc, char **argv) {
       session_active = false;
     }
   }
+  Close(fd);
+  Close(rp);
   return 0; //error?? "expected a declaration"
 }

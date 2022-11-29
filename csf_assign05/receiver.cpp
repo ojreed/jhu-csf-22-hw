@@ -46,7 +46,9 @@ int main(int argc, char **argv) {
   // Listen for okay from server 
   if(tag != "ok") {
     perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
-    // exit(-1);
+    Close(fd);
+    Close(rp);
+    exit(-1);
   }
 
   // Join correct room
@@ -64,6 +66,8 @@ int main(int argc, char **argv) {
   // Listen for okay from server 
   if(tag != "ok") {
     perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
+    Close(fd);
+    Close(rp);
     exit(-1);
   }
 
