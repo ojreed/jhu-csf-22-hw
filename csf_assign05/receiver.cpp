@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
           } else if (i == 1) {
               std::string room = token;
               i++;
-          } else {
+          } else if (i == 2) {
               std::string sender = token;
           }
           formatted_message.erase(0, pos + delimiter.length());
