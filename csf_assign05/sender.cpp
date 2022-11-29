@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
     } else { //send message
       std::cout << command_ss << std::endl;
       sender_message += "sendall:";
-      sender_message += (string) command_ss;
+      sender_message += (std::string) command_ss;
     }
     //Rio_writen(fd, &sender_message, 225); // send message to server
     sender_message += "\r\n";
