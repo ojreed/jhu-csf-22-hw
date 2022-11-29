@@ -39,13 +39,9 @@ int main(int argc, char **argv) {
   Rio_writen(fd, formatted, strlen(formatted));
   char response[225];
   rio_t rio_response; 
-<<<<<<< HEAD
-  Rio_readlineb(&rio_response, &response, 225); // Rio_readlineb might be sufficient error-wise actually...
-=======
   Rio_readlineb(&rio_response, response, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string formatted_reply(response);
   std::cout << formatted_reply << std::endl;
->>>>>>> 29d720985b359144d3772b07ec064eaf9e177ee1
   // Listen for okay from server 
   //if(response.tag == "err") {
     //perror("Error...");
