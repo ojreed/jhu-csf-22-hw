@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
   std::string user = argv[3];
   login_message += user;
   char const* formatted = login_message.c_str();
-  Rio_writen(fd, &formatted, 225);
+  Rio_writen(fd, &formatted, sizeof(formatted));
 
   //NOTEL what is the correct way to do size??
   Rio_writen(fd, &login_message, 225); // send message to server

@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
   login_message += user;
   // login_message += "\r\n";
   char const* formatted = login_message.c_str();
-  Rio_writen(fd, &formatted, 225);
+  Rio_writen(fd, &formatted, sizeof(formatted));
   struct Message response;
   rio_t rio_response; 
   Rio_readlineb(&rio_response, &response, 225); // Rio_readlineb might be sufficient error-wise actually...
