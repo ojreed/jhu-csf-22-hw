@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
   // TODO: send slogin message
   //create login message with tag:payload format 
   std::string login_message = "slogin:";
-  std::string user = argv[3];
+  std::string user(argv[3]);
   login_message += user;
   char const* formatted = login_message.c_str();
   Rio_writen(fd, &formatted, sizeof(formatted));
