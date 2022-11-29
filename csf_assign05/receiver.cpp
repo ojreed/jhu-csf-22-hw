@@ -41,12 +41,13 @@ int main(int argc, char **argv) {
   rio_t rio_response; 
   Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string formatted_reply(response);
-  std::cout << formatted_reply << std::endl;
+  std::string delimiter = ":";
+  std::string token = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
-  //if(response.tag == "err") {
-    //perror("Error...");
-    //exit(-1);
-  //}
+  if(token[0] != "ok") {
+    perror("Error...");
+    exit(-1);
+  }
 
   // Join correct room
   std::string join_message = "join:";
