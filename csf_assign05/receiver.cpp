@@ -45,9 +45,12 @@ int main(int argc, char **argv) {
   //}
 
   // Join correct room
-  struct Message join_message = (struct Message) {"join", argv[4]};
+  std::string join_message = "join:";
+  std::string room = argv[4];
+  join_message += user;
   Rio_writen(fd, &join_message, 225);
-  Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
+
+  //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
     //perror("Error...");
     //exit(-1);
