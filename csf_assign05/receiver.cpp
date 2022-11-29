@@ -56,6 +56,16 @@ int main(int argc, char **argv) {
   join_message += "\r\n";
   char const* formatted_join = join_message.c_str();
   Rio_writen(fd, formatted_join, strlen(formatted_join));
+  char join_response[550];
+  Rio_readlineb(rp, join_response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  std::string formatted_join_reply(join_response);
+  delimiter = ":";
+  tag = formatted_reply.substr(0, formatted_join_reply.find(delimiter)); // token is "scott"
+  // Listen for okay from server 
+  if(tag != "ok") {
+    perror("Error...");
+    exit(-1);
+  }
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
@@ -68,14 +78,15 @@ int main(int argc, char **argv) {
   while (session_active)
   {
     // Receive messages and print them
-    struct Message received;
-    rio_t rio_struct; 
     // Read info into buffer
-    rio_readlineb(&rio_struct, &received, 225); 
+    char message[550];
+    Rio_readlineb(rp, message, 225);
+    std::string formatted_message(message);
+    std::string new_delimiter = ":";
+    std::string new_tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
 
-    if(received.tag == "delivery") {
+    if(new_tag == "delivery") {
       std::string delimiter = ":";
-      std::string tag;
       std::string room;
       std::string sender;
       std::string message;
@@ -86,21 +97,20 @@ int main(int argc, char **argv) {
       int i = 0;
       // if the tag in received includes the room and sender
       // then change received.data to received.tag 
-      while((pos = (received.data).find(delimiter)) != std::string::npos) {
-          token = (received.data).substr(0, pos);
+      while((pos = (formatted_message).find(delimiter)) != std::string::npos) {
+          token = (formatted_message).substr(0, pos);
           if(i == 0) {
-              std::string tag = token; 
               i++;
           } else if (i == 1) {
-              std::string room = token;
+              room = token;
               i++;
-          } else {
-              std::string sender = token;
+          } else if (i == 2) {
+              sender = token;
           }
-          received.data.erase(0, pos + delimiter.length());
+          formatted_message.erase(0, pos + delimiter.length());
       }
-      message = received.data;
-      std::cout << sender << ": " << message << std::endl; 
+      message = formatted_message;
+      std::cout << sender << ": " << message;
     } 
   }
   return 0;
