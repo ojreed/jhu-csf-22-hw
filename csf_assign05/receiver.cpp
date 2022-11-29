@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
   if(tag != "ok") {
     perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
     Close(fd);
-    exit(-1);
+    // exit(-1);
   }
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
