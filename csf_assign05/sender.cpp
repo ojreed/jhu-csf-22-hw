@@ -63,12 +63,9 @@ int main(int argc, char **argv) {
     exit(-1);
   }
 
-<<<<<<< HEAD
   //NOTE: what is the correct way to do size??
-  Rio_writen(fd, &login_message, 225); // send message to server
-=======
+  // Rio_writen(fd, &login_message, 225); // send message to server
   //Rio_writen(fd, &login_message, 225); // send message to server <-- idk what this was for lol
->>>>>>> f00ee0d0bc3bc950b34439299a922fbd4802c21f
 
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
