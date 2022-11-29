@@ -56,6 +56,17 @@ int main(int argc, char **argv) {
   join_message += "\r\n";
   char const* formatted_join = join_message.c_str();
   Rio_writen(fd, formatted_join, strlen(formatted_join));
+  char response[550];
+  rio_t rio_response; 
+  Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
+  std::string formatted_reply(response);
+  std::string delimiter = ":";
+  std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
+  // Listen for okay from server 
+  if(tag != "ok") {
+    perror("Error...");
+    exit(-1);
+  }
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
