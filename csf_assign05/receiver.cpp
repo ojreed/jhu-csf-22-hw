@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
         return -1;
       }
       message = formatted_message;
-      std::cout << sender << ": " << message << std::endl;
+      std::cout << sender << ": " << message;
     } 
   }
   return 0;
