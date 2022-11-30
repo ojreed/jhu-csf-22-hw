@@ -90,9 +90,9 @@ int main(int argc, char **argv) {
       sender_message += "join:";
       sender_message += roomname; 
     } else if (command_tag == "/leave") { //send leave
-      sender_message += "leave:";
+      sender_message += "leave:bye";
     } else if (command_tag == "/quit") { // send quit
-      sender_message += "quit:";
+      sender_message += "quit:bye";
       // session_active = false; //we want to kill the session after confirmation theoretically 
     } else { //send message
       sender_message = "sendall:";
