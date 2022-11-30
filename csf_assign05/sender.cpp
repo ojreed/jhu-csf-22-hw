@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     if ((command_tag == "/quit") && (tag == "ok")) {
       session_active = false;
     }
-    tag = "";
+    tag = ""; //need to reset tag because it could create an issue where we quit and then end with the previous ok
   }
   Close(fd);
   return 0; //error?? "expected a declaration"
