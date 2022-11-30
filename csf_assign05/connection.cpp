@@ -78,7 +78,6 @@ bool Connection::receive(char* msg) {
   // make sure that m_last_result is set appropriately
   rio_t rio_response; 
   Rio_readlineb(&m_fdbuf, msg, 225); // Rio_readlineb might be sufficient error-wise actually...
-  *std::remove(msg, msg+strlen(msg), '\n') = '\0';
   std::string formatted_reply(msg);
   std::string delimiter = ":";
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"

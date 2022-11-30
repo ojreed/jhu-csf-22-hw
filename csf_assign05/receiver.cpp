@@ -67,6 +67,7 @@ int main(int argc, char **argv) {
     // Read info into buffer
     char message[550] = "\r\n";
     conn.receive(message);
+    //*std::remove(msg, msg+strlen(msg), '\n') = '\0';
     std::string formatted_message(message);
     std::string new_delimiter = ":";
     std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter)); 
