@@ -5,6 +5,7 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+#include <regex>
 #include "csapp.h"
 #include "message.h"
 #include "connection.h"
@@ -78,6 +79,7 @@ bool Connection::receive(char* msg) {
   // make sure that m_last_result is set appropriately
   rio_t rio_response; 
   Rio_readlineb(&m_fdbuf, msg, 225); // Rio_readlineb might be sufficient error-wise actually...
+  std::string new_msg = std::regex_replace(msg, std::regex("\\r\\n|\\r|\\n"), "");
   std::string formatted_reply(msg);
   std::string delimiter = ":";
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
