@@ -58,13 +58,6 @@ int main(int argc, char **argv) {
   if (works == false) {
     exit(-1);
   }
-  
-
-  //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
-  //if(response.tag == "err") {
-    //perror("Error...");
-    //exit(-1);
-  //}
 
   // Loop waiting for messages from server (which should be tagged with TAG_DELIVERY)
   bool session_active = true;
