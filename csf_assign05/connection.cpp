@@ -19,7 +19,7 @@ Connection::Connection(int fd)
   : m_fd(fd)
   , m_last_result(SUCCESS) {
   // Call rio_readinitb to initialize the rio_t object
-  rio_t *rp;
+  rio_t *rp = new rio_t();
   rio_readinitb(rp, fd);
 }
 
@@ -77,7 +77,6 @@ bool Connection::receive(char* msg) {
   // Receive a message, storing its tag and data in msg
   // return true if successful, false if not
   // make sure that m_last_result is set appropriately
-  rio_t rio_response; 
   Rio_readlineb(&m_fdbuf, msg, 225); // Rio_readlineb might be sufficient error-wise actually...
   std::string new_msg = std::regex_replace((std::string)msg, std::regex("\n"), "");
   std::string formatted_reply(msg);
