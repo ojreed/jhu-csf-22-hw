@@ -20,37 +20,31 @@ int main(int argc, char **argv) {
   std::string username = argv[3];
   std::string room_name = argv[4];
 
+  Connection conn;
+  conn.connect(server_hostname,server_port);
+
   // Listen to port specified
   // In the future put this stuff into connection.cpp functions
-  const char * h = server_hostname.c_str();
-  std::string temp_str = std::to_string(server_port); // convert number to a string
-  char const* server_port2 = temp_str.c_str(); // convert string to char Array
-  int fd = Open_clientfd(h, server_port2); 
-  if (fd < 0) {
-    std::cerr << "Could Not Open Connection\n";
-    exit(-1);//error message should be printed in Open_client
-  }
-  rio_t *rp = new rio_t();
-  Rio_readinitb(rp, fd);
+  // const char * h = server_hostname.c_str();
+  // std::string temp_str = std::to_string(server_port); // convert number to a string
+  // char const* server_port2 = temp_str.c_str(); // convert string to char Array
+  // int fd = Open_clientfd(h, server_port2); 
+  // if (fd < 0) {
+  //   std::cerr << "Could Not Open Connection\n";
+  //   exit(-1);//error message should be printed in Open_client
+  // }
+  // rio_t *rp = new rio_t();
+  // Rio_readinitb(rp, fd);
 
   // Send rlogin 
   //struct Message login_message = (struct Message) {"rlogin", argv[3]};
   std::string login_message = "rlogin:";
   std::string user = argv[3];
   login_message += user;
-  login_message += "\r\n";
-  char const* formatted = login_message.c_str();
-  Rio_writen(fd, formatted, strlen(formatted));
+  conn.send(login_message);
   char response[550];
-  // rio_t rio_response; THIS IS NOTHING --> THIS IS WHAT I REPLACED WITH RP BELOW TO FIX 
-  Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
-  std::string formatted_reply(response);
-  std::string delimiter = ":";
-  std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
-  // Listen for okay from server 
-  if(tag == "err") {
-    perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
-    Close(fd);
+  bool works = conn.receive(response);
+  if (works == false) {
     exit(-1);
   }
 
@@ -58,20 +52,13 @@ int main(int argc, char **argv) {
   std::string join_message = "join:";
   std::string room = argv[4];
   join_message += room;
-  join_message += "\r\n";
-  char const* formatted_join = join_message.c_str();
-  Rio_writen(fd, formatted_join, strlen(formatted_join));
+  conn.send(join_message);
   char join_response[550];
-  Rio_readlineb(rp, join_response, 225); // Rio_readlineb might be sufficient error-wise actually...
-  std::string formatted_join_reply(join_response);
-  delimiter = ":";
-  tag = formatted_reply.substr(0, formatted_join_reply.find(delimiter)); // token is "scott"
-  // Listen for okay from server 
-  if(tag == "err") {
-    perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //prints just the payload as a cstr
-    Close(fd);
+  works = conn.receive(join_response);
+  if (works == false) {
     exit(-1);
   }
+  
 
   //Rio_readlineb(&rio_response, &response, 225); // reusing these variables might not be the move, we'll see
   //if(response.tag == "err") {
@@ -85,11 +72,11 @@ int main(int argc, char **argv) {
   {
     // Receive messages and print them
     // Read info into buffer
-    char message[550];
-    Rio_readlineb(rp, message, 225);
+    char message[550] = "\r\n";
+    conn.receive(message);
     std::string formatted_message(message);
     std::string new_delimiter = ":";
-    std::string new_tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
+    std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter)); 
 
     if(new_tag == "delivery") {
       std::string delimiter = ":";
@@ -112,11 +99,16 @@ int main(int argc, char **argv) {
               i++;
           } else if (i == 2) {
               sender = token;
+              i++;
           }
           formatted_message.erase(0, pos + delimiter.length());
       }
+      if (i!=3 && i!=0) {
+        std::cerr << "invlaid format message returned" << std::endl;
+        return -1;
+      }
       message = formatted_message;
-      std::cout << sender << ": " << message;
+      std::cout << sender << ": " << message;// << std::endl;
     } 
   }
   return 0;

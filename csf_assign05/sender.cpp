@@ -37,37 +37,31 @@ int main(int argc, char **argv) {
 
   // TODO: connect to server
   //int fd = Open_clientfd(argv[1], argv[2]);
-  const char * h = server_hostname.c_str();
-  std::string temp_str = std::to_string(server_port); // convert number to a string
-  char const* server_port2 = temp_str.c_str(); // convert string to char Array
-  int fd = Open_clientfd(h, server_port2);
-  if (fd < 0) {
-    std::cerr << "Could Not Open Connection\n";
-    exit(-1);//error message should be printed in Open_client
-  }
-  rio_t *rp = new rio_t();
-  Rio_readinitb(rp, fd);
+  // const char * h = server_hostname.c_str();
+  // std::string temp_str = std::to_string(server_port); // convert number to a string
+  // char const* server_port2 = temp_str.c_str(); // convert string to char Array
+  // int fd = Open_clientfd(h, server_port2);
+  // if (fd < 0) {
+  //   std::cerr << "Could Not Open Connection\n";
+  //   exit(-1);//error message should be printed in Open_client
+  // }
+  // rio_t *rp = new rio_t();
+  // Rio_readinitb(rp, fd);
+  Connection conn;
+  conn.connect(server_hostname,server_port);
 
   // TODO: send slogin message
   //create login message with tag:payload format 
   std::string login_message = "slogin:";
   std::string user = argv[3];
   login_message += user;
-  login_message += "\r\n";
-  char const* formatted = login_message.c_str();
-  Rio_writen(fd, formatted, strlen(formatted));
+  conn.send(login_message);
   char response[550];
-  rio_t rio_response; 
-  Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
-  std::string formatted_reply(response);
-  std::string delimiter = ":";
-  std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
-  // Listen for okay from server 
-  if(tag == "err") {
-    perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str()); //just prints the payload as a cstr
-    Close(fd);
+  bool works = conn.receive(response);
+  if (works == false) {
     exit(-1);
   }
+  
 
   //NOTE: what is the correct way to do size??
   // Rio_writen(fd, &login_message, 225); // send message to server
@@ -84,7 +78,7 @@ int main(int argc, char **argv) {
     std::string command_tag;
     command_ss >> command_tag;
     //struct Message sender_message;
-    std::string sender_message; 
+    std::string sender_message = ""; 
     
     //WHY DOES THIS EXIST
     // char const* formatted = login_message.c_str();
@@ -105,27 +99,15 @@ int main(int argc, char **argv) {
       sender_message += command_ss.str();
     }
     //Rio_writen(fd, &sender_message, 225); // send message to server
-    sender_message += "\r\n";
-    char const* formatted_send = sender_message.c_str();
-    Rio_writen(fd, formatted_send, strlen(formatted_send)); //new correct way
+    conn.send(sender_message);
 
     //get server response back
     char response[550];
-    // rio_t rio_response; THIS IS NOTHING --> THIS IS WHAT I REPLACED WITH RP BELOW TO FIX 
-    Rio_readlineb(rp, response, 225); // Rio_readlineb might be sufficient error-wise actually...
-    std::string formatted_reply(response);
-    std::string delimiter = ":";
-    std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
-    // Listen for okay from server 
-    if(tag == "err") {
-      perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str());
-      // exit(-1);
-    }
-    if ((command_tag == "/quit") && (tag == "ok")) {
+    
+    if (command_tag == "/quit" && conn.receive(response)) {
       session_active = false;
     }
-    tag = ""; //need to reset tag because it could create an issue where we quit and then end with the previous ok
   }
-  Close(fd);
+  conn.close();
   return 0; //error?? "expected a declaration"
 }

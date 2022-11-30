@@ -38,8 +38,8 @@ public:
   // whether the most recent send or receive was successful,
   // and if not, whether the reason was an I/O error or reaching EOF,
   // or whether the format of the received message was invalid
-  bool send(const Message &msg);
-  bool receive(Message &msg);
+  bool send(std::string msg);
+  bool receive(char* msg);
 
   Result get_last_result() const { return m_last_result; }
 
