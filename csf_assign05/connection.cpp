@@ -65,7 +65,7 @@ bool Connection::send(std::string msg) {
   // Send a message
   // return true if successful, false if not
   // make sure that m_last_result is set appropriately
-  msg += "\r\n";
+  msg += "\n";
   char const* formatted_send = msg.c_str();
   Rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //new correct way
   m_last_result = SUCCESS;
