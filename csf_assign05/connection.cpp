@@ -30,7 +30,8 @@ void Connection::connect(const std::string &hostname, int port) {
   char const* server_port2 = temp_str.c_str(); // convert string to char Array
   int fd = Open_clientfd(h, server_port2);
   if (fd < 0) {
-    std::cerr << "Could Not Open Connection\n";
+    std::cerr << "Could Not Open Connection";
+    close();
     exit(-1);//error message should be printed in Open_client
   }
   rio_t *rp = new rio_t();
