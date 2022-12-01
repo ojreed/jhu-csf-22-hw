@@ -16,11 +16,13 @@
 #include "client_util.h"
 
 int main(int argc, char **argv) {
+  // Accept command from user
   if (argc != 4) {
     std::cerr << "Usage: ./sender [server_address] [port] [username]\n";
     return 1;
   }
 
+  // Break up command
   std::string server_hostname;
   int server_port;
   std::string username;
@@ -33,7 +35,7 @@ int main(int argc, char **argv) {
   Connection conn;
   conn.connect(server_hostname,server_port);
 
-  // Login
+  // Login with slogin message
   std::string login_message = "slogin:";
   std::string user = argv[3];
   login_message += user;
@@ -47,8 +49,8 @@ int main(int argc, char **argv) {
   // Loop reading commands from user, sending messages to server as appropriate
   bool session_active = true;
   bool ready_to_send = false;
-  while (session_active)
-  {
+  while (session_active) {
+    // Read in what user is typing into console
     ready_to_send = false;
     std::string command;
     std::getline(std::cin, command);
@@ -57,17 +59,18 @@ int main(int argc, char **argv) {
     command_ss >> command_tag;
     std::string sender_message = ""; 
     
-    if (command_tag.rfind("/", 0) == 0) {
-      if (command_tag == "/join") { // Send join
+    // Figure out what to do with user input based on command
+    if (command_tag.rfind("/", 0) == 0) { 
+      if (command_tag == "/join") { // Send join message
         std::string roomname; 
         roomname = command_ss.str().substr(command_ss.str().find("/join ") + 6); 
         sender_message += "join:";
         sender_message += roomname;
         ready_to_send = true; 
-      } else if (command_tag == "/leave") { // Send leave
+      } else if (command_tag == "/leave") { // Send leave message
         sender_message += "leave:bye";
         ready_to_send = true; 
-      } else if (command_tag == "/quit") { // Send quit
+      } else if (command_tag == "/quit") { // Send quit message
         sender_message += "quit:bye";
         ready_to_send = true; 
       } else {

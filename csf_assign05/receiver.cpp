@@ -17,20 +17,23 @@
 #include "client_util.h"
 
 int main(int argc, char **argv) {
+  // Accept command from user
   if (argc != 5) {
     std::cerr << "Usage: ./receiver [server_address] [port] [username] [room]\n";
     return 1;
   }
 
+  // Break up command and store
   std::string server_hostname = argv[1];
   int server_port = std::stoi(argv[2]);
   std::string username = argv[3];
   std::string room_name = argv[4];
 
+  // Connect client to the server
   Connection conn;
   conn.connect(server_hostname,server_port);
 
-  // Send rlogin 
+  // Send rlogin message (first part of communication protocol)
   std::string login_message = "rlogin:";
   std::string user = argv[3];
   login_message += user;
@@ -54,8 +57,7 @@ int main(int argc, char **argv) {
 
   // Loop waiting for messages from server (which should be tagged with TAG_DELIVERY)
   bool session_active = true;
-  while (session_active)
-  {
+  while (session_active) {
     // Receive messages and print them
     // Read info into buffer
     char message[550] = "\n";
@@ -64,17 +66,19 @@ int main(int argc, char **argv) {
     std::string new_delimiter = ":";
     std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter)); 
 
-    if(new_tag == "delivery") {
+    if(new_tag == "delivery") { // Tag means data is to be printed on receiver console
+      // Parse received data
       std::string delimiter = ":";
       std::string room;
       std::string sender;
       std::string message;
       
-      // Parse
+      
       size_t pos = 0;
       std::string token;
       int i = 0;
       
+      // Break up received message so we can evaluate/output correct message
       while((pos = (formatted_message).find(delimiter)) != std::string::npos) {
           token = (formatted_message).substr(0, pos);
           if(i == 0) {
@@ -86,12 +90,13 @@ int main(int argc, char **argv) {
               sender = token;
               i++;
           }
-          formatted_message.erase(0, pos + delimiter.length());
+          formatted_message.erase(0, pos + delimiter.length()); // Erase as we go b/c data is safe in a separate variable
       }
       if (i!=3 && i!=0) {
         std::cerr << "invlaid format message returned" << std::endl;
         return -1;
       }
+      // Strip newline characters! rio_readlineb does not do that
       pos = (formatted_message).find("\n");
       if (pos != std::string::npos) {
         formatted_message.erase(pos,formatted_message.length());
@@ -101,7 +106,7 @@ int main(int argc, char **argv) {
         formatted_message.erase(pos,formatted_message.length());
       }
       message = formatted_message;
-      std::cout << sender << ": " << message << std::endl;
+      std::cout << sender << ": " << message << std::endl; // Print message to receiver console according to protocol
     } 
   }
   return 0;
