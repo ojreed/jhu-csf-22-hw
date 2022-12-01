@@ -70,8 +70,10 @@ int main(int argc, char **argv) {
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
   bool session_active = true;
+  bool ready_to_send = false;
   while (session_active)
   {
+    ready_to_send = false;
     std::string command;
     std::getline(std::cin, command);
     std::stringstream command_ss = std::stringstream(command);
@@ -83,30 +85,41 @@ int main(int argc, char **argv) {
     //WHY DOES THIS EXIST
     // char const* formatted = login_message.c_str();
     // Rio_writen(fd, formatted, strlen(formatted));
-
-    if (command_tag == "/join") { //send join
-      std::string roomname; 
-      roomname = command_ss.str().substr(command_ss.str().find("/join ") + 6); 
-      sender_message += "join:";
-      sender_message += roomname; 
-    } else if (command_tag == "/leave") { //send leave
-      sender_message += "leave:bye";
-    } else if (command_tag == "/quit") { // send quit
-      sender_message += "quit:bye";
-      // session_active = false; //we want to kill the session after confirmation theoretically 
+    if (command_tag.rfind("/", 0) == 0) {
+      if (command_tag == "/join") { //send join
+        std::string roomname; 
+        roomname = command_ss.str().substr(command_ss.str().find("/join ") + 6); 
+        sender_message += "join:";
+        sender_message += roomname;
+        ready_to_send = true; 
+      } else if (command_tag == "/leave") { //send leave
+        sender_message += "leave:bye";
+        ready_to_send = true; 
+      } else if (command_tag == "/quit") { // send quit
+        sender_message += "quit:bye";
+        ready_to_send = true; 
+        // session_active = false; //we want to kill the session after confirmation theoretically 
+      } else {
+        conn.close();
+        std::cerr << "Bad Command Input" << std::endl;
+        // exit(-1);
+      }
     } else { //send message
       sender_message = "sendall:";
       sender_message += command_ss.str();
+      ready_to_send = true; 
     }
-    //Rio_writen(fd, &sender_message, 225); // send message to server
-    conn.send(sender_message);
 
-    //get server response back
-    char response[550];
-    
-    
-    if (conn.receive(response) && command_tag == "/quit") {
-      session_active = false;
+    if (ready_to_send) {
+      //Rio_writen(fd, &sender_message, 225); // send message to server
+      conn.send(sender_message);
+
+      //get server response back
+      char response[550];
+      
+      if (conn.receive(response) && command_tag == "/quit") {
+        session_active = false;
+      }
     }
   }
   conn.close();
