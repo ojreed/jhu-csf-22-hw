@@ -23,21 +23,7 @@ int main(int argc, char **argv) {
   Connection conn;
   conn.connect(server_hostname,server_port);
 
-  // Listen to port specified
-  // In the future put this stuff into connection.cpp functions
-  // const char * h = server_hostname.c_str();
-  // std::string temp_str = std::to_string(server_port); // convert number to a string
-  // char const* server_port2 = temp_str.c_str(); // convert string to char Array
-  // int fd = Open_clientfd(h, server_port2); 
-  // if (fd < 0) {
-  //   std::cerr << "Could Not Open Connection\n";
-  //   exit(-1);//error message should be printed in Open_client
-  // }
-  // rio_t *rp = new rio_t();
-  // Rio_readinitb(rp, fd);
-
   // Send rlogin 
-  //struct Message login_message = (struct Message) {"rlogin", argv[3]};
   std::string login_message = "rlogin:";
   std::string user = argv[3];
   login_message += user;
@@ -67,7 +53,6 @@ int main(int argc, char **argv) {
     // Read info into buffer
     char message[550] = "\n";
     conn.receive(message);
-    //*std::remove(msg, msg+strlen(msg), '\n') = '\0';
     std::string formatted_message(message);
     std::string new_delimiter = ":";
     std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter)); 
@@ -82,8 +67,7 @@ int main(int argc, char **argv) {
       size_t pos = 0;
       std::string token;
       int i = 0;
-      // if the tag in received includes the room and sender
-      // then change received.data to received.tag 
+      
       while((pos = (formatted_message).find(delimiter)) != std::string::npos) {
           token = (formatted_message).substr(0, pos);
           if(i == 0) {
