@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
   {
     // Receive messages and print them
     // Read info into buffer
-    char message[550] = "\r\n";
+    char message[550] = "\n";
     conn.receive(message);
     //*std::remove(msg, msg+strlen(msg), '\n') = '\0';
     std::string formatted_message(message);
