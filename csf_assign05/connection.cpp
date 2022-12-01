@@ -28,9 +28,14 @@ void Connection::connect(const std::string &hostname, int port) {
   const char * h = hostname.c_str();
   std::string temp_str = std::to_string(port); // convert number to a string
   char const* server_port2 = temp_str.c_str(); // convert string to char Array
-  int fd = Open_clientfd(h, server_port2);
+  int fd;// = Open_clientfd(h, server_port2);
+  if ((fd = open_clientfd(h, server_port2)) < 0) {
+	  std::cerr << "Could Not Open Connection\n";
+    close();
+    exit(-1);//error message should be printed in Open_client
+  }
   if (fd < 0) {
-    std::cerr << "Could Not Open Connection";
+    std::cerr << "Could Not Open Connection\n";
     close();
     exit(-1);//error message should be printed in Open_client
   }
