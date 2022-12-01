@@ -1,3 +1,10 @@
+/*
+ * File for implementation of functions that help clients connect to server
+ * CSF Assignment 5
+ * Madeline Estey (mestey1@jhu.edu)
+ * Owen Reed (oreed2@jhu.edu)
+ */
+
 #include <sstream>
 #include <cctype>
 #include <cassert>

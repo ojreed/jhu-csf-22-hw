@@ -1,3 +1,10 @@
+/*
+ * File for implementation of the sender client
+ * CSF Assignment 5
+ * Madeline Estey (mestey1@jhu.edu)
+ * Owen Reed (oreed2@jhu.edu)
+ */
+
 #include <iostream>
 #include <string>
 #include <sstream>
