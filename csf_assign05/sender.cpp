@@ -104,7 +104,8 @@ int main(int argc, char **argv) {
     //get server response back
     char response[550];
     
-    if (command_tag == "/quit" && conn.receive(response)) {
+    
+    if (conn.receive(response) && command_tag == "/quit") {
       session_active = false;
     }
   }

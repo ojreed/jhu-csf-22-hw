@@ -101,6 +101,14 @@ int main(int argc, char **argv) {
         std::cerr << "invlaid format message returned" << std::endl;
         return -1;
       }
+      pos = (formatted_message).find("\n");
+      if (pos != std::string::npos) {
+        formatted_message.erase(pos,formatted_message.length());
+      }
+      pos = (formatted_message).find("\r");
+      if (pos != std::string::npos) {
+        formatted_message.erase(pos,formatted_message.length());
+      }
       message = formatted_message;
       std::cout << sender << ": " << message << std::endl;
     } 
