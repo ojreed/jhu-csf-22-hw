@@ -92,7 +92,7 @@ bool Connection::receive(char* msg) {
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); // token is "scott"
   // Listen for okay from server 
   if(tag == "err") {
-    perror(formatted_reply.substr(formatted_reply.find(":") + 1).c_str());
+    std::cerr << (formatted_reply.substr(formatted_reply.find(":") + 1).c_str()) << std::endl;
     m_last_result = EOF_OR_ERROR;
     return false;
     // exit(-1);
