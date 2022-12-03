@@ -84,6 +84,7 @@
         "complex": "cpp",
         "ios": "cpp",
         "locale": "cpp",
-        "__functional_base": "cpp"
+        "__functional_base": "cpp",
+        "regex": "cpp"
     }
 }
