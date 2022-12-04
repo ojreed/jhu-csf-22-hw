@@ -2,6 +2,16 @@
 #include <ctime>
 #include "message_queue.h"
 
+// lock ensures that the message queue can only be modified by one thread at a time, 
+// and the semaphore is used to “notify” the other end that a new message is available. 
+
+// no messages available, we want the receiver to sleep until there are available messages, 
+// and each time a message is sent, it reduces the available messages by one
+
+// messages pushed to the queue are always heap-allocated, use "new"
+
+// don't directly lock mutexes, use Guard methods
+
 MessageQueue::MessageQueue() {
   // TODO: initialize the mutex and the semaphore
 }
