@@ -50,9 +50,9 @@ void *worker(void *arg) {
   struct ConnInfo *info = (ConnInfo*) arg;
   pthread_detach(pthread_self());
   for (int i = 0; i < NTHREADS; i++) {
-    pthread_mutex_lock(&info->lock);
+    Guard *g = new Guard(info->lock);
     info->count++;
-    pthread_mutex_unlock(&info->lock);
+    delete g;
   }
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
@@ -111,42 +111,38 @@ bool Server::listen() {
 }
 
 void Server::handle_client_requests() {
-  ConnInfo *obj = calloc(1, sizeof(ConnInfo));
-  Server(int x);
-  pthread_t threads[NTHREADS];
-  for (int i = 0; i < NTHREADS; i++) {
-    pthread_create(&threads[i], NULL, worker, obj);
-  }
-  for (int i = 0; i < NTHREADS; i++) {
-    pthread_join(threads[i], NULL);
-  }
-  //printf("%d\n", obj->count);
-  //pthread_mutex_destroy(&obj->lock);
-  
   // TODO: infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
-  //how to deal w serverfd
+  // how to deal w serverfd
   while(1) {
     int clientfd = Accept(serverfd, NULL, NULL);
     if (clientfd < 0) {
       std::cerr << "Could Not Accept Server\n";
       //close();
       //exit(-1);
-    }
+    } else {
+      // create struct to pass the connection object and 
+      // other data to the client thread using the aux parameter
+      // of pthread_create
+      struct ConnInfo *info = malloc(sizeof(struct ConnInfo)); // or use calloc?
+      Server(int x); //need to initialize mutex
+      info->clientfd = clientfd;
 
-    struct ConnInfo *info = malloc(sizeof(struct ConnInfo));
-    info->clientfd = clientfd;
-
-    pthread_t id;
-    if(pthread_create(&id, NULL, worker, info) != 0) {
-      std::cerr << "Error\n";
+      pthread_t threads[NTHREADS];
+      for (int i = 0; i < NTHREADS; i++) {
+        if(pthread_create(&threads[i], NULL, worker, info) != 0) { // worker() is the thread entrypoint
+          std::cerr << "Error\n";
+        }
+      }
+      for (int i = 0; i < NTHREADS; i++) {
+        if(pthread_join(threads[i], NULL) != 0) {
+          std::cerr << "Error\n";
+        }
+      }
+      //printf("%d\n", obj->count);
+      //pthread_mutex_destroy(&obj->lock);
     }
   }
-
-  // create struct to pass the connection object and 
-  // other data to the client thread using the aux parameter
-  // of pthread_create
-  // worker() is the thread entrypoint
   // Create a user object in each client thread to track the pending messages
   // and register it to a room when client sends join request
 }
