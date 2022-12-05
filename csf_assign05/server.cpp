@@ -33,6 +33,7 @@ namespace {
 void chat_with_sender(int client_fd) {
   // see sequence diagrams in part 1 for how to implement
   // terminate the loop and tear down the client thread if any message fails to send
+  
 }
 
 void chat_with_receiver(int client_fd) {
@@ -40,12 +41,11 @@ void chat_with_receiver(int client_fd) {
 }
 
 void *worker(void *arg) {
-  struct ConnInfo *info = arg;
-  pthread_detach(pthread_self());
-
-  // TODO: use a static cast to convert arg from a void* to
+   // TODO: use a static cast to convert arg from a void* to
   //       whatever pointer type describes the object(s) needed
   //       to communicate with a client (sender or receiver)
+  struct ConnInfo *info = (ConnInfo*) arg;
+  pthread_detach(pthread_self());
 
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
