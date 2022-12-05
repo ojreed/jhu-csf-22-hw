@@ -16,12 +16,15 @@
 ////////////////////////////////////////////////////////////////////////
 // Server implementation data types
 ////////////////////////////////////////////////////////////////////////
+int NTHREADS;
 
 // TODO: add any additional data types that might be helpful
 //       for implementing the Server member functions
 
 struct ConnInfo {
   int clientfd;
+  pthread_mutex_t lock;
+  volatile int count;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -46,7 +49,11 @@ void *worker(void *arg) {
   //       to communicate with a client (sender or receiver)
   struct ConnInfo *info = (ConnInfo*) arg;
   pthread_detach(pthread_self());
-
+  for (int i = 0; i < NTHREADS; i++) {
+    pthread_mutex_lock(&info->lock);
+    info->count++;
+    pthread_mutex_unlock(&info->lock);
+  }
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   Connection conn;
@@ -83,7 +90,8 @@ void *worker(void *arg) {
 Server::Server(int port)
   : m_port(port)
   , m_ssock(-1) {
-  // TODO: initialize mutex
+  // TODO: initialize mutex 
+  pthread_mutex_init(pthread_mutex_t *, const pthread_mutexattr_t *_Nullable); //what data structure is it protecting
 
 }
 
@@ -103,6 +111,18 @@ bool Server::listen() {
 }
 
 void Server::handle_client_requests() {
+  ConnInfo *obj = calloc(1, sizeof(ConnInfo));
+  Server(int x);
+  pthread_t threads[NTHREADS];
+  for (int i = 0; i < NTHREADS; i++) {
+    pthread_create(&threads[i], NULL, worker, obj);
+  }
+  for (int i = 0; i < NTHREADS; i++) {
+    pthread_join(threads[i], NULL);
+  }
+  //printf("%d\n", obj->count);
+  //pthread_mutex_destroy(&obj->lock);
+  
   // TODO: infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
   //how to deal w serverfd
