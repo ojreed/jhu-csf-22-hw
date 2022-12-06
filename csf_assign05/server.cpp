@@ -41,36 +41,59 @@ void Server::chat_with_sender(User *user,int client_fd) {
   bool convo_valid = true;
   Connection conn(client_fd);
   Room *cur_room = nullptr;
-  while (convo_valid) {
-      char message[550];
-      conn.receive(message);
-      std::string formatted_message(message);
-      std::string new_delimiter = ":";
-      std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
-      std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
-      if (new_tag == "join") {
-        //process join room
-        cur_room = this->join(user,content);
+  while (convo_valid) { //server main loop
+    //take message in
+    char message[550]; 
+    conn.receive(message);
+    //format and split message
+    std::string formatted_message(message);
+    std::string new_delimiter = ":";
+    std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
+    std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
+    //parese tag
+    if (new_tag == "join") {
+      //process join room
+      this->leave(user,cur_room); //leave current room before we join another
+      cur_room = nullptr; //validate that currently not in a room
+      cur_room = this->join(user,content); //join new room
+      if (cur_room != nullptr) {
         conn.send("ok:good join");
-      } else if (new_tag == "sendall") {
-        //process sendall 
-        this->sendall(user,cur_room,content);
+      } else {
+        conn.send("err:failed to join");
+      }
+    } else if (new_tag == "sendall") {
+      //process sendall 
+      bool success = this->sendall(user,cur_room,content);
+      if (success) {
         conn.send("ok:it is sent");
-      } else if (new_tag == "leave") {
-        //process leave
-        this->leave(user,cur_room); 
+      } else {
+        conn.send("err:failed to send");
+      }
+    } else if (new_tag == "leave") {
+      //process leave
+      bool success = this->leave(user,cur_room); 
+      if (success) {
+        cur_room = nullptr;
         conn.send("ok:ya gone");
-      } else if (new_tag == "quit") {
-        //process quit
-        this->quit(user,cur_room); 
+      } else {
+        conn.send("err:not in a room");
+      }
+    } else if (new_tag == "quit") {
+      //process quit
+      bool success = this->quit(user,cur_room); 
+      if (success) {
+        cur_room = nullptr;
         conn.send("ok:no whyyyyy");
         convo_valid = false;
       } else {
-        std::cerr<<"BAD TAG"<<std::endl;
-        this->quit(user,cur_room); 
-        conn.send("err:ur bad my guy");
-        convo_valid = false;
+        conn.send("err:quit failed");
       }
+    } else {
+      std::cerr<<"BAD TAG"<<std::endl;
+      this->quit(user,cur_room); 
+      conn.send("err:ur bad my guy");
+      convo_valid = false;
+    }
   }
   conn.close();
 }
@@ -83,7 +106,7 @@ void Server::chat_with_sender(User *user,int client_fd) {
   }
 
   bool Server::sendall(User *user, Room *cur_room,std::string message) {
-    if ((cur_room == nullptr) || (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
       cur_room->broadcast_message(user->username,message);
@@ -92,7 +115,7 @@ void Server::chat_with_sender(User *user,int client_fd) {
   }
 
   bool Server::leave(User *user, Room *cur_room) {
-    if ((cur_room == nullptr) || (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
       cur_room->remove_member(user);
@@ -101,7 +124,7 @@ void Server::chat_with_sender(User *user,int client_fd) {
   }
 
   bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
-    if ((cur_room == nullptr) || (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+    if ((cur_room != nullptr) && (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
       cur_room->remove_member(user);
     } 
     return true;
