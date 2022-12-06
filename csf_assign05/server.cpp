@@ -38,9 +38,12 @@ void *worker(void *arg) {
    // TODO: use a static cast to convert arg from a void* to
   //       whatever pointer type describes the object(s) needed
   //       to communicate with a client (sender or receiver)
-  pthread_detach(pthread_self());
+  int detach_result = pthread_detach(pthread_self());
+  if (detach_result != 0) {
+    std::cerr << "Error detaching thread: " << detach_result << std::endl;
+    // Handle error here
+  }
   struct ConnInfo *info = (ConnInfo*) arg;
-  pthread_detach(pthread_self());
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   Connection conn(info->clientfd);
@@ -85,6 +88,7 @@ void *worker(void *arg) {
     conn.close();
   } else {
     //error?
+    int send_result = conn.send("err:bad_login");//message ok because we got a good login
     std::cerr << "BAD FIRST TAG" << tag << std::endl;
     return NULL;
   }
