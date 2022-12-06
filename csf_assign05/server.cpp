@@ -12,6 +12,7 @@
 #include "room.h"
 #include "guard.h"
 #include "server.h"
+#include "csapp.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Server implementation data types
@@ -114,6 +115,7 @@ void Server::handle_client_requests() {
   // TODO: infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
   // how to deal w serverfd
+  int serverfd = open_listenfd((char*) port);
   while(1) {
     int clientfd = Accept(serverfd, NULL, NULL);
     if (clientfd < 0) {
