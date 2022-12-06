@@ -13,7 +13,19 @@ public:
 
   bool listen();
 
+  void chat_with_sender(int client_fd);
+
+  void chat_with_receiver(int client_fd);
+
   void handle_client_requests();
+
+  Room *join(User user,std::string room_name);
+
+  void sendall(User user, Room cur_room,std::string message);
+
+  void leave(User user, Room cur_room);
+
+  void quit(User user, Room cur_room);
 
   Room *find_or_create_room(const std::string &room_name);
 
