@@ -126,7 +126,7 @@ void Server::handle_client_requests() {
       // create struct to pass the connection object and 
       // other data to the client thread using the aux parameter
       // of pthread_create
-      struct ConnInfo *info = malloc(sizeof(struct ConnInfo)); // or use calloc?
+      struct ConnInfo *info = (ConnInfo*) malloc(sizeof(struct ConnInfo)); // or use calloc?
       Server(int x); // need to initialize mutex?
       info->clientfd = clientfd;
 
