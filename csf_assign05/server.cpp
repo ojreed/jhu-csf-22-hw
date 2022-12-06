@@ -91,8 +91,8 @@ Server::Server(int port)
   : m_port(port)
   , m_ssock(-1) {
   // TODO: initialize mutex 
-  pthread_mutex_init(pthread_mutex_t *, const pthread_mutexattr_t *_Nullable); //what data structure is it protecting
-
+  pthread_mutex_t mutex;
+  pthread_mutex_init(&mutex, NULL); //pthread_mutex_t *, const pthread_mutexattr_t *_Nullable
 }
 
 Server::~Server() {
@@ -125,7 +125,7 @@ void Server::handle_client_requests() {
       // other data to the client thread using the aux parameter
       // of pthread_create
       struct ConnInfo *info = malloc(sizeof(struct ConnInfo)); // or use calloc?
-      Server(int x); //need to initialize mutex
+      Server(int x); // need to initialize mutex?
       info->clientfd = clientfd;
 
       pthread_t threads[NTHREADS];
