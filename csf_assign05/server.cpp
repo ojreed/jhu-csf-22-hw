@@ -104,7 +104,7 @@ bool Server::listen() {
   //       if successful, false if not
   std::string temp_port = std::to_string(this->m_port); // Convert number to a string
   char const* port = temp_port.c_str(); // Convert string to char Array
-  if (open_listenfd(port) < 0) { // param: const char* port
+  if (Open_listenfd(port) < 0) { // param: const char* port
     return false;
   }
   return true;
