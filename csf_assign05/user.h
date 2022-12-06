@@ -12,7 +12,7 @@ struct User {
 
   bool is_sender;
 
-  User(const std::string &username, bool is_sender) : username(username) is_sender(is_sender){ }
+  User(const std::string &username, bool is_sender) : username(username), is_sender(is_sender){ }
 };
 
 #endif // USER_H

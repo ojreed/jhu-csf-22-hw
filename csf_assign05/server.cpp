@@ -25,7 +25,7 @@ int NTHREADS;
 struct ConnInfo {
   int clientfd;
   pthread_mutex_t lock;
-  Server server;
+  Server *server;
   volatile int count;
 };
 
@@ -35,89 +35,105 @@ struct ConnInfo {
 
 namespace {
 
-void Server::chat_with_sender(User user,int client_fd) {
+void Server::chat_with_sender(User *user,int client_fd) {
   // see sequence diagrams in part 1 for how to implement
   // terminate the loop and tear down the client thread if any message fails to send
   bool convo_valid = true;
   Connection conn(client_fd);
-  Room cur_room = NULL;
+  Room *cur_room = nullptr;
   while (convo_valid) {
       char message[550];
       conn.receive(message);
       std::string formatted_message(message);
       std::string new_delimiter = ":";
       std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
-      std::string content = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length); 
+      std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
       if (new_tag == "join") {
         //process join room
-        cur_room = this.join(user,content);
+        cur_room = this->join(user,content);
         conn.send("ok:good join");
       } else if (new_tag == "sendall") {
         //process sendall 
-        this.sendall(user,cur_room,content);
+        this->sendall(user,cur_room,content);
         conn.send("ok:it is sent");
       } else if (new_tag == "leave") {
         //process leave
-        this.leave(user,cur_room); 
+        this->leave(user,cur_room); 
         conn.send("ok:ya gone");
       } else if (new_tag == "quit") {
         //process quit
-        this.quit(user,cur_room); 
+        this->quit(user,cur_room); 
         conn.send("ok:no whyyyyy");
-        convo_valid == false;
+        convo_valid = false;
       } else {
         std::cerr<<"BAD TAG"<<std::endl;
-        this.quit(user,cur_room); 
+        this->quit(user,cur_room); 
         conn.send("err:ur bad my guy");
-        convo_valid == false;
+        convo_valid = false;
       }
-      
   }
-  
+  conn.close();
 }
 
 
-  Room *Server::join(User user,std::string room_name) {
-    Room target_room = find_or_create_room(room_name);
-    target_room.add_member(user);
+  Room *Server::join(User *user,std::string room_name) {
+    Room *target_room = find_or_create_room(room_name);
+    target_room->add_member(user);
     return target_room;
   }
 
-  void Server::sendall(User user, Room cur_room,std::string message) {
-    cur_room.broadcast_message(user.username,message);
+  bool Server::sendall(User *user, Room *cur_room,std::string message) {
+    if ((cur_room == nullptr) || (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+      return false; //if it does we return the room
+    } else {
+      cur_room->broadcast_message(user->username,message);
+      return true;
+    }
   }
 
-  void Server::leave(User user, Room cur_room) {
-    cur_room.remove_member(user);
+  bool Server::leave(User *user, Room *cur_room) {
+    if ((cur_room == nullptr) || (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+      return false; //if it does we return the room
+    } else {
+      cur_room->remove_member(user);
+      return true;
+    }
   }
 
-  void Server::quit(User user, Room cur_room) {
-    cur_room.remove_member(user);
+  bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
+    if ((cur_room == nullptr) || (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+      cur_room->remove_member(user);
+    } 
+    return true;
   }
 
-void Server::chat_with_receiver(User user, int client_fd) {
+void Server::chat_with_receiver(User *user, int client_fd) {
   // terminate the loop and tear down the client thread if any message transmission fails, or if a valid quit message is received
   bool convo_valid = true;
   Connection conn(client_fd);
-  Room cur_room = NULL;
+  Room *cur_room = nullptr;
   char message[550];
   conn.receive(message);
   std::string formatted_message(message);
   std::string new_delimiter = ":";
   std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
-  std::string content = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length); 
+  std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
   if (new_tag == "join") {
-        //process join room
-        cur_room = this.join(user,content);
-        conn.send("ok:good join");
+    //process join room
+    cur_room = this->join(user,content);
+    conn.send("ok:good join");
   } else {
-    conn.send("err:good join");
+    conn.send("err:bad join tag");
+    return;
   } 
   while (convo_valid) {
-    Message message_to_send = user.mqueue.dequeue()
-    std::string message_as_string = message_to_send.tag+message_to_send.data;
-    conn.send(message_as_string.c_str());
+    Message *message_to_send = user->mqueue.dequeue();
+    std::string message_as_string = message_to_send->tag+message_to_send->data;
+    convo_valid = conn.send(message_as_string.c_str());
   }
+  conn.close();
+  this->quit(user,cur_room);
+  return;
 }
 
 void *worker(void *arg) {
@@ -127,37 +143,37 @@ void *worker(void *arg) {
   struct ConnInfo *info = (ConnInfo*) arg;
   pthread_detach(pthread_self());
   for (int i = 0; i < NTHREADS; i++) {
-    Guard *g = new Guard(arg->lock);
-    arg->count++;
+    Guard *g = new Guard(info->lock);
+    info->count++;
     delete g;
   }
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
-  Connection conn(arg->clientfd);
+  Connection conn(info->clientfd);
   char message[550] = "\n";
   conn.receive(message);
   std::string formatted_message(message);
   std::string delimiter = ":";
   std::string tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
-  std::string username = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length); 
+  std::string username = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length()); 
   
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
   //       is a good idea)
-  if(tag == "rlogin") {
-    conn.send("ok:hello");
-    User user(username,false);
-    arg->server.chat_with_receiver(user,arg->clientfd);
+  if(tag == "rlogin") { //parse login message tag for recv
+    conn.send("ok:hello"); //message ok because we got a good login
+    User user(username,false); //init user as recv
+    info->server->chat_with_receiver(&user,info->clientfd); //move into recv loop
     conn.close();
-  } elif(tag == "slogin") {
-    conn.send("ok:hello");
-    User user(username,true);
-    arg->server.chat_with_sender(user,arg->clientfd);
+  } else if(tag == "slogin") { //parse login message tag for sender
+    conn.send("ok:hello"); //message ok because we got a good login
+    User user(username,true); //init user as sender
+    info->server->chat_with_sender(&user,info->clientfd); //move into sender loop
     conn.close();
   } else {
     //error?
-    std::cerr << "BAD FIRST TAG" << std::cout;
+    std::cerr << "BAD FIRST TAG" << std::endl;
   }
 
   free(info);
@@ -188,7 +204,7 @@ bool Server::listen() {
   //       if successful, false if not
   std::string temp_port = std::to_string(this->m_port); // Convert number to a string
   char const* port = temp_port.c_str(); // Convert string to char Array
-  this->m_ssock = Open_listenfd(static_cast<char*>(port) port);
+  this->m_ssock = Open_listenfd(port);
   if (m_ssock < 0) { // param: const char* port
     return false;
   }
@@ -199,7 +215,7 @@ void Server::handle_client_requests() {
   // TODO: infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
   // how to deal w serverfd
-  listen();
+  // listen(); //I think this is hadneld in the server main func
   while(1) {
     int clientfd = Accept(m_ssock, NULL, NULL);
     if (clientfd < 0) {
@@ -212,7 +228,6 @@ void Server::handle_client_requests() {
       // of pthread_create
       struct ConnInfo *info = (ConnInfo*) malloc(sizeof(struct ConnInfo)); // or use calloc?
       info->clientfd = clientfd;
-      info->serverfd = this->m_ssock;
       info->server = this;
 
       pthread_t threads[NTHREADS];
@@ -237,4 +252,11 @@ void Server::handle_client_requests() {
 Room *Server::find_or_create_room(const std::string &room_name) {
   // TODO: return a pointer to the unique Room object representing
   //       the named chat room, creating a new one if necessary
+  if (m_rooms.count(room_name)>0) { //checks to see if a room exits in the map
+    return m_rooms[room_name]; //if it does we return the room
+  } else { //if it doesnt
+    Room* new_room = new Room(room_name);
+    m_rooms[room_name] = new_room; //create a new room by constructor w/ roomname
+    return new_room; //return the new room
+  }
 }
