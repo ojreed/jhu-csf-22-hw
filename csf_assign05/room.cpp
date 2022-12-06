@@ -42,11 +42,13 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
   msg->data = sender_username;
   msg->data += ": ";
   msg->data += message_text;
-  msg->tag = "sendall";
+  msg->tag = "delivery";
 
   for (it = members.begin(); it != members.end(); ++it) {
     // Create new message
-    (*it)->mqueue.enqueue(msg);
+    if (!(*it)->is_sender) {
+      (*it)->mqueue.enqueue(msg);
+    }
   }
   
 }

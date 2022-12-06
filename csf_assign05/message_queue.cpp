@@ -30,9 +30,9 @@ void MessageQueue::enqueue(Message *msg) {
   // TODO: put the specified message on the queue
   Guard *g = new Guard(m_lock);
   m_messages.push_back(msg);
-  delete g;
   // be sure to notify any thread waiting for a message to be
   // available by calling sem_post
+  delete g;
   sem_post(&m_avail);
 }
 
@@ -54,15 +54,14 @@ Message *MessageQueue::dequeue() {
 
   // TODO: call sem_timedwait to wait up to 1 second for a message
   //       to be available, return nullptr if no message is available
+  Guard g(m_lock);
   if(sem_timedwait(&m_avail, &ts) == 0) {
     // TODO: remove the next message from the queue, return it
-    Guard *g = new Guard(m_lock);
     Message *msg = m_messages.front();
     m_messages.pop_front();
-    delete g;
     sem_post(&m_avail);
     return msg;
   } else {
-      return nullptr;
+    return nullptr;
   }
 }

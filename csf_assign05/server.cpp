@@ -17,7 +17,6 @@
 ////////////////////////////////////////////////////////////////////////
 // Server implementation data types
 ////////////////////////////////////////////////////////////////////////
-int NTHREADS;
 
 // TODO: add any additional data types that might be helpful
 //       for implementing the Server member functions
@@ -39,18 +38,20 @@ void *worker(void *arg) {
    // TODO: use a static cast to convert arg from a void* to
   //       whatever pointer type describes the object(s) needed
   //       to communicate with a client (sender or receiver)
+  pthread_detach(pthread_self());
   struct ConnInfo *info = (ConnInfo*) arg;
   pthread_detach(pthread_self());
-  for (int i = 0; i < NTHREADS; i++) {
-    Guard *g = new Guard(info->lock);
-    info->count++;
-    delete g;
-  }
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   Connection conn(info->clientfd);
   char message[550] = "\n";
-  conn.receive(message);
+  int receive_result = conn.receive(message);
+  if (receive_result == -1) {
+    std::cerr << "Error receiving message from client" << std::endl;
+    close(info->clientfd);
+    free(info);
+    return NULL;
+  }
   std::string formatted_message(message);
   std::string delimiter = ":";
   std::string tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
@@ -61,23 +62,36 @@ void *worker(void *arg) {
   //       separate helper functions for each of these possibilities
   //       is a good idea)
   if(tag == "rlogin") { //parse login message tag for recv
-    conn.send("ok:hello"); //message ok because we got a good login
+    int send_result = conn.send("ok:hello");//message ok because we got a good login
+    if (send_result == -1) {
+      std::cerr << "Error sending message to client recv" << std::endl;
+      close(info->clientfd);
+      free(info);
+      return NULL;
+    }
     User user(username,false); //init user as recv
     info->server->chat_with_receiver(&user,info->clientfd); //move into recv loop
     conn.close();
   } else if(tag == "slogin") { //parse login message tag for sender
-    conn.send("ok:hello"); //message ok because we got a good login
+    int send_result = conn.send("ok:hello");//message ok because we got a good login
+    if (send_result == -1) {
+      std::cerr << "Error sending message to client sender" << std::endl;
+      close(info->clientfd);
+      free(info);
+      return NULL;
+    }
     User user(username,true); //init user as sender
     info->server->chat_with_sender(&user,info->clientfd); //move into sender loop
     conn.close();
   } else {
     //error?
-    std::cerr << "BAD FIRST TAG" << std::endl;
+    std::cerr << "BAD FIRST TAG" << tag << std::endl;
+    return NULL;
   }
-
+  close(info->clientfd);
   free(info);
 
-  return nullptr;
+  return NULL;
 }
 
 }
@@ -90,12 +104,12 @@ Server::Server(int port)
   : m_port(port)
   , m_ssock(-1) {
   // TODO: initialize mutex 
-  pthread_mutex_t mutex;
-  pthread_mutex_init(&mutex, NULL); //pthread_mutex_t *, const pthread_mutexattr_t *_Nullable
+  pthread_mutex_init(&m_lock, NULL); //pthread_mutex_t *, const pthread_mutexattr_t *_Nullable
 }
 
 Server::~Server() {
   // TODO: destroy mutex
+  pthread_mutex_destroy(&m_lock);
 }
 
 bool Server::listen() {
@@ -129,19 +143,12 @@ void Server::handle_client_requests() {
       info->clientfd = clientfd;
       info->server = this;
 
-      pthread_t threads[NTHREADS];
-      for (int i = 0; i < NTHREADS; i++) {
-        if(pthread_create(&threads[i], NULL, worker, info) != 0) { // worker() is the thread entrypoint
-          std::cerr << "Error\n";
-        }
+      /* start new thread to handle client connection */
+      pthread_t thr_id;
+      if (pthread_create(&thr_id, NULL, worker, info) != 0) {
+        std::cerr << "Error\n";
+        free(info);
       }
-      for (int i = 0; i < NTHREADS; i++) {
-        if(pthread_join(threads[i], NULL) != 0) {
-          std::cerr << "Error\n";
-        }
-      }
-      //printf("%d\n", obj->count);
-      //pthread_mutex_destroy(&obj->lock);
     }
   }
   // Create a user object in each client thread to track the pending messages
@@ -286,3 +293,5 @@ void Server::chat_with_receiver(User *user, int client_fd) {
   this->quit(user,cur_room);
   return;
 }
+
+
