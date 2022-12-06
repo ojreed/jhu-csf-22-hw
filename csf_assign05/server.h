@@ -5,6 +5,7 @@
 #include <string>
 #include <pthread.h>
 #include "user.h"
+#include "connection.h"
 
 class Room;
 
@@ -15,9 +16,9 @@ public:
 
   bool listen();
 
-  void chat_with_sender(User *user, int client_fd);
+  void chat_with_sender(User *user, int client_fd, Connection *conn);
 
-  void chat_with_receiver(User *user, int client_fd);
+  void chat_with_receiver(User *user, int client_fd, Connection *conn);
 
   void handle_client_requests();
 
