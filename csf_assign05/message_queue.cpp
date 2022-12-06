@@ -1,5 +1,6 @@
 #include <cassert>
 #include <ctime>
+#include <semaphore>
 #include "message_queue.h"
 
 // lock ensures that the message queue can only be modified by one thread at a time, 
@@ -8,12 +9,12 @@
 // no messages available, we want the receiver to sleep until there are available messages, 
 // and each time a message is sent, it reduces the available messages by one
 
-// messages pushed to the queue are always heap-allocated, use "new"
-
 // don't directly lock mutexes, use Guard methods
 
 MessageQueue::MessageQueue() {
   // TODO: initialize the mutex and the semaphore
+  sem_init(&m_avail, 0, 0);
+  pthread_mutex_init(&m_lock, NULL);
 }
 
 MessageQueue::~MessageQueue() {
@@ -22,12 +23,17 @@ MessageQueue::~MessageQueue() {
 
 void MessageQueue::enqueue(Message *msg) {
   // TODO: put the specified message on the queue
-
+  m_messages.push_back(msg);
   // be sure to notify any thread waiting for a message to be
   // available by calling sem_post
+  sem_post(&m_avail);
 }
 
 Message *MessageQueue::dequeue() {
+  if (m_messages.empty()) {
+      return nullptr;
+    }
+
   struct timespec ts;
 
   // get the current time using clock_gettime:
@@ -41,8 +47,12 @@ Message *MessageQueue::dequeue() {
 
   // TODO: call sem_timedwait to wait up to 1 second for a message
   //       to be available, return nullptr if no message is available
+  if(sem_timedwait(&m_avail, &ts) == 0) {
+
+  }
 
   // TODO: remove the next message from the queue, return it
-  Message *msg = nullptr;
+  Message *msg = m_messages.front();
+  m_messages.pop_front();
   return msg;
 }
