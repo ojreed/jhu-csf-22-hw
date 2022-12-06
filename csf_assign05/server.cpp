@@ -35,130 +35,6 @@ struct ConnInfo {
 
 namespace {
 
-void Server::chat_with_sender(User *user,int client_fd) {
-  // see sequence diagrams in part 1 for how to implement
-  // terminate the loop and tear down the client thread if any message fails to send
-  bool convo_valid = true;
-  Connection conn(client_fd);
-  Room *cur_room = nullptr;
-  while (convo_valid) { //server main loop
-    //take message in
-    char message[550]; 
-    conn.receive(message);
-    //format and split message
-    std::string formatted_message(message);
-    std::string new_delimiter = ":";
-    std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
-    std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
-    //parese tag
-    if (new_tag == "join") {
-      //process join room
-      this->leave(user,cur_room); //leave current room before we join another
-      cur_room = nullptr; //validate that currently not in a room
-      cur_room = this->join(user,content); //join new room
-      if (cur_room != nullptr) {
-        conn.send("ok:good join");
-      } else {
-        conn.send("err:failed to join");
-      }
-    } else if (new_tag == "sendall") {
-      //process sendall 
-      bool success = this->sendall(user,cur_room,content);
-      if (success) {
-        conn.send("ok:it is sent");
-      } else {
-        conn.send("err:failed to send");
-      }
-    } else if (new_tag == "leave") {
-      //process leave
-      bool success = this->leave(user,cur_room); 
-      if (success) {
-        cur_room = nullptr;
-        conn.send("ok:ya gone");
-      } else {
-        conn.send("err:not in a room");
-      }
-    } else if (new_tag == "quit") {
-      //process quit
-      bool success = this->quit(user,cur_room); 
-      if (success) {
-        cur_room = nullptr;
-        conn.send("ok:no whyyyyy");
-        convo_valid = false;
-      } else {
-        conn.send("err:quit failed");
-      }
-    } else {
-      std::cerr<<"BAD TAG"<<std::endl;
-      this->quit(user,cur_room); 
-      conn.send("err:ur bad my guy");
-      convo_valid = false;
-    }
-  }
-  conn.close();
-}
-
-
-  Room *Server::join(User *user,std::string room_name) {
-    Room *target_room = find_or_create_room(room_name);
-    target_room->add_member(user);
-    return target_room;
-  }
-
-  bool Server::sendall(User *user, Room *cur_room,std::string message) {
-    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
-      return false; //if it does we return the room
-    } else {
-      cur_room->broadcast_message(user->username,message);
-      return true;
-    }
-  }
-
-  bool Server::leave(User *user, Room *cur_room) {
-    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
-      return false; //if it does we return the room
-    } else {
-      cur_room->remove_member(user);
-      return true;
-    }
-  }
-
-  bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
-    if ((cur_room != nullptr) && (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
-      cur_room->remove_member(user);
-    } 
-    return true;
-  }
-
-void Server::chat_with_receiver(User *user, int client_fd) {
-  // terminate the loop and tear down the client thread if any message transmission fails, or if a valid quit message is received
-  bool convo_valid = true;
-  Connection conn(client_fd);
-  Room *cur_room = nullptr;
-  char message[550];
-  conn.receive(message);
-  std::string formatted_message(message);
-  std::string new_delimiter = ":";
-  std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
-  std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
-  if (new_tag == "join") {
-    //process join room
-    cur_room = this->join(user,content);
-    conn.send("ok:good join");
-  } else {
-    conn.send("err:bad join tag");
-    return;
-  } 
-  while (convo_valid) {
-    Message *message_to_send = user->mqueue.dequeue();
-    std::string message_as_string = message_to_send->tag+message_to_send->data;
-    convo_valid = conn.send(message_as_string.c_str());
-  }
-  conn.close();
-  this->quit(user,cur_room);
-  return;
-}
-
 void *worker(void *arg) {
    // TODO: use a static cast to convert arg from a void* to
   //       whatever pointer type describes the object(s) needed
@@ -282,4 +158,131 @@ Room *Server::find_or_create_room(const std::string &room_name) {
     m_rooms[room_name] = new_room; //create a new room by constructor w/ roomname
     return new_room; //return the new room
   }
+}
+
+
+
+
+void Server::chat_with_sender(User *user,int client_fd) {
+  // see sequence diagrams in part 1 for how to implement
+  // terminate the loop and tear down the client thread if any message fails to send
+  bool convo_valid = true;
+  Connection conn(client_fd);
+  Room *cur_room = nullptr;
+  while (convo_valid) { //server main loop
+    //take message in
+    char message[550]; 
+    conn.receive(message);
+    //format and split message
+    std::string formatted_message(message);
+    std::string new_delimiter = ":";
+    std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
+    std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
+    //parese tag
+    if (new_tag == "join") {
+      //process join room
+      this->leave(user,cur_room); //leave current room before we join another
+      cur_room = nullptr; //validate that currently not in a room
+      cur_room = this->join(user,content); //join new room
+      if (cur_room != nullptr) {
+        conn.send("ok:good join");
+      } else {
+        conn.send("err:failed to join");
+      }
+    } else if (new_tag == "sendall") {
+      //process sendall 
+      bool success = this->sendall(user,cur_room,content);
+      if (success) {
+        conn.send("ok:it is sent");
+      } else {
+        conn.send("err:failed to send");
+      }
+    } else if (new_tag == "leave") {
+      //process leave
+      bool success = this->leave(user,cur_room); 
+      if (success) {
+        cur_room = nullptr;
+        conn.send("ok:ya gone");
+      } else {
+        conn.send("err:not in a room");
+      }
+    } else if (new_tag == "quit") {
+      //process quit
+      bool success = this->quit(user,cur_room); 
+      if (success) {
+        cur_room = nullptr;
+        conn.send("ok:no whyyyyy");
+        convo_valid = false;
+      } else {
+        conn.send("err:quit failed");
+      }
+    } else {
+      std::cerr<<"BAD TAG"<<std::endl;
+      this->quit(user,cur_room); 
+      conn.send("err:ur bad my guy");
+      convo_valid = false;
+    }
+  }
+  conn.close();
+}
+
+
+  Room *Server::join(User *user,std::string room_name) {
+    Room *target_room = find_or_create_room(room_name);
+    target_room->add_member(user);
+    return target_room;
+  }
+
+  bool Server::sendall(User *user, Room *cur_room,std::string message) {
+    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
+      return false; //if it does we return the room
+    } else {
+      cur_room->broadcast_message(user->username,message);
+      return true;
+    }
+  }
+
+  bool Server::leave(User *user, Room *cur_room) {
+    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
+      return false; //if it does we return the room
+    } else {
+      cur_room->remove_member(user);
+      return true;
+    }
+  }
+
+  bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
+    if ((cur_room != nullptr) && (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
+      cur_room->remove_member(user);
+    } 
+    return true;
+  }
+
+void Server::chat_with_receiver(User *user, int client_fd) {
+  // terminate the loop and tear down the client thread if any message transmission fails, or if a valid quit message is received
+  bool convo_valid = true;
+  Connection conn(client_fd);
+  Room *cur_room = nullptr;
+  char message[550];
+  conn.receive(message);
+  std::string formatted_message(message);
+  std::string new_delimiter = ":";
+  std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
+  std::string content = formatted_message.substr(formatted_message.find(new_delimiter) + 1, formatted_message.length()); 
+  if (new_tag == "join") {
+    //process join room
+    cur_room = this->join(user,content);
+    conn.send("ok:good join");
+  } else {
+    conn.send("err:bad join tag");
+    return;
+  } 
+  while (convo_valid) {
+    Message *message_to_send = user->mqueue.dequeue();
+    std::string message_as_string = message_to_send->tag+message_to_send->data;
+    convo_valid = conn.send(message_as_string.c_str());
+  }
+  conn.close();
+  this->quit(user,cur_room);
+  return;
 }

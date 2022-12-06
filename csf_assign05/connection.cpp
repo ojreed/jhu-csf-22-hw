@@ -104,8 +104,8 @@ bool Connection::send(std::string msg) {
   ssize_t size = rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //new correct way
   if (size<0) {
     m_last_result = EOF_OR_ERROR;
-    std::cerr << "Bad send" << std:endl;
-    return false
+    std::cerr << "Bad send" << std::endl;
+    return false;
   }
   m_last_result = SUCCESS;
   return true;
@@ -116,8 +116,8 @@ bool Connection::send(std::string msg) {
  * Parameters: message (msg)
  */
 bool Connection::receive(char* msg) {
-  if ((rc = rio_readlineb(&m_fdbuf, msg, 225)) < 0) {
-    std::cerr << "Rio_readlineb error" <<std:endl;
+  if ((rio_readlineb(&m_fdbuf, msg, 225)) < 0) {
+    std::cerr << "Rio_readlineb error" <<std::endl;
     m_last_result = EOF_OR_ERROR;
     return false;
   }
