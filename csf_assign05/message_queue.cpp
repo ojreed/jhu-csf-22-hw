@@ -1,7 +1,10 @@
 #include <cassert>
 #include <ctime>
-#include <semaphore>
+#include <semaphore.h>
+#include <time.h>
+#include <pthread.h>
 #include "message_queue.h"
+#include "guard.h"
 
 // lock ensures that the message queue can only be modified by one thread at a time, 
 // and the semaphore is used to “notify” the other end that a new message is available. 
@@ -52,7 +55,10 @@ Message *MessageQueue::dequeue() {
   }
 
   // TODO: remove the next message from the queue, return it
+  Guard::Guard *g = new Guard(m_lock);
   Message *msg = m_messages.front();
   m_messages.pop_front();
+  delete g;
+  sem_post(&m_avail);
   return msg;
 }
