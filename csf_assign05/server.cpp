@@ -18,13 +18,13 @@
 All dones need to be verified --> I dont trust any of them
 1. DONE | connection.cpp will leak as you dont destory your rio_t object --> DONE?
 2. DONE | you already have a rio_t object in your connection class  --> DONE
-3. DONE | your initialization of guard objects in message queue is unnecessary 
-4. DONE | again in room with your guard objects
+3. DONE | your initialization of guard objects in message queue is unnecessary --> DONE
+4. DONE | again in room with your guard objects --> DONE
 5. DONE | your dynamic allocation of message in broadcast message is wrong. What happens when you delete the shared pointer amongst threads?
 6. DONE | Why are you passing a lock to the worker. Every shared object should have its own lock. Also that would create deadlock!
 7. DONE | you will also leak because you dont destroy your connection objects especially line 92
-8. DONE | why do you have a voliatile count
-9. DONE | your find and create room doesnt have any synch primitives thats a big problem 
+8. DONE | why do you have a voliatile count --> DONE
+9. DONE | your find and create room doesnt have any synch primitives thats a big problem --> DONE
 10.TODO | you need a way to deal with senders that quit with control c  --> sigint handler???
 
 
@@ -159,7 +159,7 @@ void Server::handle_client_requests() {
   //       pthread for each connected client
   // how to deal w serverfd
   // listen(); //I think this is hadneld in the server main func
-  while(1) {
+  while(1) { // should we instead check when max number of connections is reached?
     int clientfd = Accept(m_ssock, NULL, NULL);
     if (clientfd < 0) {
       std::cerr << "Could Not Accept Server\n";
@@ -169,7 +169,7 @@ void Server::handle_client_requests() {
       // create struct to pass the connection object and 
       // other data to the client thread using the aux parameter
       // of pthread_create
-      struct ConnInfo *info = (ConnInfo*) malloc(sizeof(struct ConnInfo)); // or use calloc?
+      struct ConnInfo *info = (ConnInfo*) calloc(1, sizeof(struct ConnInfo));
       info->clientfd = clientfd;
       info->server = this;
 
