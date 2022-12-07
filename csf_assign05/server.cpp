@@ -13,6 +13,24 @@
 #include "guard.h"
 #include "server.h"
 #include "csapp.h"
+/*
+
+All dones need to be verified 
+1. DONE | connection.cpp will leak as you dont destory your rio_t object --> DONE?
+2. DONE | you already have a rio_t object in your connection class  --> DONE
+3. TODO | your initialization of guard objects in message queue is unnecessary 
+4. TODO | again in room with your guard objects
+5. DONE | your dynamic allocation of message in broadcast message is wrong. What happens when you delete the shared pointer amongst threads?
+6. TODO | Why are you passing a lock to the worker. Every shared object should have its own lock. Also that would create deadlock!
+7. DONE | you will also leak because you dont destroy your connection objects especially line 92
+8. DONE | why do you have a voliatile count
+9. DONE | your find and create room doesnt have any synch primitives thats a big problem 
+10.TODO | you need a way to deal with senders that quit with control c  --> sigint handler???
+
+
+*/
+
+
 
 ////////////////////////////////////////////////////////////////////////
 // Server implementation data types
@@ -23,9 +41,7 @@
 
 struct ConnInfo {
   int clientfd;
-  pthread_mutex_t lock;
   Server *server;
-  volatile int count;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -49,10 +65,10 @@ void *worker(void *arg) {
   Connection conn(info->clientfd);
   char message[550] = "\n";
   bool receive_result = conn.receive(message);
-  std::cout << "HEREAFTER LOGIN SENT" << message <<std::endl;
   if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
     close(info->clientfd);
+    conn.close();
     free(info);
     return NULL;
   }
@@ -69,6 +85,7 @@ void *worker(void *arg) {
     if (!conn.send("ok:hello")) {//message ok because we got a good login
       std::cerr << "Error sending message to client recv" << std::endl;
       close(info->clientfd);
+      conn.close();
       free(info);
       return NULL;
     }
@@ -79,21 +96,27 @@ void *worker(void *arg) {
     if (!conn.send("ok:hello")) {//message ok because we got a good login
       std::cerr << "Error sending message to client sender" << std::endl;
       close(info->clientfd);
+      conn.close();
       free(info);
       return NULL;
     }
     User user(username,true); //init user as sender
     info->server->chat_with_sender(&user,info->clientfd,&conn); //move into sender loop
+    close(info->clientfd);
     conn.close();
+    free(info);
   } else {
     //error?
     int send_result = conn.send("err:bad_login");//message ok because we got a good login
     std::cerr << "BAD FIRST TAG" << tag << std::endl;
-    return NULL;
+    close(info->clientfd);
+      conn.close();
+      free(info);
+      return NULL;
   }
   close(info->clientfd);
+  conn.close();
   free(info);
-
   return NULL;
 }
 
@@ -165,8 +188,11 @@ Room *Server::find_or_create_room(const std::string &room_name) {
   if (m_rooms.count(room_name)>0) { //checks to see if a room exits in the map
     return m_rooms[room_name]; //if it does we return the room
   } else { //if it doesnt
+    
     Room* new_room = new Room(room_name);
+    pthread_mutex_lock(&m_lock);
     m_rooms[room_name] = new_room; //create a new room by constructor w/ roomname
+    pthread_mutex_unlock(&m_lock);
     return new_room; //return the new room
   }
 }
@@ -293,6 +319,7 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
   while (convo_valid) {
     Message *message_to_send = user->mqueue.dequeue();
     std::string message_as_string = message_to_send->tag+message_to_send->data;
+    delete message_to_send;
     convo_valid = conn->send(message_as_string.c_str());
   }
   conn->close();

@@ -23,33 +23,32 @@ void Room::add_member(User *user) {
   if (it != members.end()) {
     // Element was found
   } else {
-    Guard *g = new Guard(this->lock); //protect access while adding user
+    pthread_mutex_lock(&lock);//protect access while adding user
     this->members.insert(user);
-    delete g;
+    pthread_mutex_unlock(&lock);
   }
 }
 
 void Room::remove_member(User *user) {
   // TODO: remove User from the room
-  Guard *g = new Guard(this->lock); //protect access while adding user
+  pthread_mutex_lock(&lock);//protect access while adding user
   std::set<User *>::iterator it = members.find(user);
   members.erase(it);
-  delete g;
+  pthread_mutex_unlock(&lock);
 }
 
 void Room::broadcast_message(const std::string &sender_username, const std::string &message_text) {
   // TODO: send a message to every (receiver) User in the room
   std::set<User *>::iterator it;
-  Message *msg = new Message();
-  msg->data = sender_username;
-  msg->data += ": ";
-  msg->data += message_text;
-  msg->tag = "delivery";
-
+  Message msg;
+  msg.data = sender_username;
+  msg.data += ": ";
+  msg.data += message_text;
+  msg.tag = "delivery";
   for (it = members.begin(); it != members.end(); ++it) {
     // Create new message
     if (!(*it)->is_sender) {
-      (*it)->mqueue.enqueue(msg);
+      (*it)->mqueue.enqueue(new Message(msg.tag,msg.data));
     }
   }
   

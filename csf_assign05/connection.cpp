@@ -34,8 +34,8 @@ Connection::Connection(int fd)
   : m_fd(fd)
   , m_last_result(SUCCESS) {
   // Initialize the rio_t object
-  rio_t *rp = new rio_t();
-  rio_readinitb(rp, fd);
+  rio_t m_fdbuf;
+  rio_readinitb(&m_fdbuf, fd);
 }
 
 /*
@@ -58,10 +58,8 @@ void Connection::connect(const std::string &hostname, int port) {
     close();
     exit(-1); // Error message should be printed in Open_client
   }
-  rio_t *rp = new rio_t();
-  Rio_readinitb(rp, fd);
+  Rio_readinitb(&m_fdbuf, fd);
   this->m_fd = fd;
-  this->m_fdbuf = *rp;
 }
 
 /*

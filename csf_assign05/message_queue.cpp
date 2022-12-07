@@ -28,11 +28,11 @@ MessageQueue::~MessageQueue() {
 
 void MessageQueue::enqueue(Message *msg) {
   // TODO: put the specified message on the queue
-  Guard *g = new Guard(m_lock);
+  pthread_mutex_lock(&m_lock);
   m_messages.push_back(msg);
   // be sure to notify any thread waiting for a message to be
   // available by calling sem_post
-  delete g;
+  pthread_mutex_unlock(&m_lock);
   sem_post(&m_avail);
 }
 
