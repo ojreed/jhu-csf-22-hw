@@ -61,13 +61,15 @@ void *worker(void *arg) {
     std::cerr << "Error detaching thread: " << detach_result << std::endl;
     // Handle error here
   }
-  std::cout << "Hello" << std::endl;
+  std::cout << "In worker function" << std::endl;
   struct ConnInfo *info = (ConnInfo*) arg;
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   Connection conn(info->clientfd);
   char message[550] = "\n";
   bool receive_result = conn.receive(message);
+  std::cout << "I got a message!" << std::endl;
+  std::cout << message << std::endl;
   if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
     close(info->clientfd);
