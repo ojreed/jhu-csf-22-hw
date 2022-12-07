@@ -114,11 +114,13 @@ bool Connection::send(std::string msg) {
  * Parameters: message (msg)
  */
 bool Connection::receive(char* msg) {
+  std::cout << "In receive function" << std::endl;
   if ((rio_readlineb(&m_fdbuf, msg, 225)) < 0) {
     std::cerr << "Rio_readlineb error" <<std::endl;
     m_last_result = EOF_OR_ERROR;
     return false;
   }
+  std::cout << "Separating message" << std::endl;
   // Divide up the received message into parts for evaluation
   std::string formatted_reply(msg); 
   std::string delimiter = ":";
@@ -130,5 +132,6 @@ bool Connection::receive(char* msg) {
     return false;
   }
   m_last_result = SUCCESS;
+  std::cout << "End of receive function" << std::endl;
   return true;
 }
