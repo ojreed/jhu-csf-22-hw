@@ -15,13 +15,13 @@
 #include "csapp.h"
 /*
 
-All dones need to be verified 
+All dones need to be verified --> I dont trust any of them
 1. DONE | connection.cpp will leak as you dont destory your rio_t object --> DONE?
 2. DONE | you already have a rio_t object in your connection class  --> DONE
-3. TODO | your initialization of guard objects in message queue is unnecessary 
-4. TODO | again in room with your guard objects
+3. DONE | your initialization of guard objects in message queue is unnecessary 
+4. DONE | again in room with your guard objects
 5. DONE | your dynamic allocation of message in broadcast message is wrong. What happens when you delete the shared pointer amongst threads?
-6. TODO | Why are you passing a lock to the worker. Every shared object should have its own lock. Also that would create deadlock!
+6. DONE | Why are you passing a lock to the worker. Every shared object should have its own lock. Also that would create deadlock!
 7. DONE | you will also leak because you dont destroy your connection objects especially line 92
 8. DONE | why do you have a voliatile count
 9. DONE | your find and create room doesnt have any synch primitives thats a big problem 
@@ -49,6 +49,8 @@ struct ConnInfo {
 ////////////////////////////////////////////////////////////////////////
 
 namespace {
+
+
 
 void *worker(void *arg) {
    // TODO: use a static cast to convert arg from a void* to
@@ -139,6 +141,7 @@ Server::~Server() {
   close(m_ssock);
 }
 
+
 bool Server::listen() {
   // TODO: use open_listenfd to create the server socket, return true
   //       if successful, false if not
@@ -200,7 +203,7 @@ Room *Server::find_or_create_room(const std::string &room_name) {
 
 
 
-void Server::chat_with_sender(User *user,int client_fd, Connection* conn) {
+void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   // see sequence diagrams in part 1 for how to implement
   // terminate the loop and tear down the client thread if any message fails to send
   bool convo_valid = true;
@@ -259,7 +262,7 @@ void Server::chat_with_sender(User *user,int client_fd, Connection* conn) {
       convo_valid = false;
     }
   }
-  conn->close();
+  conn->close(); 
 }
 
 

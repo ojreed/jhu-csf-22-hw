@@ -26,6 +26,8 @@ public:
 
   bool sendall(User *user, Room *cur_room,std::string message);
 
+  void sigint_closedown(int sig);
+
   bool leave(User *user, Room *cur_room);
 
   bool quit(User *user, Room *cur_room);
