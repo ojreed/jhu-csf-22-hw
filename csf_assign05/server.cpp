@@ -65,8 +65,10 @@ void *worker(void *arg) {
   struct ConnInfo *info = (ConnInfo*) arg;
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
+  std::cout << "Location 1" << std::endl;
   Connection conn(info->clientfd);
   char message[550] = "\n";
+  std::cout << "Location 2" << std::endl;
   bool receive_result = conn.receive(message);
   std::cout << "I got a message!" << std::endl;
   std::cout << message << std::endl;
