@@ -61,6 +61,7 @@ void *worker(void *arg) {
     std::cerr << "Error detaching thread: " << detach_result << std::endl;
     // Handle error here
   }
+  std::cout << "Hello" << std::endl;
   struct ConnInfo *info = (ConnInfo*) arg;
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
