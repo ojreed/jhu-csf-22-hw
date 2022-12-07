@@ -48,8 +48,9 @@ void *worker(void *arg) {
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   Connection conn(info->clientfd);
   char message[550] = "\n";
-  int receive_result = conn.receive(message);
-  if (receive_result == -1) {
+  bool receive_result = conn.receive(message);
+  std::cout << "HEREAFTER LOGIN SENT" << message <<std::endl;
+  if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
     close(info->clientfd);
     free(info);
@@ -59,14 +60,13 @@ void *worker(void *arg) {
   std::string delimiter = ":";
   std::string tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
   std::string username = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length()); 
-  
+  std::cout << "validate parse of message" << tag << username << std::endl;
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
   //       is a good idea)
   if(tag == "rlogin") { //parse login message tag for recv
-    int send_result = conn.send("ok:hello");//message ok because we got a good login
-    if (send_result == -1) {
+    if (!conn.send("ok:hello")) {//message ok because we got a good login
       std::cerr << "Error sending message to client recv" << std::endl;
       close(info->clientfd);
       free(info);
@@ -76,8 +76,7 @@ void *worker(void *arg) {
     info->server->chat_with_receiver(&user,info->clientfd,&conn); //move into recv loop
     conn.close();
   } else if(tag == "slogin") { //parse login message tag for sender
-    int send_result = conn.send("ok:hello");//message ok because we got a good login
-    if (send_result == -1) {
+    if (!conn.send("ok:hello")) {//message ok because we got a good login
       std::cerr << "Error sending message to client sender" << std::endl;
       close(info->clientfd);
       free(info);
@@ -114,6 +113,7 @@ Server::Server(int port)
 Server::~Server() {
   // TODO: destroy mutex
   pthread_mutex_destroy(&m_lock);
+  close(m_ssock);
 }
 
 bool Server::listen() {
@@ -238,12 +238,14 @@ void Server::chat_with_sender(User *user,int client_fd, Connection* conn) {
 
 
   Room *Server::join(User *user,std::string room_name) {
+    std::cout << "in join" <<std::endl;
     Room *target_room = find_or_create_room(room_name);
     target_room->add_member(user);
     return target_room;
   }
 
   bool Server::sendall(User *user, Room *cur_room,std::string message) {
+     std::cout << "in send" <<std::endl;
     if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
@@ -253,6 +255,7 @@ void Server::chat_with_sender(User *user,int client_fd, Connection* conn) {
   }
 
   bool Server::leave(User *user, Room *cur_room) {
+     std::cout << "in leave" <<std::endl;
     if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
@@ -262,6 +265,7 @@ void Server::chat_with_sender(User *user,int client_fd, Connection* conn) {
   }
 
   bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
+     std::cout << "in quit" <<std::endl;
     if ((cur_room != nullptr) && (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
       cur_room->remove_member(user);
     } 

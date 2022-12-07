@@ -31,8 +31,10 @@ void Room::add_member(User *user) {
 
 void Room::remove_member(User *user) {
   // TODO: remove User from the room
+  Guard *g = new Guard(this->lock); //protect access while adding user
   std::set<User *>::iterator it = members.find(user);
   members.erase(it);
+  delete g;
 }
 
 void Room::broadcast_message(const std::string &sender_username, const std::string &message_text) {

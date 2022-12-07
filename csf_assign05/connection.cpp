@@ -102,7 +102,7 @@ bool Connection::send(std::string msg) {
   msg += "\n";
   char const* formatted_send = msg.c_str();
   ssize_t size = rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //new correct way
-  if (size<0) {
+  if (size!=strlen(formatted_send)) {
     m_last_result = EOF_OR_ERROR;
     std::cerr << "Bad send" << std::endl;
     return false;
