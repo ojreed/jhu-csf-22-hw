@@ -54,7 +54,7 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
   
   for (it = members.begin(); it != members.end(); ++it) {
     // Create new message
-    if (!(*it)->is_sender) {
+    if (!((*it)->is_sender)) {
       std::cout << "adding message to queue" <<std::endl;
       (*it)->mqueue.enqueue(new Message(msg.tag,msg.data));
     }
