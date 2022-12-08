@@ -26,6 +26,7 @@ All dones need to be verified --> I dont trust any of them
 8. DONE | why do you have a voliatile count --> DONE
 9. DONE | your find and create room doesnt have any synch primitives thats a big problem --> DONE
 10.TODO | you need a way to deal with senders that quit with control c  --> sigint handler???
+11.TODO | Fix formatting!
 
 
 */

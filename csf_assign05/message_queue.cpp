@@ -45,7 +45,7 @@ Message *MessageQueue::dequeue() {
   //if (m_messages.empty()) {
       //return nullptr;
     //}
-  std::cout << "Entered dequeue" << std::endl;
+  // std::cout << "Entered dequeue" << std::endl;
   struct timespec ts;
 
   // get the current time using clock_gettime:
@@ -67,7 +67,7 @@ Message *MessageQueue::dequeue() {
     std::cout << "Took top message" << std::endl;
     m_messages.pop_front();
     std::cout << "Remove front message" << std::endl;
-    sem_post(&m_avail);
+    // sem_post(&m_avail);
     return msg;
   } else {
     return nullptr;
