@@ -75,7 +75,7 @@ void *worker(void *arg) {
     std::cerr << "Error receiving message from client" << std::endl;
     close(info->clientfd);
     conn.close();
-    free(info);
+    delete info;
     return NULL;
   }
   std::cout << "I got a message!" << std::endl;
@@ -94,7 +94,7 @@ void *worker(void *arg) {
       std::cerr << "Error sending message to client recv" << std::endl;
       close(info->clientfd);
       conn.close();
-      free(info);
+      delete info;
       return NULL;
     }
     User user(username,false); //init user as recv
@@ -105,26 +105,26 @@ void *worker(void *arg) {
       std::cerr << "Error sending message to client sender" << std::endl;
       close(info->clientfd);
       conn.close();
-      free(info);
+      delete info;
       return NULL;
     }
     User user(username,true); //init user as sender
     info->server->chat_with_sender(&user,info->clientfd,&conn); //move into sender loop
     close(info->clientfd);
     conn.close();
-    free(info);
+    delete info;
   } else {
     //error?
     int send_result = conn.send("err:bad_login");//message ok because we got a good login
     std::cerr << "BAD FIRST TAG: " << tag << std::endl;
     close(info->clientfd);
     conn.close();
-    free(info);
+    delete info;
     return NULL;
   }
   close(info->clientfd);
   conn.close();
-  free(info);
+  delete info;
   return NULL;
 }
 
@@ -183,7 +183,7 @@ void Server::handle_client_requests() {
       pthread_t thr_id;
       if (pthread_create(&thr_id, NULL, worker, info) != 0) {
         std::cerr << "Error\n";
-        //free(info);
+        delete info;
       }
     }
   }
