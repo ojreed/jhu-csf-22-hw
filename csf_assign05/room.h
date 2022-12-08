@@ -20,6 +20,8 @@ public:
   void add_member(User *user);
   void remove_member(User *user);
 
+  std::string strip_text(std::string input); 
+
   void broadcast_message(const std::string &sender_username, const std::string &message_text);
 
 private:

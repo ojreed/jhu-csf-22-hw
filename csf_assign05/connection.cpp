@@ -119,7 +119,9 @@ bool Connection::receive(char* msg) {
   std::cout << "Raw Message in receive: " << msg << std::endl;
   std::cout << "Separating message" << std::endl;
   // Divide up the received message into parts for evaluation
+  //strip message of extra chars
   std::string formatted_reply(msg); 
+  formatted_reply = strip_text(formatted_reply);
   std::string delimiter = ":";
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); 
   // Listen for okay (or err) message from server 
@@ -136,4 +138,16 @@ bool Connection::receive(char* msg) {
   m_last_result = SUCCESS;
   std::cout << "End of receive function" << std::endl;
   return true;
+}
+
+std::string Connection::strip_text(std::string input) {
+  size_t pos = (input).find("\n");
+  if (pos != std::string::npos) {
+    input.erase(pos,input.length());
+  }
+  pos = (input).find("\r");
+  if (pos != std::string::npos) {
+    input.erase(pos,input.length());
+  }
+  return input;
 }

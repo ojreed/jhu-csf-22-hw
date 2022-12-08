@@ -43,11 +43,11 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
   std::cout << "in broadcast msg func" << std::endl;
   std::set<User *>::iterator it;
   Message msg;
-  msg.data = get_room_name();
+  msg.data = strip_text(get_room_name());
   msg.data += ":";
-  msg.data += sender_username;
+  msg.data += strip_text(sender_username);
   msg.data += ":";
-  msg.data += message_text;
+  msg.data += strip_text(message_text);
   msg.tag = "delivery";
   std::cout << "message put together:" <<std::endl;
   std::cout << msg.data <<std::endl;
@@ -60,4 +60,16 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
     }
   }
   
+}
+
+std::string Room::strip_text(std::string input) {
+  size_t pos = (input).find("\n");
+  if (pos != std::string::npos) {
+    input.erase(pos,input.length());
+  }
+  pos = (input).find("\r");
+  if (pos != std::string::npos) {
+    input.erase(pos,input.length());
+  }
+  return input;
 }

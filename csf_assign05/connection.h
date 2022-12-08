@@ -48,6 +48,8 @@ public:
   bool send(std::string msg);
   bool receive(char* msg);
 
+  std::string strip_text(std::string input); 
+
   Result get_last_result() const { return m_last_result; }
 
 private:
