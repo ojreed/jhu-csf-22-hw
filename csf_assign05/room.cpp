@@ -44,6 +44,7 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
   std::set<User *>::iterator it;
   Message msg;
   msg.data = get_room_name();
+  msg.data += ":";
   msg.data += sender_username;
   msg.data += ":";
   msg.data += message_text;

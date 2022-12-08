@@ -329,7 +329,7 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
   while (convo_valid) {
     Message *message_to_send = user->mqueue.dequeue();
     if (message_to_send != nullptr) {
-    std::string message_as_string = message_to_send->tag+message_to_send->data;
+    std::string message_as_string = message_to_send->tag+":"+message_to_send->data;
     delete message_to_send;
     convo_valid = conn->send(message_as_string.c_str());
     }
