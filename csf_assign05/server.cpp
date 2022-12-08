@@ -282,7 +282,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
 
   bool Server::sendall(User *user, Room *cur_room,std::string message) {
      std::cout << "in send" <<std::endl;
-    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
+    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
       std::cout << "in else part of sendall" <<std::endl;
@@ -293,7 +293,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
 
   bool Server::leave(User *user, Room *cur_room) {
     std::cout << "in leave" <<std::endl;
-    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
+    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
       cur_room->remove_member(user);
