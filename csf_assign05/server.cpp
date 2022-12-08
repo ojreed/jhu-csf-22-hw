@@ -73,7 +73,7 @@ void *worker(void *arg) {
   bool receive_result = conn.receive(message);
   if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
-    close(info->clientfd);
+    // close(info->clientfd);
     conn.close();
     delete info;
     return NULL;
@@ -92,37 +92,37 @@ void *worker(void *arg) {
   if(tag == "rlogin") { //parse login message tag for recv
     if (!conn.send("ok:hello")) {//message ok because we got a good login
       std::cerr << "Error sending message to client recv" << std::endl;
-      close(info->clientfd);
+      // close(info->clientfd);
       conn.close();
       delete info;
       return NULL;
     }
     User user(username,false); //init user as recv
     info->server->chat_with_receiver(&user,info->clientfd,&conn); //move into recv loop
-    conn.close();
+    // conn.close();
   } else if(tag == "slogin") { //parse login message tag for sender
     if (!conn.send("ok:hello")) {//message ok because we got a good login
       std::cerr << "Error sending message to client sender" << std::endl;
-      close(info->clientfd);
+      // close(info->clientfd);
       conn.close();
       delete info;
       return NULL;
     }
     User user(username,true); //init user as sender
     info->server->chat_with_sender(&user,info->clientfd,&conn); //move into sender loop
-    close(info->clientfd);
-    conn.close();
-    delete info;
+    // close(info->clientfd);
+    // conn.close();
+    // delete info;
   } else {
     //error?
     int send_result = conn.send("err:bad_login");//message ok because we got a good login
     std::cerr << "BAD FIRST TAG: " << tag << std::endl;
-    close(info->clientfd);
+    // close(info->clientfd);
     conn.close();
     delete info;
     return NULL;
   }
-  close(info->clientfd);
+  // close(info->clientfd);
   conn.close();
   delete info;
   return NULL;
@@ -302,10 +302,8 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   }
 
   bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
-     std::cout << "in quit" <<std::endl;
-    if ((cur_room != nullptr) && (m_rooms.find(cur_room->get_room_name()) != m_rooms.end())) { //checks to see if a room exits in the map
-      cur_room->remove_member(user);
-    } 
+    std::cout << "in quit" <<std::endl;
+    leave(user,cur_room);
     return true;
   }
 
@@ -329,15 +327,11 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
   } 
   while (convo_valid) {
     Message *message_to_send = user->mqueue.dequeue();
-    if (message_to_send == nullptr) {
-      conn->send("err:bad bad bad");
-      conn->close();
-      this->quit(user,cur_room);
-      return;
-    }
+    if (message_to_send != nullptr) {
     std::string message_as_string = message_to_send->tag+message_to_send->data;
     delete message_to_send;
     convo_valid = conn->send(message_as_string.c_str());
+    }
   }
   conn->close();
   this->quit(user,cur_room);
