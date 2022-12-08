@@ -58,7 +58,6 @@ int main(int argc, char **argv) {
     std::string command_tag;
     command_ss >> command_tag;
     std::string sender_message = ""; 
-    
     // Figure out what to do with user input based on command
     if (command_tag.rfind("/", 0) == 0) { 
       if (command_tag == "/join") { // Send join message

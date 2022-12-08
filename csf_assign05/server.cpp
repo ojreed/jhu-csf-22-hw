@@ -67,11 +67,10 @@ void *worker(void *arg) {
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   std::cout << "Location 1" << std::endl;
   Connection conn(info->clientfd);
-  char message[550] = "\n";
+  std::cout << "client fd:" << info->clientfd << std::endl;
+  char message[550] = "FAILED TO OVERWRITE";
   std::cout << "Location 2" << std::endl;
   bool receive_result = conn.receive(message);
-  std::cout << "I got a message!" << std::endl;
-  std::cout << message << std::endl;
   if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
     close(info->clientfd);
@@ -79,11 +78,13 @@ void *worker(void *arg) {
     free(info);
     return NULL;
   }
+  std::cout << "I got a message!" << std::endl;
+  std::cout << message << std::endl;
   std::string formatted_message(message);
   std::string delimiter = ":";
   std::string tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
   std::string username = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length()); 
-  std::cout << "validate parse of message" << tag << username << std::endl;
+  std::cout << "validate parse of message" << std::endl <<"Tag:" << tag  << std::endl << "Username:" << username << std::endl;
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
@@ -115,7 +116,7 @@ void *worker(void *arg) {
   } else {
     //error?
     int send_result = conn.send("err:bad_login");//message ok because we got a good login
-    std::cerr << "BAD FIRST TAG" << tag << std::endl;
+    std::cerr << "BAD FIRST TAG: " << tag << std::endl;
     close(info->clientfd);
       conn.close();
       free(info);
