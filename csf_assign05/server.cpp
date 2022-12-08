@@ -66,9 +66,9 @@ void *worker(void *arg) {
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   std::cout << "Location 1" << std::endl;
-  Connection conn(info->clientfd);
+  Connection conn((info->clientfd));
   std::cout << "client fd:" << info->clientfd << std::endl;
-  char message[550] = "FAILED TO OVERWRITE";
+  char message[550] = "FAILED:To Send";
   std::cout << "Location 2" << std::endl;
   bool receive_result = conn.receive(message);
   if (receive_result == false) {
@@ -118,9 +118,9 @@ void *worker(void *arg) {
     int send_result = conn.send("err:bad_login");//message ok because we got a good login
     std::cerr << "BAD FIRST TAG: " << tag << std::endl;
     close(info->clientfd);
-      conn.close();
-      free(info);
-      return NULL;
+    conn.close();
+    free(info);
+    return NULL;
   }
   close(info->clientfd);
   conn.close();
@@ -175,7 +175,7 @@ void Server::handle_client_requests() {
       // create struct to pass the connection object and 
       // other data to the client thread using the aux parameter
       // of pthread_create
-      struct ConnInfo *info = (ConnInfo*) calloc(1, sizeof(struct ConnInfo));
+      struct ConnInfo *info = new ConnInfo();
       info->clientfd = clientfd;
       info->server = this;
 
@@ -327,6 +327,12 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
   } 
   while (convo_valid) {
     Message *message_to_send = user->mqueue.dequeue();
+    if (message_to_send == nullptr) {
+      conn->send("err:bad bad bad");
+      conn->close();
+      this->quit(user,cur_room);
+      return;
+    }
     std::string message_as_string = message_to_send->tag+message_to_send->data;
     delete message_to_send;
     convo_valid = conn->send(message_as_string.c_str());

@@ -53,11 +53,6 @@ void Connection::connect(const std::string &hostname, int port) {
     close();
     exit(-1); // Error message should be printed in Open_client
   }
-  if (fd < 0) {
-    std::cerr << "Could Not Open Connection\n";
-    close();
-    exit(-1); // Error message should be printed in Open_client
-  }
   Rio_readinitb(m_fdbuf, fd);
   this->m_fd = fd;
 }
@@ -70,6 +65,7 @@ Connection::~Connection() {
   if (is_open()) {  
     close();
   }
+  delete m_fdbuf;
 }
 
 /*
@@ -130,6 +126,11 @@ bool Connection::receive(char* msg) {
   if(tag == "err") {
     std::cerr << (formatted_reply.substr(formatted_reply.find(":") + 1).c_str());
     m_last_result = EOF_OR_ERROR;
+    return false;
+  }
+  if(tag == formatted_reply) {
+    std::cerr << (formatted_reply.substr(formatted_reply.find(":") + 1).c_str());
+    m_last_result = INVALID_MSG;
     return false;
   }
   m_last_result = SUCCESS;
