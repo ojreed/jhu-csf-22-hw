@@ -20,7 +20,7 @@ Room::~Room() {
 void Room::add_member(User *user) {
   // TODO: add User to the room
   // std::set<User *>::iterator it = members.find(user);
-  if (members.count(user) < 0) {
+  if (members.count(user) <= 0) {
     pthread_mutex_lock(&lock);//protect access while adding user
     this->members.insert(user);
     pthread_mutex_unlock(&lock);
@@ -29,7 +29,7 @@ void Room::add_member(User *user) {
 
 void Room::remove_member(User *user) {
   // TODO: remove User from the room
-  if (members.count(user) >= 0) {
+  if (members.count(user) > 0) {
     pthread_mutex_lock(&lock);//protect access while adding user
     members.erase(members.find(user));
     pthread_mutex_unlock(&lock);
