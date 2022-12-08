@@ -32,6 +32,7 @@ public:
 
   bool quit(User *user, Room *cur_room);
 
+
   Room *find_or_create_room(const std::string &room_name);
 
 private:

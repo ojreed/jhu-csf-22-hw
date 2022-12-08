@@ -53,6 +53,7 @@ void Connection::connect(const std::string &hostname, int port) {
     close();
     exit(-1); // Error message should be printed in Open_client
   }
+  this->m_fdbuf = new rio_t;
   Rio_readinitb(m_fdbuf, fd);
   this->m_fd = fd;
 }
@@ -110,14 +111,14 @@ bool Connection::send(std::string msg) {
  * Parameters: message (msg)
  */
 bool Connection::receive(char* msg) {
-  std::cout << "In receive function" << std::endl;
+  // std::cout << "In receive function" << std::endl;
   if ((rio_readlineb(this->m_fdbuf, msg, 225)) < 0) {
     std::cerr << "Rio_readlineb error" <<std::endl;
     m_last_result = EOF_OR_ERROR;
     return false;
   }
-  std::cout << "Raw Message in receive: " << msg << std::endl;
-  std::cout << "Separating message" << std::endl;
+  // std::cout << "Raw Message in receive: " << msg << std::endl;
+  // std::cout << "Separating message" << std::endl;
   // Divide up the received message into parts for evaluation
   //strip message of extra chars
   std::string formatted_reply(msg); 
@@ -136,7 +137,7 @@ bool Connection::receive(char* msg) {
     return false;
   }
   m_last_result = SUCCESS;
-  std::cout << "End of receive function" << std::endl;
+  // std::cout << "End of receive function" << std::endl;
   return true;
 }
 

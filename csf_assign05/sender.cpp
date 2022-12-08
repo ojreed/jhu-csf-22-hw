@@ -15,6 +15,22 @@
 #include "connection.h"
 #include "client_util.h"
 
+
+Connection* conn_for_int;
+bool session_active = true;
+
+void signal_handler(int signum, siginfo_t* info, void* context) {
+  Connection* conn = conn_for_int;
+  char response[550];
+  while (strcmp(response,"ok:no whyyyyy") != 0) {
+    conn->send("quit:user int");
+    conn->receive(response);
+  }
+  // Get server response back
+  conn->close();
+  session_active = false;
+}
+
 int main(int argc, char **argv) {
   // Accept command from user
   if (argc != 4) {
@@ -34,6 +50,16 @@ int main(int argc, char **argv) {
   // Connect to server
   Connection conn;
   conn.connect(server_hostname,server_port);
+  conn_for_int = &conn;
+
+  // Set up the sigaction structure
+  struct sigaction act;
+  act.sa_sigaction = signal_handler;
+  sigemptyset(&act.sa_mask);
+  act.sa_flags = SA_SIGINFO;
+
+  // Register the custom signal handler
+  sigaction(SIGINT, &act, NULL);
 
   // Login with slogin message
   std::string login_message = "slogin:";
@@ -47,7 +73,7 @@ int main(int argc, char **argv) {
   }
   
   // Loop reading commands from user, sending messages to server as appropriate
-  bool session_active = true;
+  
   bool ready_to_send = false;
   while (session_active) {
     // Read in what user is typing into console
@@ -96,3 +122,5 @@ int main(int argc, char **argv) {
   conn.close();
   return 0; 
 }
+
+

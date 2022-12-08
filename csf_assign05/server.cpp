@@ -62,15 +62,15 @@ void *worker(void *arg) {
     std::cerr << "Error detaching thread: " << detach_result << std::endl;
     // Handle error here
   }
-  std::cout << "In worker function" << std::endl;
+  // std::cout << "In worker function" << std::endl;
   struct ConnInfo *info = (ConnInfo*) arg;
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
-  std::cout << "Location 1" << std::endl;
+  // std::cout << "Location 1" << std::endl;
   Connection conn((info->clientfd));
-  std::cout << "client fd:" << info->clientfd << std::endl;
+  // std::cout << "client fd:" << info->clientfd << std::endl;
   char message[550] = "FAILED:To Send";
-  std::cout << "Location 2" << std::endl;
+  // std::cout << "Location 2" << std::endl;
   bool receive_result = conn.receive(message);
   if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
@@ -79,13 +79,13 @@ void *worker(void *arg) {
     delete info;
     return NULL;
   }
-  std::cout << "I got a message!" << std::endl;
-  std::cout << message << std::endl;
+  // std::cout << "I got a message!" << std::endl;
+  // std::cout << message << std::endl;
   std::string formatted_message(message);
   std::string delimiter = ":";
   std::string tag = formatted_message.substr(0, formatted_message.find(delimiter)); 
   std::string username = formatted_message.substr(formatted_message.find(delimiter) + 1, formatted_message.length()); 
-  std::cout << "validate parse of message" << std::endl <<"Tag:" << tag  << std::endl << "Username:" << username << std::endl;
+  // std::cout << "validate parse of message" << std::endl <<"Tag:" << tag  << std::endl << "Username:" << username << std::endl;
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
@@ -210,6 +210,7 @@ Room *Server::find_or_create_room(const std::string &room_name) {
 
 
 
+
 void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   // see sequence diagrams in part 1 for how to implement
   // terminate the loop and tear down the client thread if any message fails to send
@@ -274,27 +275,27 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
 
 
   Room *Server::join(User *user,std::string room_name) {
-    std::cout << "in join" <<std::endl;
+    // std::cout << "in join" <<std::endl;
     Room *target_room = find_or_create_room(room_name);
-    std::cout << "created room name: "<<target_room->get_room_name() <<std::endl;
+    // std::cout << "created room name: "<<target_room->get_room_name() <<std::endl;
     target_room->add_member(user);
     return target_room;
   }
 
   bool Server::sendall(User *user, Room *cur_room,std::string message) {
-     std::cout << "in send" <<std::endl;
+    //  std::cout << "in send" <<std::endl;
     if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
-      std::cout << "in else part of sendall" <<std::endl;
+      // std::cout << "in else part of sendall" <<std::endl;
       cur_room->broadcast_message(user->username,message);
-      std::cout << "broadcast successful" <<std::endl;
+      // std::cout << "broadcast successful" <<std::endl;
       return true;
     }
   }
 
   bool Server::leave(User *user, Room *cur_room) {
-    std::cout << "in leave" <<std::endl;
+    // std::cout << "in leave" <<std::endl;
     if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
@@ -304,7 +305,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   }
 
   bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
-    std::cout << "in quit" <<std::endl;
+    // std::cout << "in quit" <<std::endl;
     leave(user,cur_room);
     return true;
   }
@@ -339,5 +340,7 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
   this->quit(user,cur_room);
   return;
 }
+
+
 
 

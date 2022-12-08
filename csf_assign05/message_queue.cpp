@@ -61,12 +61,12 @@ Message *MessageQueue::dequeue() {
   //       to be available, return nullptr if no message is available
   // Guard g(m_lock);
   if(sem_timedwait(&m_avail, &ts) == 0) {
-    std::cout << "inside if statement" << std::endl;
+    // std::cout << "inside if statement" << std::endl;
     // TODO: remove the next message from the queue, return it
     Message *msg = m_messages.front();
-    std::cout << "Took top message" << std::endl;
+    // std::cout << "Took top message" << std::endl;
     m_messages.pop_front();
-    std::cout << "Remove front message" << std::endl;
+    // std::cout << "Remove front message" << std::endl;
     // sem_post(&m_avail);
     return msg;
   } else {
