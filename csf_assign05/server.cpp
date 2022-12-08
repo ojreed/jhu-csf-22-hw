@@ -285,6 +285,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
     if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
+      std::cout << "in else part of sendall" <<std::endl;
       cur_room->broadcast_message(user->username,message);
       return true;
     }
