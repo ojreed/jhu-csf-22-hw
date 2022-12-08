@@ -3,6 +3,7 @@
 #include <semaphore.h>
 #include <time.h>
 #include <pthread.h>
+#include <iostream>
 #include "message_queue.h"
 #include "guard.h"
 
@@ -44,7 +45,7 @@ Message *MessageQueue::dequeue() {
   //if (m_messages.empty()) {
       //return nullptr;
     //}
-
+  std::cout << "Entered dequeue" << std::endl;
   struct timespec ts;
 
   // get the current time using clock_gettime:
@@ -60,9 +61,12 @@ Message *MessageQueue::dequeue() {
   //       to be available, return nullptr if no message is available
   // Guard g(m_lock);
   if(sem_timedwait(&m_avail, &ts) == 0) {
+    std::cout << "inside if statement" << std::endl;
     // TODO: remove the next message from the queue, return it
     Message *msg = m_messages.front();
+    std::cout << "Took top message" << std::endl;
     m_messages.pop_front();
+    std::cout << "Remove front message" << std::endl;
     sem_post(&m_avail);
     return msg;
   } else {
