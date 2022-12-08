@@ -183,7 +183,7 @@ void Server::handle_client_requests() {
       pthread_t thr_id;
       if (pthread_create(&thr_id, NULL, worker, info) != 0) {
         std::cerr << "Error\n";
-        free(info);
+        //free(info);
       }
     }
   }
