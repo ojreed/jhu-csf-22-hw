@@ -19,10 +19,8 @@ Room::~Room() {
 
 void Room::add_member(User *user) {
   // TODO: add User to the room
-  std::set<User *>::iterator it = members.find(user);
-  if (it != members.end()) {
-    // Element was found
-  } else {
+  // std::set<User *>::iterator it = members.find(user);
+  if (members.count(user) < 0) {
     pthread_mutex_lock(&lock);//protect access while adding user
     this->members.insert(user);
     pthread_mutex_unlock(&lock);
@@ -31,10 +29,11 @@ void Room::add_member(User *user) {
 
 void Room::remove_member(User *user) {
   // TODO: remove User from the room
-  pthread_mutex_lock(&lock);//protect access while adding user
-  std::set<User *>::iterator it = members.find(user);
-  members.erase(it);
-  pthread_mutex_unlock(&lock);
+  if (members.count(user) >= 0) {
+    pthread_mutex_lock(&lock);//protect access while adding user
+    members.erase(members.find(user));
+    pthread_mutex_unlock(&lock);
+  }
 }
 
 void Room::broadcast_message(const std::string &sender_username, const std::string &message_text) {

@@ -275,6 +275,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   Room *Server::join(User *user,std::string room_name) {
     std::cout << "in join" <<std::endl;
     Room *target_room = find_or_create_room(room_name);
+    std::cout << "created room name: "<<target_room->get_room_name() <<std::endl;
     target_room->add_member(user);
     return target_room;
   }
@@ -290,7 +291,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   }
 
   bool Server::leave(User *user, Room *cur_room) {
-     std::cout << "in leave" <<std::endl;
+    std::cout << "in leave" <<std::endl;
     if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) > 0)) { //checks to see if a room exits in the map
       return false; //if it does we return the room
     } else {
