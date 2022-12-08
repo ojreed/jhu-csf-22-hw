@@ -43,8 +43,9 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
   std::cout << "in broadcast msg func" << std::endl;
   std::set<User *>::iterator it;
   Message msg;
-  msg.data = sender_username;
-  msg.data += ": ";
+  msg.data = get_room_name();
+  msg.data += sender_username;
+  msg.data += ":";
   msg.data += message_text;
   msg.tag = "delivery";
   std::cout << "message put together:" <<std::endl;
