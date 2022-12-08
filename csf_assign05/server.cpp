@@ -287,6 +287,7 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
     } else {
       std::cout << "in else part of sendall" <<std::endl;
       cur_room->broadcast_message(user->username,message);
+      std::cout << "broadcast successful" <<std::endl;
       return true;
     }
   }
