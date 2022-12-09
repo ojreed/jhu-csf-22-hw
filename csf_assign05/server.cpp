@@ -25,9 +25,9 @@ All dones need to be verified --> I dont trust any of them
 7. DONE | you will also leak because you dont destroy your connection objects especially line 92
 8. DONE | why do you have a voliatile count --> DONE
 9. DONE | your find and create room doesnt have any synch primitives thats a big problem --> DONE
-10.TODO | you need a way to deal with senders that quit with control c  --> sigint handler???
+10.DONE | you need a way to deal with senders that quit with control c  --> sigint handler???
 11.DONE | Fix formatting!
-
+12 TODO | find remaining bugs --> start with if you fuck up open_listenfd error handling
 
 */
 
