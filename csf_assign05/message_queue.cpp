@@ -37,6 +37,7 @@ void MessageQueue::enqueue(Message *msg) {
   m_messages.push_back(msg);
   // be sure to notify any thread waiting for a message to be
   // available by calling sem_post
+  // pthread_mutex_unlock(&m_lock);
   sem_post(&m_avail);
 }
 
@@ -58,8 +59,8 @@ Message *MessageQueue::dequeue() {
 
   // TODO: call sem_timedwait to wait up to 1 second for a message
   //       to be available, return nullptr if no message is available
-  Guard g(m_lock);
   if(sem_timedwait(&m_avail, &ts) == 0) {
+    Guard g(m_lock);
     // std::cout << "inside if statement" << std::endl;
     // TODO: remove the next message from the queue, return it
     Message *msg = m_messages.front();

@@ -25,14 +25,16 @@ void Room::add_member(User *user) {
   if (members.count(user) <= 0) {
     Guard g(lock);//protect access while adding user
     this->members.insert(user);
+    // pthread_mutex_unlock(&lock);
   }
 }
 
 void Room::remove_member(User *user) {
   // TODO: remove User from the room
   if (members.count(user) > 0) {
-     Guard g(lock);//protect access while adding user
+    Guard g(lock);//protect access while adding user
     members.erase(members.find(user));
+    // pthread_mutex_unlock(&lock);
   }
 }
 
