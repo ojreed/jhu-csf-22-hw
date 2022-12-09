@@ -19,16 +19,18 @@
 Connection* conn_for_int;
 bool session_active = true;
 
+
+//unneccary but fun rabit hole of a function to properly close out quiting senders
 void signal_handler(int signum, siginfo_t* info, void* context) {
-  Connection* conn = conn_for_int;
-  char response[550];
-  while (strcmp(response,"ok:no whyyyyy") != 0) {
-    conn->send("quit:user int");
-    conn->receive(response);
+  Connection* conn = conn_for_int;//pull connection info from global connection pointer
+  char response[550]; 
+  while (strcmp(response,"ok:no whyyyyy") != 0) { //while we dont have a valid close response 
+    conn->send("quit:user int"); //try to close
+    conn->receive(response); //get response
   }
   // Get server response back
-  conn->close();
-  session_active = false;
+  conn->close(); //close out our connection to server
+  session_active = false; //end while loop
 }
 
 int main(int argc, char **argv) {

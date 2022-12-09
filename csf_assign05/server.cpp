@@ -27,7 +27,7 @@ All dones need to be verified --> I dont trust any of them
 9. DONE | your find and create room doesnt have any synch primitives thats a big problem --> DONE
 10.DONE | you need a way to deal with senders that quit with control c  --> sigint handler???
 11.DONE | Fix formatting!
-12 TODO | find remaining bugs/gradescope nuke --> start with if you fuck up open_listenfd error handling
+12 DONE | find remaining bugs/gradescope nuke --> start with if you fuck up open_listenfd error handling
 
 */
 
@@ -200,9 +200,9 @@ Room *Server::find_or_create_room(const std::string &room_name) {
   } else { //if it doesnt
     
     Room* new_room = new Room(room_name);
-    pthread_mutex_lock(&m_lock);
+    Guard g(m_lock);
     m_rooms[room_name] = new_room; //create a new room by constructor w/ roomname
-    pthread_mutex_unlock(&m_lock);
+    // pthread_mutex_unlock(&m_lock);
     return new_room; //return the new room
   }
 }
