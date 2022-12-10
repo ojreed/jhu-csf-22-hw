@@ -316,8 +316,6 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
     conn->send("ok:good join");
   } else {
     conn->send("err:bad join tag");
-    conn->close();
-    this->quit(user,cur_room);
     return;
   } 
 

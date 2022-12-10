@@ -96,8 +96,8 @@ void Connection::close() {
 bool Connection::send(std::string msg) {
   msg += "\n"; 
   char const* formatted_send = msg.c_str(); //convert from string to char array
-  size_t size = rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //write message
-  if (size!=strlen(formatted_send)) { //handle errors in message send
+  ssize_t size = rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //write message
+  if (size!= (ssize_t) strlen(formatted_send)) { //handle errors in message send
     m_last_result = EOF_OR_ERROR;
     std::cerr << "Bad send" << std::endl;
     return false;
