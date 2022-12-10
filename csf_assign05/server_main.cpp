@@ -1,3 +1,10 @@
+/*
+ * Main file/entry point for a server. Hands off work to handle_client_requests function.
+ * CSF Assignment 5 MS2
+ * Madeline Estey (mestey1@jhu.edu)
+ * Owen Reed (oreed2@jhu.edu)
+ */
+
 #include <iostream>
 #include <csignal>
 #include "server.h"

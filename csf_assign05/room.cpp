@@ -1,3 +1,10 @@
+/*
+ * File for Room object and corresponding functions.
+ * CSF Assignment 5 MS2
+ * Madeline Estey (mestey1@jhu.edu)
+ * Owen Reed (oreed2@jhu.edu)
+ */
+
 #include <iostream>
 #include "guard.h"
 #include "message.h"

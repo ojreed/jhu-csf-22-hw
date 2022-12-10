@@ -1,6 +1,6 @@
 /*
- * File for implementation of functions that help clients connect to server
- * CSF Assignment 5
+ * File for implementation of functions that help clients connect to server.
+ * CSF Assignment 5 MS2
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)
  */

@@ -1,5 +1,5 @@
 /*
- * File for implementation of functions to create a server
+ * File for implementation of functions to create a server.
  * CSF Assignment 5 MS2
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)

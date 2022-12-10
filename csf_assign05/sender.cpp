@@ -1,6 +1,6 @@
 /*
- * File for implementation of the sender client
- * CSF Assignment 5
+ * File for implementation of the sender client.
+ * CSF Assignment 5 MS2
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)
  */
@@ -20,13 +20,13 @@ Connection* conn_for_int;
 bool session_active = true;
 
 
-//unneccary but fun rabit hole of a function to properly close out quiting senders
+// Unneccessary but fun rabit hole of a function to properly close out quiting senders
 void signal_handler(int signum, siginfo_t* info, void* context) {
-  Connection* conn = conn_for_int;//pull connection info from global connection pointer
+  Connection* conn = conn_for_int;// Pull connection info from global connection pointer
   char response[550]; 
-  while (strcmp(response,"ok:no whyyyyy") != 0) { //while we dont have a valid close response 
-    conn->send("quit:user int"); //try to close
-    conn->receive(response); //get response
+  while (strcmp(response,"ok:no whyyyyy") != 0) { // While we dont have a valid close response 
+    conn->send("quit:user int"); // Try to close
+    conn->receive(response); // Get response
   }
   // Get server response back
   conn->close(); //close out our connection to server
