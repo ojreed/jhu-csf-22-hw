@@ -89,7 +89,7 @@ void *worker(void *arg) {
     User user(username,true); // Init user as sender
     info->server->chat_with_sender(&user,info->clientfd,&conn); // Move into receiver communication function
   } else { // Error
-    int send_result = conn.send("err:bad_login");
+    conn.send("err:bad_login");
     std::cerr << "BAD FIRST TAG: " << tag << std::endl;
     conn.close();
     delete info;
@@ -291,6 +291,7 @@ bool Server::leave(User *user, Room *cur_room) {
  */
 bool Server::quit(User *user, Room *cur_room) { 
   leave(user,cur_room);
+  delete user;
   return true;
 }
 
@@ -315,6 +316,8 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
     conn->send("ok:good join");
   } else {
     conn->send("err:bad join tag");
+    conn->close();
+    this->quit(user,cur_room);
     return;
   } 
 

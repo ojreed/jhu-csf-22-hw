@@ -31,7 +31,7 @@ MessageQueue::~MessageQueue() {
   // destroy the mutex and the semaphore
   pthread_mutex_destroy(&m_lock); //destroy mutex
   sem_destroy(&m_avail); //destory semaphore
-  Message *next_message; 
+  Message *next_message = nullptr; 
   while((next_message = dequeue())!= nullptr) { //empty the queue and delete all messages
     next_message = NULL;
   }
