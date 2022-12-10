@@ -28,7 +28,26 @@ own thread).
 Critical sections we have:
 room.cpp (mutexes)
 - add_member and remove_member functions: mutex
+- the mutex protects modification to the set of users in the room at any given time
+- all of our mutexes are implementated with guards
+- this is a pretty striaght forward case for a mutex where we need a guard aroudn every access to the shared member set 
+- we only have one mutex so we dont have to worry about a 2 lock deadlock and it cleanly managed by the guard to ensure unlock
+
+server.cpp (mutexes)
+- create_or_find_room function needs a mutex
+- this is because mutliple threads can be creating a room at the same time and we need to ensure we dont have a double creation of a room
+    - for example if user 1 and 2 join room1 at the same time there is a risk that both trigger the room creation process since the second user might start adding a room before the first finishes 
+- this is also implmented with a guard
+- since there is no second lock we dont have to worry about a deadlock from the guard
+- it cleanly managed by the guard to ensure unlock
 
 message_queue.cpp (mutexes and semaphores)
 - enqueue and dequeue fucntions: mutex and semaphore
+- we need mutexes (implementated with guards here) in order to ensure that messages are added one at a time and removed cleanly wihtout an interuppting add
+- the lock ensures that only one thread can be working with a given recivers message queue at any one time
+- the semaphore is used to create a wait while there is no message ready to be pulled out of the queue  
+    - when a message is added it will signal to the semaphore wait to let the deuque commence. this leaves the reciver always ready and waiting for a message
+    - the time limit that we implemented gauruntees that it is forever halting program and will eventually get out of the lock
+- we only have one mutex for the whole queue that ensures whenever the queue comes into scope to be modified there will be a lock in place to ensure only one person modifies it
+-since there is no second lock we dont have to worry about a deadlock grom the guard
 
