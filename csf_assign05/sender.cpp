@@ -19,10 +19,11 @@
 Connection* conn_for_int;
 bool session_active = true;
 
-
-// Unneccessary but fun rabit hole of a function to properly close out quiting senders
+/*
+ * Function to properly close out quiting senders.
+ */
 void signal_handler(int signum, siginfo_t* info, void* context) {
-  Connection* conn = conn_for_int;// Pull connection info from global connection pointer
+  Connection* conn = conn_for_int; // Pull connection info from global connection pointer
   char response[550]; 
   while (strcmp(response,"ok:no whyyyyy") != 0) { // While we dont have a valid close response 
     conn->send("quit:user int"); // Try to close
@@ -86,6 +87,7 @@ int main(int argc, char **argv) {
     std::string command_tag;
     command_ss >> command_tag;
     std::string sender_message = ""; 
+    
     // Figure out what to do with user input based on command
     if (command_tag.rfind("/", 0) == 0) { 
       if (command_tag == "/join") { // Send join message
@@ -112,10 +114,8 @@ int main(int argc, char **argv) {
 
     if (ready_to_send) {
       conn.send(sender_message);
-
       // Get server response back
       char response[550];
-      
       if (conn.receive(response) && command_tag == "/quit") {
         session_active = false;
       }

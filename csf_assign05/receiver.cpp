@@ -96,16 +96,6 @@ int main(int argc, char **argv) {
         std::cerr << "invlaid format message returned" << std::endl;
         return -1;
       }
-      //NOTE: MAY NEED TO ADD BACK BUT FIRST MOVED INTO RECIVER FUNCTION OF CONN
-      // Strip newline characters! rio_readlineb does not do that
-      // pos = (formatted_message).find("\n");
-      // if (pos != std::string::npos) {
-      //   formatted_message.erase(pos,formatted_message.length());
-      // }
-      // pos = (formatted_message).find("\r");
-      // if (pos != std::string::npos) {
-      //   formatted_message.erase(pos,formatted_message.length());
-      // }
       message = formatted_message;
       std::cout << sender << ": " << message << std::endl; // Print message to receiver console according to protocol
     } 
