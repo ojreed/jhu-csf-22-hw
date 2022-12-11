@@ -1,5 +1,5 @@
 /*
- * Header file for functions that help clients connect to server.
+ * Header file for functions that help clients connect to server
  * CSF Assignment 5
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)

@@ -1,6 +1,6 @@
 /*
- * File for implementation of functions that help clients connect to server.
- * CSF Assignment 5 MS2
+ * File for implementation of functions that help clients connect to server
+ * CSF Assignment 5
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)
  */
@@ -94,15 +94,15 @@ void Connection::close() {
  * Parameters: message (msg)
  */
 bool Connection::send(std::string msg) {
-  msg += "\n"; 
-  char const* formatted_send = msg.c_str(); //convert from string to char array
-  ssize_t size = rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //write message
-  if (size!= (ssize_t) strlen(formatted_send)) { //handle errors in message send
+  msg += "\n";
+  char const* formatted_send = msg.c_str();
+  ssize_t size = rio_writen(this->m_fd, formatted_send, strlen(formatted_send)); //new correct way
+  if (size!= (ssize_t) strlen(formatted_send)) {
     m_last_result = EOF_OR_ERROR;
     std::cerr << "Bad send" << std::endl;
     return false;
   }
-  m_last_result = SUCCESS; //store that its good
+  m_last_result = SUCCESS;
   return true;
 }
 
@@ -123,28 +123,28 @@ bool Connection::receive(char* msg) {
   std::string delimiter = ":";
   std::string tag = formatted_reply.substr(0, formatted_reply.find(delimiter)); 
   // Listen for okay (or err) message from server 
-  if(tag == "err") { //handle error message
+  if(tag == "err") {
     std::cerr << (formatted_reply.substr(formatted_reply.find(":") + 1).c_str());
     m_last_result = EOF_OR_ERROR;
     return false;
   }
-  if(tag == formatted_reply) { //handle no ability to parse tag from message --> poor format 
+  if(tag == formatted_reply) {
     std::cerr << (formatted_reply.substr(formatted_reply.find(":") + 1).c_str());
     m_last_result = INVALID_MSG;
     return false;
   }
-  m_last_result = SUCCESS; //store correct
+  m_last_result = SUCCESS;
   return true;
 }
 
-std::string Connection::strip_text(std::string input) { //helper function for getting rid of newline chars
-  size_t pos = (input).find("\n"); 
-  if (pos != std::string::npos) { //handle /n
-    input.erase(pos,input.length()); //erase the target char
+std::string Connection::strip_text(std::string input) {
+  size_t pos = (input).find("\n");
+  if (pos != std::string::npos) {
+    input.erase(pos,input.length());
   }
   pos = (input).find("\r");
-  if (pos != std::string::npos) { //handle /r
-    input.erase(pos,input.length());//erase the target char
+  if (pos != std::string::npos) {
+    input.erase(pos,input.length());
   }
   return input;
 }

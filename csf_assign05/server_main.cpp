@@ -1,17 +1,13 @@
 /*
- * Main file/entry point for a server. Hands off work to handle_client_requests function.
- * CSF Assignment 5 MS2
+ * File for implementation of the receiver client
+ * CSF Assignment 5
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)
  */
-
 #include <iostream>
 #include <csignal>
 #include "server.h"
 
-// If you implement the Server class as described by its
-// TODO comments, you should not need to make any changes
-// to this main function.
 
 int main(int argc, char **argv) {
   if (argc != 2) {

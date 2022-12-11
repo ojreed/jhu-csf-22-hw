@@ -1,5 +1,5 @@
 /*
- * File for implementation of the receiver client.
+ * File for implementation of the receiver client
  * CSF Assignment 5
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)
@@ -94,11 +94,13 @@ int main(int argc, char **argv) {
       }
       if (i!=3 && i!=0) {
         std::cerr << "invlaid format message returned" << std::endl;
+        conn.close();
         return -1;
       }
       message = formatted_message;
       std::cout << sender << ": " << message << std::endl; // Print message to receiver console according to protocol
     } 
   }
+  conn.close();
   return 0;
 }

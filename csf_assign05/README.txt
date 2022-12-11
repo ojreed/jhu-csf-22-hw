@@ -50,4 +50,3 @@ message_queue.cpp (mutexes and semaphores)
     - the time limit that we implemented gauruntees that it is forever halting program and will eventually get out of the lock
 - we only have one mutex for the whole queue that ensures whenever the queue comes into scope to be modified there will be a lock in place to ensure only one person modifies it
 -since there is no second lock we dont have to worry about a deadlock grom the guard
-
