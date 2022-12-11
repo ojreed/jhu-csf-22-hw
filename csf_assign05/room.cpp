@@ -42,7 +42,6 @@ void Room::remove_member(User *user) {
 
 void Room::broadcast_message(const std::string &sender_username, const std::string &message_text) {
   // send a message to every (receiver) User in the room
-  std::set<User *>::iterator it;
   Message msg;
   msg.data = strip_text(get_room_name());
   msg.data += ":";
@@ -50,6 +49,8 @@ void Room::broadcast_message(const std::string &sender_username, const std::stri
   msg.data += ":";
   msg.data += strip_text(message_text);
   msg.tag = "delivery";
+  Guard g(lock);
+  std::set<User *>::iterator it;
   for (it = members.begin(); it != members.end(); ++it) {
     // Create new message
     if (!((*it)->is_sender)) {

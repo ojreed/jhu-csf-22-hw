@@ -1,5 +1,5 @@
 /*
- * File for implementation of functions that help clients connect to server
+ * File for implementation of the connection class
  * CSF Assignment 5
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)

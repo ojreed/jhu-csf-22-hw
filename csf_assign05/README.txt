@@ -32,6 +32,7 @@ room.cpp (mutexes)
 - all of our mutexes are implementated with guards
 - this is a pretty striaght forward case for a mutex where we need a guard aroudn every access to the shared member set 
 - we only have one mutex so we dont have to worry about a 2 lock deadlock and it cleanly managed by the guard to ensure unlock
+- we also lock inside broadcast_message in order to prevent changes happening mid iteraton.
 
 server.cpp (mutexes)
 - create_or_find_room function needs a mutex
@@ -40,6 +41,7 @@ server.cpp (mutexes)
 - this is also implmented with a guard
 - since there is no second lock we dont have to worry about a deadlock from the guard
 - it cleanly managed by the guard to ensure unlock
+
 
 message_queue.cpp (mutexes and semaphores)
 - enqueue and dequeue fucntions: mutex and semaphore

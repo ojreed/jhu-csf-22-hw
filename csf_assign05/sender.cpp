@@ -19,6 +19,10 @@
 Connection* conn_for_int;
 bool session_active = true;
 
+
+/*
+Function to handle force quit of the sender client.
+*/
 void signal_handler(int signum, siginfo_t* info, void* context) {
   Connection* conn = conn_for_int;
   char response[550];
@@ -31,6 +35,9 @@ void signal_handler(int signum, siginfo_t* info, void* context) {
   session_active = false;
 }
 
+/*
+Main loop for the sender class.
+*/
 int main(int argc, char **argv) {
   // Accept command from user
   if (argc != 4) {
@@ -73,7 +80,7 @@ int main(int argc, char **argv) {
   }
   
   // Loop reading commands from user, sending messages to server as appropriate
-  
+  //boolean to manage when we need to send a message
   bool ready_to_send = false;
   while (session_active) {
     // Read in what user is typing into console

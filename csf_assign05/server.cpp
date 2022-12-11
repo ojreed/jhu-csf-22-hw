@@ -1,5 +1,5 @@
 /*
- * File for implementation of the receiver client
+ * File for implementation of the server
  * CSF Assignment 5
  * Madeline Estey (mestey1@jhu.edu)
  * Owen Reed (oreed2@jhu.edu)
@@ -42,27 +42,22 @@ namespace {
 
 
 void *worker(void *arg) {
-   // TODO: use a static cast to convert arg from a void* to
-  //       whatever pointer type describes the object(s) needed
-  //       to communicate with a client (sender or receiver)
+  //use a static cast to convert arg from a void* to
+  //whatever pointer type describes the object(s) needed
+  //to communicate with a client (sender or receiver)
   int detach_result = pthread_detach(pthread_self());
   if (detach_result != 0) {
     std::cerr << "Error detaching thread: " << detach_result << std::endl;
     // Handle error here
   }
-  // std::cout << "In worker function" << std::endl;
   struct ConnInfo *info = (ConnInfo*) arg;
-  // TODO: read login message (should be tagged either with
-  //       TAG_SLOGIN or TAG_RLOGIN), send response
-  // std::cout << "Location 1" << std::endl;
+  //read login message (should be tagged either with
+  //TAG_SLOGIN or TAG_RLOGIN), send response
   Connection conn((info->clientfd));
-  // std::cout << "client fd:" << info->clientfd << std::endl;
   char message[550] = "FAILED:To Send";
-  // std::cout << "Location 2" << std::endl;
   bool receive_result = conn.receive(message);
   if (receive_result == false) {
     std::cerr << "Error receiving message from client" << std::endl;
-    // close(info->clientfd);
     conn.close();
     delete info;
     return NULL;
@@ -113,6 +108,11 @@ void *worker(void *arg) {
 // Server member function implementation
 ////////////////////////////////////////////////////////////////////////
 
+
+
+/*
+Constructor to open up mutex and set port.
+*/
 Server::Server(int port)
   : m_port(port)
   , m_ssock(-1) {
@@ -120,37 +120,46 @@ Server::Server(int port)
   pthread_mutex_init(&m_lock, NULL); //pthread_mutex_t *, const pthread_mutexattr_t *_Nullable
 }
 
+/*
+Destructor to close down socket and mutex.
+*/
 Server::~Server() {
   // destroy mutex
   pthread_mutex_destroy(&m_lock);
   close(m_ssock);
 }
 
-
+/*
+Listen function serves to init the server fd.
+*/
 bool Server::listen() {
-  //  use open_listenfd to create the server socket, return true
-  //       if successful, false if not
+  //use open_listenfd to create the server socket, return true
+  //if successful, false if not
   std::string temp_port = std::to_string(this->m_port); // Convert number to a string
   char const* port = temp_port.c_str(); // Convert string to char Array
   this->m_ssock = open_listenfd(port);
-  if (m_ssock < 0) { // param: const char* port
+  //handle weather or not the open function worked
+  if (m_ssock < 0) { 
     return false;
   }
   return true;
 }
 
+/*
+Continious server loop to constatnyl call accept in order to wait for new connections to the server.
+*/
 void Server::handle_client_requests() {
-  //      infinite loop calling accept or Accept, starting a new
-  //       pthread for each connected client
+  //infinite loop calling accept or Accept, starting a new
+  //pthread for each connected client
   // how to deal w serverfd
   while(1) { // should we instead check when max number of connections is reached?
     int clientfd = Accept(m_ssock, NULL, NULL);
     if (clientfd < 0) {
       std::cerr << "Could Not Accept Server\n";
     } else {
-      // create struct to pass the connection object and 
-      // other data to the client thread using the aux parameter
-      // of pthread_create
+      //create struct to pass the connection object and 
+      //other data to the client thread using the aux parameter
+      //of pthread_create
       struct ConnInfo *info = new ConnInfo();
       info->clientfd = clientfd;
       info->server = this;
@@ -163,13 +172,15 @@ void Server::handle_client_requests() {
       }
     }
   }
-  // Create a user object in each client thread to track the pending messages
-  // and register it to a room when client sends join request
 }
 
+/*
+Find or create room function that given a room name will return a pointer to a room object. Either by creating a room for the server
+or by finding the already existing room.
+*/
 Room *Server::find_or_create_room(const std::string &room_name) {
-  //      return a pointer to the unique Room object representing
-  //       the named chat room, creating a new one if necessary
+  //return a pointer to the unique Room object representing
+  //the named chat room, creating a new one if necessary
   if (m_rooms.count(room_name)>0) { //checks to see if a room exits in the map
     return m_rooms[room_name]; //if it does we return the room
   } else { //if it doesnt
@@ -184,7 +195,9 @@ Room *Server::find_or_create_room(const std::string &room_name) {
 
 
 
-
+/*
+Function to manage continuous converstion with a sender client.
+*/
 void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
   // see sequence diagrams in part 1 for how to implement
   // terminate the loop and tear down the client thread if any message fails to send
@@ -248,43 +261,59 @@ void Server::chat_with_sender(User *user, int client_fd, Connection* conn) {
 }
 
 
-  Room *Server::join(User *user,std::string room_name) {
-    Room *target_room = find_or_create_room(room_name);
-    target_room->add_member(user);
-    return target_room;
-  }
+/*
+Join room helper function.
+*/
+Room *Server::join(User *user,std::string room_name) {
+  Room *target_room = find_or_create_room(room_name);
+  target_room->add_member(user);
+  return target_room;
+}
 
-  bool Server::sendall(User *user, Room *cur_room,std::string message) {
-    //  std::cout << "in send" <<std::endl;
-    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
-      return false; //if it does we return the room
-    } else {
-      cur_room->broadcast_message(user->username,message);
-      return true;
-    }
-  }
-
-  bool Server::leave(User *user, Room *cur_room) {
-    if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
-      return false; //if it does we return the room
-    } else {
-      cur_room->remove_member(user);
-      return true;
-    }
-  }
-
-  bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
-    leave(user,cur_room);
-    delete user;
+/*
+Send out message helper function.
+*/
+bool Server::sendall(User *user, Room *cur_room,std::string message) {
+  if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
+    return false; //if it does we return the room
+  } else {
+    cur_room->broadcast_message(user->username,message);
     return true;
   }
+}
 
+/*
+Leave room helper function.
+*/
+bool Server::leave(User *user, Room *cur_room) {
+  if ((cur_room == nullptr) || (m_rooms.count(cur_room->get_room_name()) <= 0)) { //checks to see if a room exits in the map
+    return false; //if it does we return the room
+  } else {
+    cur_room->remove_member(user);
+    return true;
+  }
+}
+
+/*
+Quit helper function.
+*/
+bool Server::quit(User *user, Room *cur_room) { //add any other needed close down code to this
+  leave(user,cur_room);
+  delete user;
+  return true;
+}
+
+/*
+Code to manage continues convo with recv.
+*/
 void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
   // terminate the loop and tear down the client thread if any message transmission fails, or if a valid quit message is received
+  //manage login
   bool convo_valid = true;
   Room *cur_room = nullptr;
   char message[550];
   conn->receive(message);
+  //parse message properly
   std::string formatted_message(message);
   std::string new_delimiter = ":";
   std::string new_tag = formatted_message.substr(0, formatted_message.find(new_delimiter));
@@ -295,21 +324,23 @@ void Server::chat_with_receiver(User *user, int client_fd, Connection* conn) {
     conn->send("ok:good join");
   } else {
     conn->send("err:bad join tag");
-    //conn->close();
-    //delete user;
     return;
   } 
-  while (convo_valid) {
+  //loop for continued converstation with recv
+  while (convo_valid) { 
+    //pull message from message queue
     Message *message_to_send = user->mqueue.dequeue();
     if (message_to_send != nullptr) {
       std::string message_as_string = message_to_send->tag+":"+message_to_send->data;
+      //delete message object from heap
       delete message_to_send;
-      convo_valid = conn->send(message_as_string.c_str());
+      //send out message to recv
+      convo_valid = conn->send(message_as_string.c_str()); 
     }
   }
+  //closedown connection thread
   conn->close();
   this->quit(user,cur_room);
-  //conn->close();
   return;
 }
 
